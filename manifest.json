@@ -1,0 +1,22 @@
+{
+  "name": "USA Cup 2026 – Haugsbygd/Tyristubben",
+  "short_name": "USA Cup 2026",
+  "description": "J17/18 treningsprogram og reiseinfo",
+  "start_url": "/USACup2026/",
+  "display": "standalone",
+  "background_color": "#0B2240",
+  "theme_color": "#0B2240",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
