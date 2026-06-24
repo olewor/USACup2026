@@ -308,7 +308,7 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
 
 <div class="section" id="intervall">
     <div class="int-display" id="intDisplay">
-    <div class="int-big" id="intTime">04:00</div>
+    <div class="int-big" id="intTime">03:00</div>
     <div class="int-label" id="intLabel">Klar – trykk Start</div>
     <div class="int-progress">
       <div class="int-drag" id="id1"></div><div class="int-drag" id="id2"></div>
@@ -321,13 +321,13 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
     <button class="btn btn-reset" onclick="resetInt()">↺ Reset</button>
   </div>
   <div class="card">
-    <div style="font-size:0.95rem;font-weight:800;color:#0F2D4A;margin-bottom:8px;">4 × 4 min</div>
-    <div class="info blue" style="margin-bottom:10px;">Løpebane 85–90% puls · 2 min rolig pause mellom drag</div>
+    <div style="font-size:0.95rem;font-weight:800;color:#0F2D4A;margin-bottom:8px;">4 × 3 min</div>
+    <div class="info blue" style="margin-bottom:10px;">Løpebane 85–90% puls · 1 min rolig pause mellom drag</div>
     <table class="t"><tr><th>Drag</th><th>Tid</th><th>Intensitet</th><th>Pause</th></tr>
-    <tr><td><b>1</b></td><td>4 min</td><td>85–90% puls</td><td>2 min rolig</td></tr>
-    <tr><td><b>2</b></td><td>4 min</td><td>85–90% puls</td><td>2 min rolig</td></tr>
-    <tr><td><b>3</b></td><td>4 min</td><td>85–90% puls</td><td>2 min rolig</td></tr>
-    <tr><td><b>4</b></td><td>4 min</td><td>85–90% puls</td><td>5 min nedjogg</td></tr>
+    <tr><td><b>1</b></td><td>3 min</td><td>85–90% puls</td><td>1 min rolig</td></tr>
+    <tr><td><b>2</b></td><td>3 min</td><td>85–90% puls</td><td>1 min rolig</td></tr>
+    <tr><td><b>3</b></td><td>3 min</td><td>85–90% puls</td><td>1 min rolig</td></tr>
+    <tr><td><b>4</b></td><td>3 min</td><td>85–90% puls</td><td>5 min nedjogg</td></tr>
     </table>
   </div>
 </div>
@@ -438,10 +438,10 @@ function toggleCheck(li){li.classList.toggle('checked');}
 function showPlayer(id,btn){document.querySelectorAll('.ppanel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));document.getElementById('pp-'+id).classList.add('active');btn.classList.add('active');}
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 const phases=[
-  {label:'Drag 1 – kjør!',s:240,type:'work',drag:0},{label:'Pause – rolig',s:120,type:'rest',drag:0},
-  {label:'Drag 2 – kjør!',s:240,type:'work',drag:1},{label:'Pause – rolig',s:120,type:'rest',drag:1},
-  {label:'Drag 3 – kjør!',s:240,type:'work',drag:2},{label:'Pause – rolig',s:120,type:'rest',drag:2},
-  {label:'Drag 4 – kjør!',s:240,type:'work',drag:3},{label:'Nedjogg – bra!',s:300,type:'rest',drag:3}
+  {label:'Drag 1 – kjør!',s:180,type:'work',drag:0},{label:'Pause – rolig',s:60,type:'rest',drag:0},
+  {label:'Drag 2 – kjør!',s:180,type:'work',drag:1},{label:'Pause – rolig',s:60,type:'rest',drag:1},
+  {label:'Drag 3 – kjør!',s:180,type:'work',drag:2},{label:'Pause – rolig',s:60,type:'rest',drag:2},
+  {label:'Drag 4 – kjør!',s:180,type:'work',drag:3},{label:'Nedjogg – bra!',s:300,type:'rest',drag:3}
 ];
 let pi=0,ps=0,pRun=false,pId;
 function updateInt(){
@@ -455,7 +455,7 @@ function updateInt(){
 }
 function startInt(){if(pRun)return;pRun=true;pId=setInterval(()=>{ps++;if(ps>=phases[pi].s){ps=0;pi=Math.min(pi+1,phases.length-1);}updateInt();},1000);}
 function pauseInt(){pRun=false;clearInterval(pId);}
-function resetInt(){pauseInt();pi=0;ps=0;document.getElementById('intTime').textContent='04:00';if(document.getElementById('intLabel'))document.getElementById('intLabel').textContent='Klar – trykk Start';document.getElementById('intDisplay').className='int-display';for(let i=1;i<=4;i++){const el=document.getElementById('id'+i);if(el)el.className='int-drag';}}
+function resetInt(){pauseInt();pi=0;ps=0;document.getElementById('intTime').textContent='03:00';if(document.getElementById('intLabel'))document.getElementById('intLabel').textContent='Klar – trykk Start';document.getElementById('intDisplay').className='int-display';for(let i=1;i<=4;i++){const el=document.getElementById('id'+i);if(el)el.className='int-drag';}}
 </script>
 </body>
 </html>
