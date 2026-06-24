@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USA Cup 2025 – Haugsbygd/Tyristubben</title>
+<title>USA Cup 2026 – Haugsbygd/Tyristubben</title>
 <style>
   :root {
     --navy: #0B2240;
@@ -309,8 +309,8 @@
     </div>
   </div>
   <div class="hero-eyebrow">Haugsbygd / Tyristubben</div>
-  <div class="hero-title">USA Cup 2025</div>
-  <div class="hero-sub">J17/18 · Minnesota · Juli 2025</div>
+  <div class="hero-title">USA Cup 2026</div>
+  <div class="hero-sub">J17/18 · Minnesota · Juli 2026</div>
 
   <div class="countdown-wrap">
     <div class="countdown-label">✈ Nedtelling til avreise</div>
@@ -323,7 +323,7 @@
       <div class="cd-sep">:</div>
       <div class="cd-unit"><span class="cd-val" id="cd-secs">--</span><span class="cd-key">Sek</span></div>
     </div>
-    <div class="departure-note">Avgang <span>OSL → MSP · 10. juli kl. 13:50</span></div>
+    <div class="departure-note">Avgang <span>OSL → MSP · 10. juli 2026 kl. 13:50</span></div>
   </div>
 </div>
 
@@ -341,7 +341,7 @@
 
 <script>
 // === COUNTDOWN ===
-const departure = new Date('2025-07-10T13:50:00');
+const departure = new Date('2026-07-10T13:50:00+02:00');
 function updateCountdown() {
   const now = new Date();
   const diff = departure - now;
@@ -364,7 +364,7 @@ setInterval(updateCountdown, 1000);
 // === EVENTS ===
 const events = [
   {
-    date: new Date('2025-06-24'),
+    date: new Date('2026-06-24'),
     day: '24', month: 'JUN',
     type: 'Styrkeøkt', typeClass: 'type-styrke',
     title: 'Styrkeøkt på Sporty',
@@ -374,7 +374,7 @@ const events = [
     today: true,
   },
   {
-    date: new Date('2025-06-28'),
+    date: new Date('2026-06-28'),
     day: '28', month: 'JUN',
     type: 'Kick-off', typeClass: 'type-event',
     title: 'Kick-off USA Cup',
@@ -383,7 +383,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-01'),
+    date: new Date('2026-07-01'),
     day: '01', month: 'JUL',
     type: 'Styrkeøkt', typeClass: 'type-styrke',
     title: 'Styrkeøkt på Sporty',
@@ -392,7 +392,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-02'),
+    date: new Date('2026-07-02'),
     day: '02', month: 'JUL',
     type: 'Trening', typeClass: 'type-trening',
     title: 'Trening Haugsbygd',
@@ -401,7 +401,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-05'),
+    date: new Date('2026-07-05'),
     day: '05', month: 'JUL',
     type: 'Trening', typeClass: 'type-trening',
     title: 'Trening AKA',
@@ -410,7 +410,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-07'),
+    date: new Date('2026-07-07'),
     day: '07', month: 'JUL',
     type: 'Treningskamp', typeClass: 'type-kamp',
     title: 'Treningskamp?',
@@ -419,7 +419,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-08'),
+    date: new Date('2026-07-08'),
     day: '08', month: 'JUL',
     type: 'Styrkeøkt', typeClass: 'type-styrke',
     title: 'Styrkeøkt på Sporty',
@@ -428,7 +428,7 @@ const events = [
     link: null,
   },
   {
-    date: new Date('2025-07-09'),
+    date: new Date('2026-07-09'),
     day: '09', month: 'JUL',
     type: 'Trening', typeClass: 'type-trening',
     title: 'Trening Haugsbygd',
@@ -438,14 +438,13 @@ const events = [
   },
 ];
 
-const today = new Date();
-today.setHours(0,0,0,0);
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
 const list = document.getElementById('eventList');
 
 events.forEach(ev => {
-  const evDate = new Date(ev.date);
-  evDate.setHours(0,0,0,0);
+  const evDate = new Date(ev.date.getFullYear(), ev.date.getMonth(), ev.date.getDate());
   const isPast = evDate < today;
   const isToday = evDate.getTime() === today.getTime();
 
