@@ -77,7 +77,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;backgrou
 .chip-green{background:#D6EFE0;color:#1B6B3A;}
 .chip-grey{background:#E8EDF3;color:#6B7A8D;}
 .chip-red{background:#FDEAEA;color:#A81C1C;}
-.t-styrke{color:#1F5C8B;}.t-trening{color:#1B6B3A;}.t-kamp{color:#A81C1C;}.t-reise{color:#C8A84B;}
+.t-styrke{color:#1F5C8B;}.t-trening{color:#1B6B3A;}.t-kamp{color:#A81C1C;}.t-reise{color:#C8A84B;}.t-event{color:#7B3FA0;}
 .today-pip{width:6px;height:6px;border-radius:50%;background:#C8A84B;display:inline-block;margin-right:3px;vertical-align:middle;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 .avreise-card{background:linear-gradient(135deg,#0B2240,#1a3a5c);border-radius:10px;padding:16px;text-align:center;color:white;border:1px solid rgba(200,168,75,0.4);margin-top:8px;}
@@ -324,8 +324,9 @@ function showTab(id, btn) {
 // EVENTS
 const today = new Date(); today.setHours(0,0,0,0);
 const events = [
-  { date:'2026-06-24', day:'24', month:'JUN', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Byggøkt · Full belastning · 2 timer', link:'USA_Cup_Program.html' },
-  { date:'2026-06-28', day:'28', month:'JUN', type:'Trening', tc:'t-trening', title:'Trening + Grilling', detail:'17:00 Styrke · 17:30 Fotball · 19:00 Grilling', link:'bane_28jun.html' },
+  { date:'2026-06-24', day:'24', month:'JUN', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Gjennomført ✓', link:null },
+  { date:'2026-06-28', day:'28', month:'JUN', type:'Trening', tc:'t-trening', title:'Fotballøkt', detail:'Program kommer', link:null },
+  { date:'2026-06-29', day:'29', month:'JUN', type:'Kick-off', tc:'t-event', title:'Kick-off + Trening + Grilling', detail:'Trening · Grilling hos Marie O · Spillermøte', link:'bane_28jun.html' },
   { date:'2026-07-01', day:'01', month:'JUL', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Vedlikehold · Samme vekt', link:'sporty_01jul.html' },
   { date:'2026-07-02', day:'02', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'17:00 Styrke · 17:30 Fotball', link:'bane_02jul.html' },
   { date:'2026-07-05', day:'05', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening AKA', detail:'Program kommer', link:'bane_05jul.html' },
