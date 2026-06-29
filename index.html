@@ -180,9 +180,14 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
         <div class="pack-section">📋 Dokumenter</div>
         <div class="pack-item">✅ Pass (gyldig)<br>✅ ESTA – må registreres FØR avreise<br>✅ Reiseforsikring</div>
         <div class="pack-section">🎒 Håndbagasje</div>
-        <div class="pack-item">✅ Kamptøy (drakt, shorts, strømper)<br>✅ Leggbeskytter<br>✅ Fotballsko<br>✅ Reiseskjorte (ha på ved avreise)<br>✅ Lader, verdisaker</div>
-        <div class="pack-section">🧳 Innsjekket</div>
-        <div class="pack-item" style="color:#6B7A8D;font-style:italic;">Kommer...</div>
+        <div class="pack-item">✅ <span style="color:#1F5C8B;font-weight:700;">Blå kamptøy</span> (drakt, shorts, strømper) – blå drakt prioriteres<br>✅ Leggbeskytter<br>✅ Fotballsko<br>✅ Reiseskjorte (ha på ved avreise)<br>✅ Lader, verdisaker</div>
+        <div class="pack-section">🧳 Innsjekket – minst mulig!</div>
+        <div class="pack-item">✅ Gul drakt<br>✅ Treningsklær + joggesko<br>✅ Evt. medisiner<br>✅ Toalettsaker<br>✅ Hverdagsklær<br>✅ Bag til/fra kamper (om du ikke bruker håndbagasjen)<br>✅ Håndklær (evt. kjøpe i USA via DoorDash)</div>
+        <div class="pack-section">⚽ Felles utstyr (laget tar med)</div>
+        <div class="pack-item">✅ 3 fotballer, kjegler, vester, ballpumpe<br>✅ Medisinbag: tape, bandasje, paracet/ibux</div>
+        <div class="pack-section">🛒 Kjøpes via DoorDash ved ankomst</div>
+        <div class="pack-item">🛍 Kjølebag<br>🛍 Vann til alle<br>🛍 Vaskemiddel<br>🛍 Isposer<br>🛍 Middag fredag + forbruksvarer fredag–søndag</div>
+        <div style="background:#FFF0D6;border-left:3px solid #B35C00;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#B35C00;margin-top:10px;">🏠 På hjemreise: vi prøver å ta med mest mulig fotballtøy fra spillerne i lagsbagen – for å spare plass i egen koffert.</div>
       </div>
     </details>
     <div class="sec-heading">Program i USA</div>
@@ -325,8 +330,7 @@ function showTab(id, btn) {
 const today = new Date(); today.setHours(0,0,0,0);
 const events = [
   { date:'2026-06-24', day:'24', month:'JUN', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Gjennomført ✓', link:null },
-  { date:'2026-06-28', day:'28', month:'JUN', type:'Trening', tc:'t-trening', title:'Fotballøkt', detail:'Program kommer', link:null },
-  { date:'2026-06-29', day:'29', month:'JUN', type:'Kick-off', tc:'t-event', title:'Kick-off + Trening + Grilling', detail:'Trening · Grilling hos Marie O · Spillermøte', link:'bane_28jun.html' },
+  { date:'2026-06-29', day:'29', month:'JUN', type:'Kick-off ⚽', tc:'t-event', title:'Kick-off USA Cup', detail:'18:30 Trening · 20:00 Grilling · Bading · Marie O', link:'bane_29jun.html' },
   { date:'2026-07-01', day:'01', month:'JUL', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Vedlikehold · Samme vekt', link:'sporty_01jul.html' },
   { date:'2026-07-02', day:'02', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'17:00 Styrke · 17:30 Fotball', link:'bane_02jul.html' },
   { date:'2026-07-05', day:'05', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening AKA', detail:'Program kommer', link:'bane_05jul.html' },
@@ -376,6 +380,7 @@ const usaDays = [
   { dag:'Lørdag', dato:'11. juli', emoji:'🏠', color:'#1B6B3A', items:[
     {tid:'', txt:'Bli kjent · Hvile etter reisen'},
     {tid:'', txt:'Treningsøkt'},
+    {tid:'16:00', txt:'🇳🇴 Norge spiller kvartfinale? (norsk tid)'},
   ]},
   { dag:'Søndag', dato:'12. juli', emoji:'🛍️', color:'#1F5C8B', items:[
     {tid:'', txt:'Mall of America'},
@@ -393,9 +398,10 @@ const usaDays = [
   ]},
   { dag:'Onsdag', dato:'15. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
   { dag:'Torsdag', dato:'16. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
-  { dag:'Fredag', dato:'17. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
-  { dag:'Lørdag', dato:'18. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
+  { dag:'Fredag', dato:'17. juli', emoji:'🏆', color:'#A81C1C', items:[{tid:'', txt:'Sluttspillet starter'}]},
+  { dag:'Lørdag', dato:'18. juli', emoji:'🏆', color:'#A81C1C', items:[{tid:'', txt:'Finaler'}]},
   { dag:'Søndag', dato:'19. juli', emoji:'✈️', color:'#0B2240', items:[
+    {tid:'16:00', txt:'🏆 VM-finale (norsk tid)'},
     {tid:'19:30', txt:'MSP → Reykjavík (KEF) · FI 656 · Avgang 02:30 norsk tid (20. juli)'},
     {tid:'06:35', txt:'Ankomst Keflavik · 08:35 norsk tid · ca. 1t 15 min mellomlandling'},
     {tid:'07:50', txt:'KEF → Oslo (OSL) · FI 318 · Avgang 09:50 norsk tid'},

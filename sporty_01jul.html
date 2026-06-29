@@ -95,6 +95,7 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
     <button class="nav-btn active" onclick="showTab('plan',this)">📋 Plan</button>
     <button class="nav-btn" onclick="showTab('ovelser',this)">🏋️ Øvelser</button>
     <button class="nav-btn" onclick="showTab('intervall',this)">⚡ Intervall</button>
+    <button class="nav-btn" onclick="showTab('spillere',this)">👤 Spillere</button>
     <button class="nav-btn" onclick="showTab('sjekk',this)">✓ Sjekk</button>
   </div>
 </div>
@@ -113,7 +114,7 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
     <div class="tl-item"><div class="tl-time">0:34–0:46</div><div class="tl-content"><strong>St. 3 · Tåhev + Tibialis raise</strong><span>3×15 · Hvile 45 sek</span></div></div>
     <div class="tl-item"><div class="tl-time">0:46–0:58</div><div class="tl-content"><strong>St. 4 · Hip thrust</strong><span>3×15 · Hvile 45 sek</span></div></div>
     <div class="tl-item"><div class="tl-time">0:58–1:10</div><div class="tl-content"><strong>St. 5 · Bulgarian split squat + Step-up</strong><span>3×10 · Hvile 75 sek</span></div></div>
-    <div class="tl-item"><div class="tl-time">0:58–1:10</div><div class="tl-content"><strong>St. 6 · RDL</strong><span>3×6 · Hvile 75 sek</span></div></div>
+    <div class="tl-item"><div class="tl-time">0:58–1:10</div><div class="tl-content"><strong>St. 6 · RDL</strong><span>3×10 · Hvile 75 sek</span></div></div>
     <div class="tl-item"><div class="tl-time">1:10–1:22</div><div class="tl-content"><strong>St. 7 · Sittende roing + Ryggekstensjon</strong><span>3×12 · Hvile 60 sek</span></div></div>
     <div class="tl-item"><div class="tl-time amber">1:22–1:30</div><div class="tl-content"><strong>Pause + forbered intervall</strong><span>Drikk vann</span></div></div>
     <div class="tl-item"><div class="tl-time grey">1:30–2:00</div><div class="tl-content"><strong>4 × 4 min intervall</strong><span>Løpebane eller sykkel</span></div></div>
@@ -220,9 +221,9 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
         <div class="stat-box"><div class="stat-val">45 sek</div><div class="stat-key">Hvile</div></div>
       </div>
       <div class="rest-bar">⏱ 45 sek hvile – bytt med makker under hvilen</div>
-      <div style="font-size:0.75rem;color:#666;margin-bottom:8px;">🏋️ Hofteabduksjon-maskin + benk og stang/vektskive</div>
-      <div class="how-to"><strong>Slik gjør du det:</strong> <strong>Hofteabduksjon:</strong> Press knærne ut mot putene. Hold 1 sek ytterst. Kontrollert tilbake – ikke slipp. <br><strong>Hip thrust:</strong> Skuldrene på benken, stang over hoften. Press hoften opp til kroppen er rett. Hold 2 sek øverst. Senk kontrollert. Styrker sete og hofter – viktig for knestabilitet.</div>
-      <div class="tip-row"><div class="tip">Hofteabduksjon: hold 1 sek ytterst</div><div class="tip">Hip thrust: hold 2 sek øverst</div><div class="tip go">✓ Begge øvelsene forebygger kneskader</div></div>
+      <div style="font-size:0.75rem;color:#666;margin-bottom:8px;">🏋️ Benk og stang/vektskive</div>
+      <div class="how-to"><strong>Slik gjør du det:</strong> <strong>Hip thrust:</strong> Skuldrene på benken, stang over hoften. Press hoften opp til kroppen er rett. Hold 2 sek øverst. Senk kontrollert. Styrker sete og hofter – viktig for knestabilitet.</div>
+      <div class="tip-row"><div class="tip">Hold 2 sek øverst</div><div class="tip">Hip thrust: hold 2 sek øverst</div><div class="tip go">✓ Begge øvelsene forebygger kneskader</div></div>
       <div style="margin-top:8px;background:#F0F3F6;border-radius:6px;padding:7px 10px;font-size:0.78rem;color:#555;">
         👥 <strong>Rotasjon:</strong> Hip thrust: dropp ved knesmerter, gjør glute bridge i stedet.
       </div>
@@ -264,7 +265,7 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
     <div class="ex-body">
       <div class="ex-stats">
         <div class="stat-box"><div class="stat-val">3</div><div class="stat-key">Sett</div></div>
-        <div class="stat-box"><div class="stat-val">6</div><div class="stat-key">Reps</div></div>
+        <div class="stat-box"><div class="stat-val">10</div><div class="stat-key">Reps</div></div>
         <div class="stat-box"><div class="stat-val">75 sek</div><div class="stat-key">Hvile</div></div>
       </div>
       <div class="rest-bar">⏱ 75 sek hvile – bytt med makker under hvilen</div>
@@ -332,11 +333,136 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
   <div class="sec-heading">Stasjoner fullført</div>
   <div class="card">
     <ul class="checklist">
-      <li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 1 · Leg press – 4×12</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 2 · Leg curl – 3×12</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 3 · Tåhev ett ben – 3×15</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 4 · Hofteabduksjon – 3×15</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 5 · Bulgarian split squat – 3×10</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 6 · RDL curl – 3×6</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 7 · Sittende roing – 3×12</div></li>
+      <li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 1 · Leg press – 4×12</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 2 · Leg curl – 3×12</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 3 · Tåhev ett ben – 3×15</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 4 · Hip thrust – 3×15</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 5 · Bulgarian split squat – 3×10</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 6 · RDL curl – 3×6</div></li><li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">St. 7 · Sittende roing – 3×12</div></li>
       <li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">Intervall fullført</div></li>
       <li onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text">Nedjogg og tøying</div></li>
     </ul>
   </div>
+</div>
+
+<div class="section" id="spillere">
+  <div class="info blue" style="margin-bottom:12px;">Individuelt program for spillere som er skadet eller har begrensninger. Trykk på navn for å se tilpasset program.</div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+    <button class="ptab active" onclick="showPlayer('akn',this)" style="border:2px solid #D5E8F0;background:white;color:#1F5C8B;border-radius:20px;padding:7px 16px;font-size:0.85rem;font-weight:700;cursor:pointer;">AKN</button>
+    <button class="ptab" onclick="showPlayer('mo',this)" style="border:2px solid #D5E8F0;background:white;color:#1F5C8B;border-radius:20px;padding:7px 16px;font-size:0.85rem;font-weight:700;cursor:pointer;">MO</button>
+    <button class="ptab" onclick="showPlayer('maa',this)" style="border:2px solid #D5E8F0;background:white;color:#1F5C8B;border-radius:20px;padding:7px 16px;font-size:0.85rem;font-weight:700;cursor:pointer;">MAA</button>
+    <button class="ptab" onclick="showPlayer('zn',this)" style="border:2px solid #D5E8F0;background:white;color:#1F5C8B;border-radius:20px;padding:7px 16px;font-size:0.85rem;font-weight:700;cursor:pointer;">ZN</button>
+    <button class="ptab" onclick="showPlayer('lmm',this)" style="border:2px solid #D5E8F0;background:white;color:#1F5C8B;border-radius:20px;padding:7px 16px;font-size:0.85rem;font-weight:700;cursor:pointer;">LMM</button>
+  </div>
+
+  <!-- AKN: Kne -->
+  <div class="ppanel active" id="pp-akn">
+    <div style="background:#1F5C8B;color:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="font-size:1.1rem;font-weight:800;">AKN – Kne</div>
+      <div style="font-size:0.8rem;opacity:0.8;">Fysio-godkjent · Dropp Nordic og Bulgarian split squat</div>
+    </div>
+    <div class="card">
+      <div style="font-size:0.85rem;line-height:2;">
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 1 Leg press</strong> – ✅ OK · Moderat vekt</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 2 Leg curl</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 3 Tåhev + Tibialis</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 4 Hip thrust</strong> – ✅ OK · Alle sett</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 5 Step-up</strong> – ✅ OK · <span style="color:#B35C00;font-weight:700;">Dropp Bulgarian split squat</span></div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 6 RDL</strong> – ✅ OK · <span style="color:#B35C00;font-weight:700;">Dropp Nordic hamstring</span></div>
+        <div style="padding:4px 0;"><strong>St. 7 Roing + Ryggekstensjon</strong> – ✅ OK</div>
+      </div>
+      <div style="margin-top:10px;background:#FFF0D6;border-left:3px solid #B35C00;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#B35C00;">Stopp ved ustabilitet eller skarp smerte. Si fra til trener.</div>
+    </div>
+  </div>
+
+  <!-- MO: Ankel overtråkk -->
+  <div class="ppanel" id="pp-mo" style="display:none;">
+    <div style="background:#A81C1C;color:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="font-size:1.1rem;font-weight:800;">MO – Ankel</div>
+      <div style="font-size:0.8rem;opacity:0.8;">Overtråkk 31. mai · Instabilitet · Rehab fokus</div>
+    </div>
+    <div class="card">
+      <div style="background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;margin-bottom:10px;">5 min ekstra ankeloppvarming FØR start: ankelsirkler · balanse · tåhev med støtte</div>
+      <div style="font-size:0.85rem;line-height:2;">
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 1 Leg press</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 2 Leg curl</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 3 Tåhev</strong> – <span style="color:#B35C00;font-weight:700;">Kun med støtte</span> · Tibialis raise ✅</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 4 Hip thrust</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 5 Step-up</strong> – ✅ OK · <span style="color:#B35C00;font-weight:700;">Dropp Bulgarian</span></div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 6 RDL</strong> – ✅ OK</div>
+        <div style="padding:4px 0;"><strong>St. 7 Roing + Ryggekstensjon</strong> – ✅ OK</div>
+      </div>
+      <div style="margin-top:10px;background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;">Intervall: Sykkel – ikke løpebane.</div>
+    </div>
+  </div>
+
+  <!-- MAA: Ankel overtråkk -->
+  <div class="ppanel" id="pp-maa" style="display:none;">
+    <div style="background:#A81C1C;color:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="font-size:1.1rem;font-weight:800;">MAA – Ankel</div>
+      <div style="font-size:0.8rem;opacity:0.8;">Overtråkk · Starter rehab nå</div>
+    </div>
+    <div class="card">
+      <div style="background:#D6EFE0;border-left:3px solid #1B6B3A;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1B6B3A;margin-bottom:10px;">Lett ubehag (2–3/10) er normalt og nødvendig ved rehab. Skarp smerte (4+) = stopp.</div>
+      <div style="font-size:0.85rem;line-height:2;">
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 1 Leg press</strong> – ✅ OK · Moderat vekt</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 2 Leg curl</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 3 Tåhev</strong> – <span style="color:#B35C00;font-weight:700;">Kun med støtte</span> · Tibialis raise ✅</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 4 Hip thrust</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 5 Step-up</strong> – ✅ OK · <span style="color:#B35C00;font-weight:700;">Dropp Bulgarian</span></div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 6 RDL</strong> – ✅ OK</div>
+        <div style="padding:4px 0;"><strong>St. 7 Roing + Ryggekstensjon</strong> – ✅ OK</div>
+      </div>
+      <div style="margin-top:10px;background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;">Intervall: Sykkel – ikke løpebane.</div>
+    </div>
+  </div>
+
+  <!-- ZN: Ankel overtråkk med hevelse -->
+  <div class="ppanel" id="pp-zn" style="display:none;">
+    <div style="background:#A81C1C;color:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="font-size:1.1rem;font-weight:800;">ZN – Ankel (hevelse)</div>
+      <div style="font-size:0.8rem;opacity:0.8;">Overtråkk · Hevelse · Skånsom start</div>
+    </div>
+    <div class="card">
+      <div style="background:#FDEAEA;border-left:3px solid #A81C1C;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#A81C1C;margin-bottom:10px;">Hevelse = aktiv betennelse. Ikke bøye ankelen mot smerte. RICE mellom sett: Rest · Ice · Compression · Elevation.</div>
+      <div style="font-size:0.85rem;line-height:2;">
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 1 Leg press</strong> – ✅ OK · Unngå full dorsalfleksjon i ankelen</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 2 Leg curl</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 3 Tåhev + Tibialis</strong> – <span style="color:#A81C1C;font-weight:700;">Dropp begge</span> · Hvil ankelen</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 4 Hip thrust</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 5</strong> – <span style="color:#A81C1C;font-weight:700;">Dropp begge</span> · Hvil</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 6 RDL</strong> – ✅ OK · Forsiktig med belastning på ankelen</div>
+        <div style="padding:4px 0;"><strong>St. 7 Roing + Ryggekstensjon</strong> – ✅ OK</div>
+      </div>
+      <div style="margin-top:10px;background:#FDEAEA;border-left:3px solid #A81C1C;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#A81C1C;">Intervall: Hvil – ikke sykkel ved hevelse. Is på ankelen etter økt.</div>
+    </div>
+    <div class="card" style="background:#EEF3F8;">
+      <div style="font-size:0.85rem;font-weight:800;color:#0F2D4A;margin-bottom:8px;">🦵 Ekstraprogram for ZN mellom sett</div>
+      <div style="font-size:0.84rem;line-height:1.8;">
+        <div><strong>Isometrisk ankelstyrke:</strong> Press foten mot en vegg uten bevegelse · 5 × 10 sek</div>
+        <div><strong>Tåsprik:</strong> Spre tærne vidt, hold 5 sek · 3 × 10 – aktiverer fotbuen</div>
+        <div><strong>Sittende ankelpumping:</strong> Flekser og strekker ankelen sakte · 3 × 20</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LMM: Ankel kronisk instabilitet -->
+  <div class="ppanel" id="pp-lmm" style="display:none;">
+    <div style="background:#A81C1C;color:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;">
+      <div style="font-size:1.1rem;font-weight:800;">LMM – Ankel</div>
+      <div style="font-size:0.8rem;opacity:0.8;">To overtråkk · Kronisk instabilitet · Alltid ankelstøtte</div>
+    </div>
+    <div class="card">
+      <div style="background:#FDEAEA;border-left:3px solid #A81C1C;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#A81C1C;margin-bottom:10px;">⚠ Alltid ankelstøtte – aldri uten. Si fra umiddelbart ved ustabilitet.</div>
+      <div style="font-size:0.85rem;line-height:2;">
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 1 Leg press</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 2 Leg curl</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 3 Tåhev</strong> – <span style="color:#B35C00;font-weight:700;">Kun med støtte</span> · Tibialis raise ✅</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 4 Hip thrust</strong> – ✅ OK</div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 5 Step-up</strong> – ✅ OK · <span style="color:#B35C00;font-weight:700;">Dropp Bulgarian</span></div>
+        <div style="padding:4px 0;border-bottom:1px solid #F0F3F6;"><strong>St. 6 RDL</strong> – ✅ OK</div>
+        <div style="padding:4px 0;"><strong>St. 7 Roing + Ryggekstensjon</strong> – ✅ OK</div>
+      </div>
+      <div style="margin-top:10px;background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;">Intervall: Sykkel – aldri løpebane uten godkjenning.</div>
+    </div>
+  </div>
+
 </div>
 
 </div>
@@ -344,6 +470,12 @@ table.t tr:nth-child(even) td{background:var(--grey-light);}
 function showTab(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
 function toggleEx(el){el.classList.toggle('open');}
 function toggleCheck(li){li.classList.toggle('checked');}
+function showPlayer(id,btn){
+  document.querySelectorAll('.ppanel').forEach(p=>{p.style.display='none';});
+  document.querySelectorAll('.ptab').forEach(b=>{b.style.background='white';b.style.color='#1F5C8B';b.style.borderColor='#D5E8F0';});
+  document.getElementById('pp-'+id).style.display='block';
+  btn.style.background='#0F2D4A';btn.style.color='white';btn.style.borderColor='#0F2D4A';
+}
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 const phases=[
   {label:'Drag 1 – kjør!',s:240,type:'work',drag:0},{label:'Pause – rolig',s:120,type:'rest',drag:0},
