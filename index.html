@@ -157,9 +157,11 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
 <!-- TABS -->
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('trening',this)">🏋️<br>Trening</button>
+  <button class="tab-btn" onclick="showTab('sjekkliste',this)">🎒<br>Pakkeliste</button>
   <button class="tab-btn" onclick="showTab('usaprog',this)">🇺🇸<br>USA Prog.</button>
   <button class="tab-btn" onclick="showTab('hvemhva',this)">🏠<br>Hvem/Hva</button>
   <button class="tab-btn" onclick="showTab('games',this)">🏆<br>USA Games</button>
+  <button class="tab-btn" onclick="showTab('kontakt',this)">📞<br>Kontakt</button>
 </div>
 
 <!-- CONTENT -->
@@ -182,7 +184,7 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
         <div class="pack-section">🎒 Håndbagasje</div>
         <div class="pack-item">✅ <span style="color:#1F5C8B;font-weight:700;">Blå kamptøy</span> (drakt, shorts, strømper) – blå drakt prioriteres<br>✅ Leggbeskytter<br>✅ Fotballsko<br>✅ Reiseskjorte (ha på ved avreise)<br>✅ Lader, verdisaker</div>
         <div class="pack-section">🧳 Innsjekket – minst mulig!</div>
-        <div class="pack-item">✅ Gul drakt<br>✅ Treningsklær + joggesko<br>✅ Evt. medisiner<br>✅ Toalettsaker<br>✅ Hverdagsklær<br>✅ Bag til/fra kamper (om du ikke bruker håndbagasjen)<br>✅ Håndklær (evt. kjøpe i USA via DoorDash)</div>
+        <div class="pack-item">✅ Gul drakt (i innsjekket)<br>✅ Treningsklær + joggesko<br>✅ Evt. medisiner<br>✅ Toalettsaker<br>✅ Hverdagsklær<br>✅ Bag til/fra kamper (om du ikke bruker håndbagasjen)<br>✅ Håndklær (evt. kjøpe i USA via DoorDash)</div>
         <div class="pack-section">⚽ Felles utstyr (laget tar med)</div>
         <div class="pack-item">✅ 3 fotballer, kjegler, vester, ballpumpe<br>✅ Medisinbag: tape, bandasje, paracet/ibux</div>
         <div class="pack-section">🛒 Kjøpes via DoorDash ved ankomst</div>
@@ -191,6 +193,10 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
       </div>
     </details>
     <div class="sec-heading">Program i USA</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button onclick="setTidzone('lokal',this)" id="btn-lokal" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;background:#0B2240;color:white;">🕐 Lokal tid</button>
+      <button onclick="setTidzone('norsk',this)" id="btn-norsk" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;background:#F0F3F6;color:#666;">🇳🇴 Norsk tid</button>
+    </div>
     <div id="usaDays"></div>
   </div>
 
@@ -247,6 +253,165 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
     </div>
   </div>
 
+  <!-- SJEKKLISTE -->
+  <div class="panel" id="sjekkliste">
+
+    <style>
+      .cl-section{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#6B7A8D;margin:16px 0 6px;}
+      .cl-card{background:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.07);}
+      .cl-subhead{font-size:0.75rem;font-weight:700;color:#1F5C8B;margin:10px 0 4px;}
+      .cl-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid #F0F3F6;cursor:pointer;font-size:0.87rem;}
+      .cl-item:last-child{border-bottom:none;}
+      .cl-box{width:22px;height:22px;border:2px solid #C0CCDA;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.8rem;margin-top:1px;}
+      .cl-item.done .cl-box{background:#1B6B3A;border-color:#1B6B3A;color:white;}
+      .cl-item.done .cl-text{text-decoration:line-through;color:#6B7A8D;}
+      .cl-text{flex:1;line-height:1.4;}
+      .cl-note{font-size:0.75rem;color:#6B7A8D;display:block;margin-top:1px;}
+      .cl-tag{font-size:0.7rem;font-weight:700;border-radius:10px;padding:1px 7px;margin-left:5px;flex-shrink:0;white-space:nowrap;}
+      .tag-blue{background:#D5E8F0;color:#1F5C8B;}
+      .tag-amber{background:#FFF0D6;color:#B35C00;}
+      .tag-green{background:#D6EFE0;color:#1B6B3A;}
+      .tag-red{background:#FDEAEA;color:#A81C1C;}
+      .cl-info{background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;margin-bottom:8px;line-height:1.5;}
+      .cl-warn{background:#FFF0D6;border-left:3px solid #B35C00;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#B35C00;margin-bottom:8px;line-height:1.5;}
+      .cl-alert{background:#FDEAEA;border-left:3px solid #A81C1C;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#A81C1C;margin-bottom:8px;line-height:1.5;}
+    </style>
+
+    <div class="cl-info">📋 Pakk smart: legg alt frem på gulvet, kryss av – og pakk i poser: kamp, hverdag, hygiene og håndbagasje. Mål: én bag + én håndbagasje – alt merket med navn.</div>
+
+    <!-- SISTE SJEKK FØR AVREISE -->
+    <details open>
+      <summary style="padding:10px 14px;font-weight:800;font-size:0.9rem;color:#0B2240;cursor:pointer;list-style:none;display:flex;justify-content:space-between;background:white;border-radius:12px;margin-bottom:8px;box-shadow:0 2px 6px rgba(0,0,0,0.07);">
+        ✈️ Siste sjekk – dagen før avreise <span style="font-size:0.75rem;color:#6B7A8D;font-weight:600;">Kryss av med foresatte</span>
+      </summary>
+      <div class="cl-card">
+        <div class="cl-subhead">⚽ Kampklar</div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Fotballsko</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Leggskinn</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Kampstrømper</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Treningstøy</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Solkrem</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Gnagsårplaster / tape</div></div>
+        <div class="cl-subhead">✈️ Reiseklar</div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Pass <span class="cl-tag tag-amber">Håndbagasje!</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">ESTA <span class="cl-tag tag-amber">Håndbagasje!</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Reiseforsikring</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Bankkort / kontanter USD <span class="cl-note">Husk å fjerne regionsperre på kortet!</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Mobil + lader</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Powerbank <span class="cl-tag tag-red">Kun håndbagasje!</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Adapter USA <span class="cl-note">Type A/B – to flate pinner</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Roamingpakke USA aktivert <span class="cl-note">Sjekk med operatør – husk å slå på før avreise</span></div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Reisebekreftelse på mobil <span class="cl-note">Bookingreferanse: FI/ZEK9VS · FI319, FI657, FI656, FI318</span></div></div>
+        <div class="cl-subhead">🏠 Bo-klar</div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Klær for 10 dager</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Hygiene-bag</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Medisiner i originalpakning</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Ørepropper / sovemaske</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Skittentøypose</div></div>
+        <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">God innstilling 😊</div></div>
+      </div>
+    </details>
+
+    <!-- HÅNDBAGASJE -->
+    <div class="cl-section">🎒 Håndbagasje – maks 10 kg · 55×40×23 cm</div>
+    <div class="cl-card">
+      <div class="cl-warn">Alt du trenger til kamp pakkes her – trygg om kofferten forsinkes!</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Pass + ESTA + reisedokumenter <span class="cl-note">Alltid lett tilgjengelig – ikke i bunnen av bagasjen</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text"><strong>Blå kamptøy</strong> – drakt, shorts, strømper <span class="cl-tag tag-blue">Blå drakt!</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Leggskinn</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Fotballsko</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Reiseskjorte <span class="cl-note">Ha den på ved avreise fra Oslo kl. 11:45</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Powerbank <span class="cl-tag tag-red">Aldri i innsjekket!</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Mobil + lader + adapter USA</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Medisiner + linser/briller <span class="cl-tag tag-amber">Håndbagasje!</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Hodetelefoner</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Hoodie / jakke <span class="cl-note">Fly kan være kaldt</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Ørepropper + sovemaske + nakkepute</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Snacks til reisen <span class="cl-note">Mat for purchase på flyet</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Lett toalettmappe – i godkjent 1L væskepose</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Et komplett klesskift</div></div>
+    </div>
+
+    <!-- INNSJEKKET -->
+    <div class="cl-section">🧳 Innsjekket – maks 23 kg · minst mulig!</div>
+    <div class="cl-card">
+      <div class="cl-info">🌡️ Dag 27–31°C · 🌙 Kveld 17–21°C · ☀️ 11 t sol · 🌧️ 2–3 kortvarige regndager<br>Pakk til 10 dager – men husk at det sikkert blir shopping! 🛍️ La det være litt plass til hjemreisen.</div>
+
+      <div class="cl-subhead">⚽ Fotballutstyr</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Gul drakt + shorts + strømper <span class="cl-tag tag-amber">Innsjekket</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Ekstra fotballsko (om du har)</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Treningsshorts / tights – 2–3 stk</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Treningstrøyer – lette, flere stk</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Kampbag / sekk <span class="cl-note">Til utstyr til og fra kamp</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Keeperutstyr (hvis relevant)</div></div>
+
+      <div class="cl-subhead">👕 Hverdagsklær</div>
+      <div style="background:#F3E5F5;border-left:3px solid #7B1FA0;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#7B1FA0;margin-bottom:8px;">🛍️ <strong>Mall of America – søndag 12. juli:</strong> USAs største kjøpesenter – perfekt sted å kjøpe det du evt. mangler!</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Undertøy – 10 stk + ekstra</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Sokker – 10 stk + ekstra <span class="cl-note">Gode sokker mot gnagsår</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">T-skjorter – 6–7 stk <span class="cl-note">Lett materiale – det blir varmt!</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Shorts – 3–4 stk</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Lett bukse / joggebukse – 1–2 stk <span class="cl-note">Til kaldere kvelder</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Lagshoodie <span class="cl-tag tag-green">De som har</span><span class="cl-note">Perfekt til kvelder og luftkondisjonerte lokaler</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Nattøy</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Badetøy</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Sandaler / flip-flops</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Lett regnjakke / vindjakke</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Caps / solhatt</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Solbriller</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Skittentøypose + pose til vått tøy</div></div>
+
+      <div class="cl-subhead">🛁 Hygiene og helse</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Tannbørste + tannkrem</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Sjampo + balsam + dusjsåpe</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Deodorant</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Solkrem – minst SPF 30 <span class="cl-note">Viktig! 11 t sol per dag</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">After sun / aloe vera</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Myggmiddel</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Bind / tamponger / mensprodukter</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Personlige medisiner – nok for hele turen <span class="cl-note">I originalpakning</span></div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Våtservietter + liten antibac</div></div>
+    </div>
+
+    <!-- VANN -->
+    <div class="cl-section">💧 Vann – NB!</div>
+    <div class="cl-card">
+      <div class="cl-info">Laget har bestilt 72 × 0,5L flasker + 3 × 4L-dunker via DoorDash. Ca. 2–3 flasker per spiller per kamp deles ut. Du trenger ikke ta med drikkeflaske!</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text" style="color:#6B7A8D;">Drikkeflaske – trenger ikke! Vann deles ut av laget</div></div>
+    </div>
+
+    <!-- VARME-TIPS -->
+    <div class="cl-section">🌡️ Spill smart i varmen</div>
+    <div class="cl-card">
+      <div class="cl-alert">Varseltegn: svimmelhet, kvalme, hodepine, frysninger i varmen, forvirring. Si fra med én gang!</div>
+      <div class="cl-subhead">Før kamp</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Drikk jevnt hele dagen</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Spis salte / enkle måltider</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Solkrem + caps i pauser og venting</div></div>
+      <div class="cl-subhead">Under kamp</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Små slurker ofte</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Kjøl ned nakke og håndledd</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Tørr trøye tilgjengelig</div></div>
+      <div class="cl-subhead">Etter kamp</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Fyll på væske + salter</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Dusj + skift til tørt</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Legg kampklær til tørk · Luft fotballsko</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Prioriter søvn og ro</div></div>
+    </div>
+
+    <!-- HJEMREISE -->
+    <div class="cl-section">🏠 Hjemreise – husk!</div>
+    <div class="cl-card">
+      <div class="cl-warn">Vi prøver å ta med mest mulig fotballtøy fra spillerne i lagsbagen – for å spare plass i din egen koffert!</div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Gi fotballtøy til lagsleder for fellesfrakt</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Sjekk vekten på kofferten – maks 23 kg</div></div>
+      <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Pass + boardingkort samlet ved innsjekk</div></div>
+    </div>
+
+    <div style="text-align:center;padding:16px 0 4px;font-size:0.78rem;color:#6B7A8D;">Huk av etter hvert som du pakker 🎒</div>
+
+  </div>
+
   <!-- USA GAMES -->
   <div class="panel" id="games">
     <div class="sec-heading">Poengkort</div>
@@ -284,6 +449,90 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
         <div style="font-size:0.8rem;">Oppdateres under turneringen</div>
       </div>
     </div>
+  </div>
+
+  <!-- KONTAKT -->
+  <div class="panel" id="kontakt">
+
+    <div class="sec-heading">📍 Adresser i USA</div>
+
+    <!-- AIRBNB -->
+    <div class="rom-card">
+      <div class="rom-hdr" style="background:#1B6B3A;">🏠 Airbnb – Fredag 10. til mandag 13. juli</div>
+      <div style="padding:14px;">
+        <div style="font-size:1rem;font-weight:800;color:#0B2240;margin-bottom:4px;">419 Hamline Avenue South</div>
+        <div style="font-size:0.9rem;color:#6B7A8D;margin-bottom:12px;">Saint Paul, Minnesota 55105, USA</div>
+        <a href="https://maps.apple.com/?q=419+Hamline+Avenue+South+Saint+Paul+Minnesota" target="_blank"
+           style="display:flex;align-items:center;gap:8px;background:#0B2240;color:white;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-bottom:8px;">
+          🗺️ Åpne i Kart
+        </a>
+        <a href="https://www.google.com/maps/search/?api=1&query=419+Hamline+Avenue+South+Saint+Paul+Minnesota+55105" target="_blank"
+           style="display:flex;align-items:center;gap:8px;background:#4285F4;color:white;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+          🗺️ Åpne i Google Maps
+        </a>
+      </div>
+    </div>
+
+    <!-- COLLEGE -->
+    <div class="rom-card" style="margin-top:10px;">
+      <div class="rom-hdr" style="background:#1F5C8B;">🎓 Northwestern University – Mandag 13. til søndag 19. juli</div>
+      <div style="padding:14px;">
+        <div style="font-size:1rem;font-weight:800;color:#0B2240;margin-bottom:4px;">3003 Snelling Ave N</div>
+        <div style="font-size:0.9rem;color:#6B7A8D;margin-bottom:12px;">Roseville, MN 55113, USA</div>
+        <a href="https://maps.apple.com/?q=3003+Snelling+Ave+N+Roseville+MN+55113" target="_blank"
+           style="display:flex;align-items:center;gap:8px;background:#0B2240;color:white;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-bottom:8px;">
+          🗺️ Åpne i Kart
+        </a>
+        <a href="https://www.google.com/maps/search/?api=1&query=3003+Snelling+Ave+N+Roseville+MN+55113" target="_blank"
+           style="display:flex;align-items:center;gap:8px;background:#4285F4;color:white;border-radius:10px;padding:10px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+          🗺️ Åpne i Google Maps
+        </a>
+      </div>
+    </div>
+
+    <div class="sec-heading" style="margin-top:16px;">📞 Kontaktpersoner</div>
+
+    <div class="rom-card">
+      <div style="padding:14px;">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F3F6;">
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Ole</div>
+            <div style="font-size:0.82rem;color:#6B7A8D;">Lagsleder</div>
+          </div>
+          <a href="tel:+4792656752" style="display:flex;align-items:center;gap:6px;background:#1B6B3A;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+            📱 92 65 67 52
+          </a>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F3F6;">
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Øyvind</div>
+            <div style="font-size:0.82rem;color:#6B7A8D;">Trener</div>
+          </div>
+          <a href="tel:+4545290092" style="display:flex;align-items:center;gap:6px;background:#1F5C8B;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+            📱 +45 29 00 92
+          </a>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Iver</div>
+            <div style="font-size:0.82rem;color:#6B7A8D;">Trener</div>
+          </div>
+          <a href="tel:+4741407660" style="display:flex;align-items:center;gap:6px;background:#1F5C8B;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+            📱 414 07 660
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="background:#FDEAEA;border-left:3px solid #A81C1C;border-radius:0 8px 8px 0;padding:10px 12px;font-size:0.82rem;color:#A81C1C;margin-top:10px;line-height:1.6;">
+      🚨 <strong>Nødsituasjon i USA:</strong> Ring <strong>911</strong><br>
+      Norsk nødtelefon fra utlandet: <strong>+47 112</strong> (politi) · <strong>+47 113</strong> (ambulanse)
+    </div>
+
   </div>
 
 </div><!-- /content -->
@@ -370,24 +619,26 @@ list.appendChild(av);
 // USA DAYS
 const usaDays = [
   { dag:'Fredag', dato:'10. juli', emoji:'✈️', color:'#0B2240', items:[
-    {tid:'11:45', txt:'Oppmøte Oslo lufthavn · Reiseskjorte'},
-    {tid:'13:50', txt:'OSL → Reykjavík (KEF) · FI 319 · Ankomst 16:45 norsk tid'},
+    {tid:'11:00', norsk:'11:00', txt:'Oppmøte Oslo lufthavn · Reiseskjorte'},
+    {tid:'13:50', norsk:'13:50', txt:'OSL → Reykjavík (KEF) · FI 319'},
+    {tid:'14:45', norsk:'16:45', txt:'Ankomst Reykjavík (KEF)'},
+    {tid:'14:45–16:45', norsk:'16:45–18:45', txt:'Mellomlandling Keflavik'},
     {tid:'16:45', txt:'Mellomlandling Keflavik · ca. 2 timer (16:45–18:45 norsk tid)'},
-    {tid:'18:45', txt:'KEF → Minneapolis (MSP) · FI 657'},
-    {tid:'18:20', txt:'Ankomst Minneapolis lokal tid · 01:20 norsk tid (natt til 11. juli) · Terminal 2 – Humphrey'},
+    {tid:'16:45', norsk:'18:45', txt:'KEF → Minneapolis (MSP) · FI 657'},
+    {tid:'18:20', norsk:'01:20 (+1)', txt:'Ankomst Minneapolis · Terminal 2 – Humphrey'},
     {tid:'', txt:'Buss til Airbnb · Middag og dagligvarer på døra'},
   ]},
   { dag:'Lørdag', dato:'11. juli', emoji:'🏠', color:'#1B6B3A', items:[
     {tid:'', txt:'Bli kjent · Hvile etter reisen'},
     {tid:'', txt:'Treningsøkt'},
-    {tid:'16:00', txt:'🇳🇴 Norge spiller kvartfinale? (norsk tid)'},
+    {tid:'16:00', norsk:'23:00', txt:'🇳🇴 Norge kvartfinale?'},
   ]},
   { dag:'Søndag', dato:'12. juli', emoji:'🛍️', color:'#1F5C8B', items:[
     {tid:'', txt:'Mall of America'},
     {tid:'', txt:'Treningsøkt'},
   ]},
   { dag:'Mandag', dato:'13. juli', emoji:'🎓', color:'#B35C00', items:[
-    {tid:'10:00', txt:'Utsjekk Airbnb'},
+    {tid:'10:00', norsk:'17:00', txt:'Utsjekk Airbnb'},
     {tid:'', txt:'Reiser til college'},
     {tid:'', txt:'Lett treningsøkt · Bli kjent med anlegget'},
   ]},
@@ -401,27 +652,48 @@ const usaDays = [
   { dag:'Fredag', dato:'17. juli', emoji:'🏆', color:'#A81C1C', items:[{tid:'', txt:'Sluttspillet starter'}]},
   { dag:'Lørdag', dato:'18. juli', emoji:'🏆', color:'#A81C1C', items:[{tid:'', txt:'Finaler'}]},
   { dag:'Søndag', dato:'19. juli', emoji:'✈️', color:'#0B2240', items:[
-    {tid:'16:00', txt:'🏆 VM-finale (norsk tid)'},
-    {tid:'19:30', txt:'MSP → Reykjavík (KEF) · FI 656 · Avgang 02:30 norsk tid (20. juli)'},
-    {tid:'06:35', txt:'Ankomst Keflavik · 08:35 norsk tid · ca. 1t 15 min mellomlandling'},
-    {tid:'07:50', txt:'KEF → Oslo (OSL) · FI 318 · Avgang 09:50 norsk tid'},
-    {tid:'12:35', txt:'Ankomst Oslo · 12:35 norsk tid'},
+    {tid:'16:00', norsk:'23:00', txt:'🏆 VM-finale'},
+    {tid:'19:30', norsk:'02:30 (+1)', txt:'MSP → Reykjavík (KEF) · FI 656'},
+    {tid:'06:35', norsk:'08:35', txt:'Ankomst Keflavik · ca. 1t 15 min mellomlandling'},
+    {tid:'07:50', norsk:'09:50', txt:'KEF → Oslo (OSL) · FI 318'},
+    {tid:'12:35', norsk:'12:35', txt:'Ankomst Oslo'},
   ]},
 ];
-const usaEl = document.getElementById('usaDays');
-usaDays.forEach(d => {
-  const card = document.createElement('div');
-  card.className = 'day-card';
-  card.innerHTML = `
-    <div class="day-hdr" style="background:${d.color}">
-      <div style="font-size:1.3rem;">${d.emoji}</div>
-      <div><div class="day-lbl">${d.dag}</div><div class="day-dt">${d.dato}</div></div>
-    </div>
-    <div class="day-body">
-      ${d.items.map(i => `<div class="m-entry">${i.tid ? `<span class="m-time">${i.tid}</span>` : ''}<span class="m-txt">${i.txt}</span></div>`).join('')}
-    </div>`;
-  usaEl.appendChild(card);
-});
+
+// Lokal/norsk tid toggle
+let aktivTidzone = 'lokal';
+function setTidzone(tz) {
+  aktivTidzone = tz;
+  document.getElementById('btn-lokal').style.background = tz==='lokal' ? '#0B2240' : '#F0F3F6';
+  document.getElementById('btn-lokal').style.color = tz==='lokal' ? 'white' : '#666';
+  document.getElementById('btn-norsk').style.background = tz==='norsk' ? '#0B2240' : '#F0F3F6';
+  document.getElementById('btn-norsk').style.color = tz==='norsk' ? 'white' : '#666';
+  renderUsaDays();
+}
+
+function renderUsaDays() {
+  const el = document.getElementById('usaDays');
+  if (!el) return;
+  el.innerHTML = '';
+  usaDays.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    const items = d.items.map(i => {
+      const tid = (aktivTidzone === 'norsk' && i.norsk !== undefined) ? i.norsk : i.tid;
+      const tidLabel = tid ? `<span class="m-time">${tid}</span> ` : '';
+      return `<div class="m-entry">${tidLabel}<span class="m-txt">${i.txt}</span></div>`;
+    }).join('');
+    card.innerHTML = `
+      <div class="day-hdr" style="background:${d.color || 'var(--navy)'}">
+        <div style="font-size:1.3rem;">${d.emoji || ''}</div>
+        <div><div class="day-lbl">${d.dag}</div><div class="day-dt">${d.dato}</div></div>
+      </div>
+      <div class="day-body">${items || '<div class="day-empty">Program kommer...</div>'}</div>`;
+    el.appendChild(card);
+  });
+}
+
+renderUsaDays();
 
 // PWA
 let deferredPrompt;
