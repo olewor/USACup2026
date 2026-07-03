@@ -4,383 +4,372 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin – USA Cup 2026</title>
+<meta name="theme-color" content="#0B2240">
 <style>
-:root{--navy:#0B2240;--blue:#1F5C8B;--gold:#C8A84B;--green:#1B6B3A;--red:#A81C1C;--grey:#6B7A8D;--grey-light:#F0F3F6;--bg:#E8EDF2;--radius:12px;}
+:root{--navy:#0F2D4A;--blue:#1F5C8B;--green:#1B6B3A;--amber:#B35C00;--red:#A81C1C;--grey:#666;--light:#F0F3F6;--radius:12px;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#1a2535;min-height:100vh;}
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);padding:20px;}
-.login-box{background:rgba(255,255,255,0.07);border:1px solid rgba(200,168,75,0.3);border-radius:16px;padding:32px 24px;width:100%;max-width:340px;text-align:center;}
-.login-box h1{color:var(--gold);font-size:1.4rem;margin-bottom:4px;}
-.login-box p{color:rgba(255,255,255,0.5);font-size:0.82rem;margin-bottom:24px;}
-.login-input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:white;font-size:1.1rem;text-align:center;letter-spacing:4px;margin-bottom:12px;outline:none;}
-.login-input:focus{border-color:var(--gold);}
-.login-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;}
-.login-error{color:#ff6b6b;font-size:0.82rem;margin-top:8px;display:none;}
-#app{display:none;}
-.topbar{background:var(--navy);color:white;padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;}
-.topbar h1{font-size:1rem;font-weight:800;}
-.logout-btn{background:rgba(255,255,255,0.1);border:none;color:white;padding:6px 12px;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;}
-.main{max-width:640px;margin:0 auto;padding:16px 12px 60px;}
-.tabs{display:flex;gap:6px;margin-bottom:16px;}
-.tab{flex:1;padding:10px;border:none;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;background:white;color:var(--grey);box-shadow:0 2px 6px rgba(0,0,0,0.07);}
-.tab.active{background:var(--navy);color:white;}
-.panel{display:none;}.panel.active{display:block;}
-.card{background:white;border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
-.card-title{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:14px;}
-label{display:block;font-size:0.75rem;font-weight:700;color:var(--grey);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;margin-top:12px;}
-label:first-of-type{margin-top:0;}
-select,input[type="text"],textarea{width:100%;padding:10px 12px;border:1.5px solid #DDE3EA;border-radius:8px;font-size:0.95rem;font-family:inherit;background:white;color:var(--navy);outline:none;}
-select:focus,input:focus,textarea:focus{border-color:var(--blue);}
-textarea{resize:vertical;min-height:70px;}
-.btn-row{display:flex;gap:8px;margin-top:16px;}
-.btn{flex:1;padding:12px;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;}
-.btn:active{opacity:0.8;}
-.btn-primary{background:var(--navy);color:white;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#E8EDF2;color:#333;}
+.topbar{background:var(--navy);color:white;padding:14px 16px;text-align:center;}
+.topbar h1{font-size:1.1rem;font-weight:800;}
+.topbar p{font-size:0.75rem;opacity:0.6;margin-top:2px;}
+.main{max-width:640px;margin:0 auto;padding:14px 12px 60px;}
+.card{background:white;border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.sec{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--grey);margin:16px 0 8px;}
+label{display:block;font-size:0.82rem;font-weight:600;color:#444;margin-bottom:4px;margin-top:10px;}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;background:white;color:#333;outline:none;}
+input:focus,select:focus{border-color:var(--blue);}
+.btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:10px;}
 .btn-green{background:var(--green);color:white;}
+.btn-blue{background:var(--blue);color:white;}
 .btn-red{background:var(--red);color:white;}
-.btn-grey{background:var(--grey-light);color:var(--grey);}
-.goal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
-.goal-entry{background:var(--grey-light);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;font-size:0.87rem;}
-.goal-num{background:var(--navy);color:white;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;flex-shrink:0;}
-.goal-info{flex:1;}
-.goal-scorer{font-weight:700;color:var(--navy);}
-.goal-assist{color:var(--grey);font-size:0.8rem;}
-.goal-delete{background:none;border:none;color:var(--red);font-size:1.1rem;cursor:pointer;padding:4px;flex-shrink:0;}
-.match-item{border:1px solid #DDE3EA;border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;}
-.match-item.active{border-color:var(--gold);background:#FFFBF0;}
-.match-name{font-weight:800;color:var(--navy);}
-.match-meta{font-size:0.78rem;color:var(--grey);margin-top:2px;}
-.score-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
-.score-table th{padding:8px 6px;background:var(--grey-light);text-align:left;font-weight:700;color:var(--navy);font-size:0.75rem;}
-.score-table td{padding:7px 6px;border-top:1px solid var(--grey-light);}
-.score-table tr:nth-child(even) td{background:#FAFBFC;}
-.pts{font-weight:900;color:var(--navy);text-align:center;}
-.sec-label{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--grey);margin-bottom:8px;}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--navy);color:white;padding:12px 24px;border-radius:100px;font-size:0.9rem;font-weight:700;z-index:999;transition:transform 0.3s;white-space:nowrap;}
-.toast.show{transform:translateX(-50%) translateY(0);}
-.info-box{border-radius:8px;padding:9px 11px;font-size:0.8rem;margin-top:8px;}
-.info-blue{background:#D5E8F0;color:#1F5C8B;border-left:3px solid #1F5C8B;}
-.info-green{background:#D6EFE0;color:#1B6B3A;border-left:3px solid #1B6B3A;}
+.btn-grey{background:#C0CCDA;color:white;}
+.pill{display:inline-block;font-size:0.72rem;font-weight:700;border-radius:10px;padding:2px 8px;margin:2px;}
+.pill-gold{background:#FFF0D6;color:#B35C00;}
+.pill-blue{background:#D5E8F0;color:#1F5C8B;}
+.pill-green{background:#D6EFE0;color:#1B6B3A;}
+.pill-red{background:#FDEAEA;color:#A81C1C;}
+.pill-purple{background:#F3E5F5;color:#7B1FA0;}
+.info{background:#D5E8F0;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:var(--blue);margin-bottom:10px;}
+.warn{background:#FFF0D6;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:var(--amber);margin-bottom:10px;}
+.kamp-item{border:1px solid #E4EAF0;border-radius:10px;padding:12px;margin-bottom:8px;}
+.kamp-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.kamp-title{font-weight:700;font-size:0.9rem;}
+.kamp-res{font-size:1.1rem;font-weight:800;color:var(--navy);}
+.status{display:inline-block;font-size:0.72rem;font-weight:700;border-radius:6px;padding:2px 8px;}
+.status-win{background:#D6EFE0;color:#1B6B3A;}
+.status-loss{background:#FDEAEA;color:#A81C1C;}
+.status-draw{background:#FFF0D6;color:#B35C00;}
+#loginView{display:block;}
+#adminView{display:none;}
+.spinner{text-align:center;padding:20px;color:var(--grey);font-size:0.9rem;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B6B3A;color:white;padding:10px 20px;border-radius:20px;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.3s;z-index:999;}
+.toast.show{opacity:1;}
+.spellerchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.spchip{padding:6px 12px;border-radius:20px;border:2px solid #C0CCDA;background:white;font-size:0.82rem;font-weight:600;cursor:pointer;color:#444;}
+.spchip.sel{background:var(--navy);border-color:var(--navy);color:white;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 </style>
 </head>
 <body>
 
-<div id="loginScreen">
-  <div class="login-box">
-    <h1>⚽ USA Cup Admin</h1>
-    <p>Kun for trener</p>
-    <input class="login-input" type="password" id="pwInput" placeholder="••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Logg inn</button>
-    <div class="login-error" id="loginError">Feil passord</div>
+<div class="topbar">
+  <h1>⚽ Admin – USA Cup 2026</h1>
+  <p>Kampregistrering og poenggiving</p>
+</div>
+
+<div class="main">
+
+<!-- LOGIN -->
+<div id="loginView">
+  <div class="card" style="margin-top:20px;">
+    <div style="text-align:center;font-size:2rem;margin-bottom:10px;">🔐</div>
+    <div style="text-align:center;font-weight:800;font-size:1.1rem;color:#0B2240;margin-bottom:16px;">Logg inn som trener</div>
+    <label>Passord</label>
+    <input type="password" id="passInput" placeholder="Skriv passord..." onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:12px;">Logg inn</button>
+    <div id="loginErr" style="color:#A81C1C;font-size:0.82rem;margin-top:8px;text-align:center;display:none;">Feil passord</div>
   </div>
 </div>
 
-<div id="app">
-  <div class="topbar">
-    <div><div style="font-size:1rem;font-weight:800;">⚽ USA Cup Admin</div><div style="font-size:0.7rem;opacity:0.6;">Kampregistrering</div></div>
-    <button class="logout-btn" onclick="logout()">Logg ut</button>
+<!-- ADMIN -->
+<div id="adminView">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+    <div style="font-size:0.8rem;color:var(--grey);">Innlogget som trener ✓</div>
+    <button onclick="doLogout()" style="background:none;border:none;color:var(--red);font-size:0.8rem;font-weight:600;cursor:pointer;">Logg ut</button>
   </div>
 
-  <div class="main">
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('kamper',this)">📋 Kamper</button>
-      <button class="tab" onclick="showTab('poeng',this)">🏆 Poeng</button>
-      <button class="tab" onclick="showTab('eksport',this)">📤 Eksport</button>
-    </div>
-
-    <!-- KAMPER -->
-    <div class="panel active" id="kamper">
-      <div class="card">
-        <div class="card-title">➕ Ny kamp</div>
-        <label>Motstander</label>
-        <input type="text" id="motstanderInput" placeholder="f.eks. FC Dallas">
-        <div style="display:flex;gap:8px;">
-          <div style="flex:1;"><label>Våre mål</label><input type="text" id="vaareMaal" placeholder="0" style="text-align:center;font-size:1.3rem;font-weight:800;"></div>
-          <div style="flex:1;"><label>Deres mål</label><input type="text" id="deresMaal" placeholder="0" style="text-align:center;font-size:1.3rem;font-weight:800;"></div>
-        </div>
+  <!-- NY KAMP -->
+  <div class="sec">➕ Registrer kamp</div>
+  <div class="card">
+    <div class="grid2">
+      <div>
         <label>Dato / runde</label>
-        <input type="text" id="kampDato" placeholder="f.eks. Tirsdag 14. juli · Gruppe A">
-        <div class="btn-row"><button class="btn btn-primary" onclick="nyKamp()">Opprett kamp</button></div>
+        <input type="text" id="kampDato" placeholder="f.eks. 14. juli · Gruppe A">
       </div>
-
-      <div class="sec-label">Registrerte kamper</div>
-      <div id="kampListe"></div>
-
-      <div id="hendelsesPanel" style="display:none;">
-        <div class="card" style="border:2px solid var(--gold);">
-          <div class="card-title">⚽ Legg til hendelse – <span id="aktivKampNavn" style="color:var(--grey);font-weight:600;font-size:0.82rem;"></span></div>
-          <label>Type</label>
-          <select id="hendelseType" onchange="oppdaterSkjema()">
-            <option value="maal">⚽ Mål</option>
-            <option value="matchavgjorende">🏆 Matchavgjørende</option>
-            <option value="oyeblikk">⭐ Kampens øyeblikk</option>
-          </select>
-          <div id="maalSkjema">
-            <label>Målscorer (valgfritt)</label>
-            <select id="maalscorer"><option value="">– Ingen / ukjent –</option></select>
-            <label>Assist (valgfritt)</label>
-            <select id="assist1"><option value="">– Ingen –</option></select>
-            <label>2. assist (valgfritt)</label>
-            <select id="assist2"><option value="">– Ingen –</option></select>
-          </div>
-          <div id="spillerSkjema" style="display:none;">
-            <label>Spiller</label>
-            <select id="hendelsesSpiller"><option value="">– Ingen / ukjent –</option></select>
-            <label>Beskrivelse (valgfritt)</label>
-            <textarea id="hendelsesBeskrivelse" placeholder="f.eks. Reddet straffe i 90.min"></textarea>
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-green" onclick="leggTilHendelse()">Legg til</button>
-            <button class="btn btn-grey" onclick="lukkHendelser()">Lukk</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="sec-label">Hendelser i kampen</div>
-          <div id="hendelserListe"></div>
-          <div class="btn-row" style="margin-top:12px;">
-            <button class="btn btn-red" onclick="slettAktivKamp()" style="flex:0.5;">🗑 Slett kamp</button>
-          </div>
-        </div>
+      <div>
+        <label>Motstander</label>
+        <input type="text" id="kampMot" placeholder="f.eks. Sverige B">
       </div>
     </div>
-
-    <!-- POENG -->
-    <div class="panel" id="poeng">
-      <div class="card">
-        <div class="card-title">🏆 Poengoversikt</div>
-        <table class="score-table" id="poengTabell">
-          <tr><th>Spiller</th><th style="text-align:center;">⚽</th><th style="text-align:center;">🎯</th><th style="text-align:center;">🎯2.</th><th style="text-align:center;">⭐</th><th style="text-align:center;">🏆</th></tr>
-        </table>
+    <div class="grid2" style="margin-top:8px;">
+      <div>
+        <label>Våre mål</label>
+        <input type="number" id="kampVare" min="0" value="0">
+      </div>
+      <div>
+        <label>Deres mål</label>
+        <input type="number" id="kampDeres" min="0" value="0">
       </div>
     </div>
-
-    <!-- EKSPORT -->
-    <div class="panel" id="eksport">
-      <div class="card">
-        <div class="card-title">📤 Eksport – poengtabell</div>
-        <p style="font-size:0.85rem;color:var(--grey);margin-bottom:14px;">Generer koden og kopier den. Gå til GitHub → index.html → blyant → finn score-table → erstatt innholdet → Commit.</p>
-        <div class="btn-row" style="margin-bottom:10px;">
-          <button class="btn btn-primary" onclick="genererEksport()">⚡ Generer</button>
-          <button class="btn btn-green" onclick="kopierEksport()">📋 Kopier</button>
-        </div>
-        <textarea id="eksportKode" style="font-family:monospace;font-size:0.72rem;height:200px;" readonly placeholder="Trykk Generer..."></textarea>
-        <div class="info-box info-blue" style="margin-top:8px;">Lim inn mellom &lt;table class="score-table"&gt; og &lt;/table&gt; i index.html</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📋 Kampresultater – kode</div>
-        <p style="font-size:0.85rem;color:var(--grey);margin-bottom:10px;">Lim inn i kampresultater-seksjonen i index.html.</p>
-        <div class="btn-row" style="margin-bottom:10px;">
-          <button class="btn btn-primary" onclick="genererEksport()">⚡ Generer</button>
-          <button class="btn btn-green" onclick="kopierKamper()">📋 Kopier</button>
-        </div>
-        <textarea id="eksportKamper" style="font-family:monospace;font-size:0.72rem;height:140px;" readonly placeholder="Trykk Generer..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-title">💾 Sikkerhetskopi</div>
-        <p style="font-size:0.85rem;color:var(--grey);margin-bottom:10px;">Lagre data – send til deg selv på e-post eller Notes etter hver kamp.</p>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="lageSikkerhetskopi()">Generer</button>
-          <button class="btn btn-grey" onclick="kopierBackup()">Kopier</button>
-        </div>
-        <textarea id="backupData" style="font-family:monospace;font-size:0.72rem;height:80px;margin-top:10px;" readonly></textarea>
-        <div style="margin-top:10px;"><button class="btn btn-grey" onclick="gjenopprettBackup()" style="font-size:0.82rem;">Gjenopprett fra backup</button></div>
-        <textarea id="backupInput" style="font-family:monospace;font-size:0.72rem;height:60px;margin-top:8px;" placeholder="Lim inn backup-data her..."></textarea>
-      </div>
-    </div>
-
+    <button class="btn btn-green" onclick="lagreKamp()">💾 Lagre kamp</button>
   </div>
+
+  <!-- REGISTRER HENDELSE -->
+  <div class="sec">🎯 Registrer hendelse</div>
+  <div class="card">
+    <div id="kampVelger">
+      <div class="info">Ingen kamper registrert ennå</div>
+    </div>
+    <div id="hendelseForm" style="display:none;">
+      <label>Type</label>
+      <select id="hendelseType" onchange="oppdaterHendelseForm()">
+        <option value="mal">⚽ Mål</option>
+        <option value="moment">⭐ Øyeblikk</option>
+        <option value="avgjorende">🏆 Avgjørende</option>
+      </select>
+
+      <div id="malForm">
+        <label>Scorer</label>
+        <div class="spellerchips" id="scorerChips"></div>
+        <label style="margin-top:10px;">Assist</label>
+        <div class="spellerchips" id="assistChips"></div>
+        <label style="margin-top:10px;">2. assist</label>
+        <div class="spellerchips" id="assist2Chips"></div>
+      </div>
+
+      <div id="momentForm" style="display:none;">
+        <label>Spiller</label>
+        <div class="spellerchips" id="momentChips"></div>
+        <label style="margin-top:10px;">Beskrivelse</label>
+        <input type="text" id="momentTekst" placeholder="f.eks. Fantastisk redning i overtid">
+      </div>
+
+      <div id="avgjørendeForm" style="display:none;">
+        <label>Spiller</label>
+        <div class="spellerchips" id="avgjørendeChips"></div>
+      </div>
+
+      <button class="btn btn-blue" onclick="lagreHendelse()" style="margin-top:14px;">💾 Lagre hendelse</button>
+    </div>
+  </div>
+
+  <!-- KAMPHISTORIKK -->
+  <div class="sec">📋 Kamphistorikk</div>
+  <div id="kampListe"><div class="spinner">Laster...</div></div>
+
+  <!-- POENGTABELL -->
+  <div class="sec">📊 Poengtabell</div>
+  <div id="poengTabell"><div class="spinner">Laster...</div></div>
+
+  <!-- SLETT -->
+  <div class="sec">🗑 Administrasjon</div>
+  <div class="card">
+    <div class="warn">Slett siste hendelse om du registrerte feil</div>
+    <button class="btn btn-red" onclick="slettSiste()">🗑 Slett siste hendelse</button>
+  </div>
+
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, onSnapshot, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCuo0k8-iD2nFhOzhC79Nf9wPK1dRBUYEw",
+  authDomain: "usacup2026-66732.firebaseapp.com",
+  projectId: "usacup2026-66732",
+  storageBucket: "usacup2026-66732.firebasestorage.app",
+  messagingSenderId: "712752858233",
+  appId: "1:712752858233:web:efa8fcecd32d3f02d340a8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const PASSORD = 'usacup2026';
 const SPILLERE = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Linnea','Kaja F','Marie','Malin','Kaja','Bea','Hanna'];
 
-// Populate selects
-['maalscorer','assist1','assist2','hendelsesSpiller'].forEach(id => {
-  const el = document.getElementById(id);
-  SPILLERE.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = s;
-    el.appendChild(opt);
-  });
-});
-
-// LOGIN
-function doLogin() {
-  if (document.getElementById('pwInput').value === PASSORD) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    sessionStorage.setItem('adminOK','1');
-    lastData(); renderKampListe(); renderPoeng();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('pwInput').value = '';
-  }
-}
-function logout() {
-  sessionStorage.removeItem('adminOK');
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-}
-if (sessionStorage.getItem('adminOK')) {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-}
-
-// DATA
+let valgtKampId = null;
 let kamper = [];
-let aktivIdx = null;
-function lastData() { try { kamper = JSON.parse(localStorage.getItem('usacup_kamper')||'[]'); } catch(e){kamper=[];} }
-function lagreData() { localStorage.setItem('usacup_kamper', JSON.stringify(kamper)); }
+let hendelser = [];
 
-// TABS
-function showTab(id,btn) {
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active'); btn.classList.add('active');
-  if(id==='poeng') renderPoeng();
-  if(id==='eksport') genererEksport();
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// NY KAMP
-function nyKamp() {
-  const m = document.getElementById('motstanderInput').value.trim();
-  if(!m){toast('Fyll inn motstander');return;}
-  kamper.push({id:Date.now(),motstander:m,vaareMaal:parseInt(document.getElementById('vaareMaal').value)||0,deresMaal:parseInt(document.getElementById('deresMaal').value)||0,dato:document.getElementById('kampDato').value.trim(),hendelser:[]});
-  lagreData();
-  document.getElementById('motstanderInput').value='';
-  document.getElementById('vaareMaal').value='';
-  document.getElementById('deresMaal').value='';
-  document.getElementById('kampDato').value='';
-  renderKampListe(); toast('Kamp opprettet!');
-}
-
-function renderKampListe() {
-  const el = document.getElementById('kampListe');
-  if(!kamper.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--grey);font-size:0.85rem;">Ingen kamper ennå</div>';return;}
-  el.innerHTML = kamper.map((k,i)=>{
-    const res = k.vaareMaal+' – '+k.deresMaal;
-    const c = k.vaareMaal>k.deresMaal?'var(--green)':k.vaareMaal<k.deresMaal?'var(--red)':'var(--grey)';
-    return `<div class="match-item ${aktivIdx===i?'active':''}" onclick="velgKamp(${i})">
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div><div class="match-name">vs. ${k.motstander}</div><div class="match-meta">${k.dato||''} · ${k.hendelser.filter(h=>h.type==='maal').length} mål</div></div>
-        <div style="font-size:1.3rem;font-weight:900;color:${c}">${res}</div>
-      </div></div>`;
-  }).join('');
-}
-
-function velgKamp(idx) {
-  aktivIdx=idx;
-  document.getElementById('aktivKampNavn').textContent='vs. '+kamper[idx].motstander;
-  document.getElementById('hendelsesPanel').style.display='block';
-  renderHendelser(); renderKampListe();
-  document.getElementById('hendelsesPanel').scrollIntoView({behavior:'smooth'});
-}
-function lukkHendelser(){aktivIdx=null;document.getElementById('hendelsesPanel').style.display='none';renderKampListe();}
-
-function oppdaterSkjema(){
-  const t=document.getElementById('hendelseType').value;
-  document.getElementById('maalSkjema').style.display=t==='maal'?'block':'none';
-  document.getElementById('spillerSkjema').style.display=t!=='maal'?'block':'none';
-}
-
-function leggTilHendelse(){
-  if(aktivIdx===null)return;
-  const t=document.getElementById('hendelseType').value;
-  let h={type:t};
-  if(t==='maal'){
-    h.scorer=document.getElementById('maalscorer').value;
-    h.assist1=document.getElementById('assist1').value;
-    h.assist2=document.getElementById('assist2').value;
-    document.getElementById('maalscorer').value='';
-    document.getElementById('assist1').value='';
-    document.getElementById('assist2').value='';
-  } else {
-    h.spiller=document.getElementById('hendelsesSpiller').value;
-    h.beskrivelse=document.getElementById('hendelsesBeskrivelse').value.trim();
-    document.getElementById('hendelsesSpiller').value='';
-    document.getElementById('hendelsesBeskrivelse').value='';
+function chips(containerId, spillere, allowNone=false) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  if (allowNone) {
+    const b = document.createElement('button');
+    b.textContent = 'Ingen'; b.className = 'spchip';
+    b.onclick = () => { el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+    el.appendChild(b);
   }
-  kamper[aktivIdx].hendelser.push(h);
-  lagreData(); renderHendelser(); renderPoeng();
-  toast(t==='maal'?'⚽ Mål!':t==='matchavgjorende'?'🏆 Matchavgjørende!':'⭐ Øyeblikk!');
+  spillere.forEach(s => {
+    const b = document.createElement('button');
+    b.textContent = s; b.className = 'spchip';
+    b.onclick = () => { el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
+    el.appendChild(b);
+  });
 }
 
-function renderHendelser(){
-  if(aktivIdx===null)return;
-  const h=kamper[aktivIdx].hendelser;
-  const el=document.getElementById('hendelserListe');
-  if(!h.length){el.innerHTML='<div style="color:var(--grey);font-size:0.85rem;font-style:italic;">Ingen hendelser ennå</div>';return;}
-  let nr=0;
-  el.innerHTML=h.map((hen,i)=>{
-    if(hen.type==='maal'){nr++;
-      return `<div class="goal-entry"><div class="goal-num">⚽${nr}</div><div class="goal-info"><div class="goal-scorer">${hen.scorer||'Ukjent'}</div><div class="goal-assist">${[hen.assist1,hen.assist2].filter(Boolean).map(a=>'🎯 '+a).join(' · ')||'Ingen assist'}</div></div><button class="goal-delete" onclick="slettHendelse(${i})">✕</button></div>`;
-    } else if(hen.type==='matchavgjorende'){
-      return `<div class="goal-entry"><div class="goal-num">🏆</div><div class="goal-info"><div class="goal-scorer">${hen.spiller||'Ukjent'}</div><div class="goal-assist">${hen.beskrivelse||'Matchavgjørende'}</div></div><button class="goal-delete" onclick="slettHendelse(${i})">✕</button></div>`;
-    } else {
-      return `<div class="goal-entry"><div class="goal-num">⭐</div><div class="goal-info"><div class="goal-scorer">${hen.spiller||'Ukjent'}</div><div class="goal-assist">${hen.beskrivelse||'Kampens øyeblikk'}</div></div><button class="goal-delete" onclick="slettHendelse(${i})">✕</button></div>`;
-    }
+function getChip(containerId) {
+  const el = document.getElementById(containerId);
+  const sel = el.querySelector('.spchip.sel');
+  return sel ? (sel.textContent === 'Ingen' ? null : sel.textContent) : null;
+}
+
+chips('scorerChips', SPILLERE);
+chips('assistChips', SPILLERE, true);
+chips('assist2Chips', SPILLERE, true);
+chips('momentChips', SPILLERE);
+chips('avgjørendeChips', SPILLERE);
+
+function lastData() {
+  onSnapshot(query(collection(db,'kamper'), orderBy('tidspunkt','asc')), snap => {
+    kamper = snap.docs.map(d => ({id:d.id,...d.data()}));
+    rendKamper();
+  });
+  onSnapshot(query(collection(db,'hendelser'), orderBy('tidspunkt','asc')), snap => {
+    hendelser = snap.docs.map(d => ({id:d.id,...d.data()}));
+    rendPoeng();
+  });
+}
+
+function rendKamper() {
+  const kv = document.getElementById('kampVelger');
+  if (!kamper.length) {
+    kv.innerHTML = '<div class="info">Ingen kamper ennå</div>';
+    document.getElementById('hendelseForm').style.display='none';
+    return;
+  }
+  kv.innerHTML = '<label>Velg kamp for hendelse</label><select id="kampSelect" onchange="window.velgKamp(this.value)">' +
+    '<option value="">-- Velg kamp --</option>' +
+    kamper.map(k=>`<option value="${k.id}">${k.dato} · vs ${k.mot} (${k.vare}–${k.deres})</option>`).join('') +
+    '</select>';
+  document.getElementById('hendelseForm').style.display = valgtKampId ? 'block' : 'none';
+
+  const kl = document.getElementById('kampListe');
+  kl.innerHTML = kamper.slice().reverse().map(k => {
+    const status = k.vare>k.deres ? 'win' : k.vare<k.deres ? 'loss' : 'draw';
+    const statusTxt = k.vare>k.deres ? '✅ Seier' : k.vare<k.deres ? '❌ Tap' : '🤝 Uavgjort';
+    const mal = hendelser.filter(h=>h.kampId===k.id&&h.type==='mal');
+    return `<div class="kamp-item">
+      <div class="kamp-hdr">
+        <div><div class="kamp-title">vs ${k.mot}</div><div style="font-size:0.75rem;color:#888;">${k.dato}</div></div>
+        <div style="text-align:right;"><div class="kamp-res">${k.vare} – ${k.deres}</div><span class="status status-${status}">${statusTxt}</span></div>
+      </div>
+      ${mal.map(m=>`<div style="font-size:0.82rem;color:#444;margin-top:4px;">⚽ ${m.scorer||'?'}${m.assist?` 🎯 ${m.assist}`:''}${m.assist2?` · ${m.assist2}`:''}</div>`).join('')}
+    </div>`;
   }).join('');
 }
 
-function slettHendelse(i){kamper[aktivIdx].hendelser.splice(i,1);lagreData();renderHendelser();renderPoeng();}
-function slettAktivKamp(){if(!confirm('Slette kampen?'))return;kamper.splice(aktivIdx,1);lagreData();lukkHendelser();toast('Slettet');}
-
-// POENG
-function beregnPoeng(){
-  const p={};
-  SPILLERE.forEach(s=>p[s]={maal:0,assist:0,assist2:0,oyeblikk:0,avgjorende:0});
-  kamper.forEach(k=>k.hendelser.forEach(h=>{
-    if(h.type==='maal'){if(h.scorer&&p[h.scorer])p[h.scorer].maal++;if(h.assist1&&p[h.assist1])p[h.assist1].assist++;if(h.assist2&&p[h.assist2])p[h.assist2].assist2++;}
-    else if(h.type==='matchavgjorende'){if(h.spiller&&p[h.spiller])p[h.spiller].avgjorende++;}
-    else if(h.type==='oyeblikk'){if(h.spiller&&p[h.spiller])p[h.spiller].oyeblikk++;}
-  }));
-  return p;
+function rendPoeng() {
+  const poeng = {};
+  SPILLERE.forEach(s => poeng[s]={mal:0,assist:0,assist2:0,moment:0,avgjorende:0});
+  hendelser.forEach(h => {
+    if (h.type==='mal') {
+      if (h.scorer && poeng[h.scorer]) poeng[h.scorer].mal++;
+      if (h.assist && poeng[h.assist]) poeng[h.assist].assist++;
+      if (h.assist2 && poeng[h.assist2]) poeng[h.assist2].assist2++;
+    } else if (h.type==='moment' && h.spiller && poeng[h.spiller]) poeng[h.spiller].moment++;
+    else if (h.type==='avgjorende' && h.spiller && poeng[h.spiller]) poeng[h.spiller].avgjorende++;
+  });
+  const sortert = SPILLERE.filter(s=>Object.values(poeng[s]).some(v=>v>0))
+    .sort((a,b)=>(poeng[b].mal+poeng[b].assist)-(poeng[a].mal+poeng[a].assist));
+  const pt = document.getElementById('poengTabell');
+  if (!sortert.length) {
+    pt.innerHTML = '<div class="card" style="color:#888;text-align:center;font-size:0.85rem;padding:16px;">Ingen hendelser registrert ennå</div>';
+    return;
+  }
+  pt.innerHTML = '<div class="card"><table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
+    '<tr style="border-bottom:2px solid #E4EAF0;"><th style="text-align:left;padding:6px 4px;color:#666;font-size:0.72rem;text-transform:uppercase;">Spiller</th><th style="color:#666;font-size:0.72rem;">⚽</th><th style="color:#666;font-size:0.72rem;">🎯</th><th style="color:#666;font-size:0.72rem;">🎯2</th><th style="color:#666;font-size:0.72rem;">⭐</th><th style="color:#666;font-size:0.72rem;">🏆</th></tr>' +
+    sortert.map(s=>`<tr style="border-bottom:1px solid #F0F3F6;">
+      <td style="padding:7px 4px;font-weight:600;">${s}</td>
+      <td style="text-align:center;">${poeng[s].mal||''}</td>
+      <td style="text-align:center;">${poeng[s].assist||''}</td>
+      <td style="text-align:center;">${poeng[s].assist2||''}</td>
+      <td style="text-align:center;">${poeng[s].moment||''}</td>
+      <td style="text-align:center;">${poeng[s].avgjorende||''}</td>
+    </tr>`).join('') +
+    '</table></div>';
 }
 
-function renderPoeng(){
-  const p=beregnPoeng();
-  const rows=SPILLERE.map(s=>({navn:s,...p[s]})).sort((a,b)=>(b.maal+b.assist+b.assist2+b.oyeblikk+b.avgjorende)-(a.maal+a.assist+a.assist2+a.oyeblikk+a.avgjorende));
-  const el=document.getElementById('poengTabell');
-  const hdr=el.rows[0]; el.innerHTML=''; el.appendChild(hdr);
-  rows.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${r.navn}</strong></td><td class="pts">${r.maal||''}</td><td class="pts">${r.assist||''}</td><td class="pts">${r.assist2||''}</td><td class="pts">${r.oyeblikk||''}</td><td class="pts">${r.avgjorende||''}</td>`;el.appendChild(tr);});
-}
+// Expose all functions to window
+window.doLogin = function() {
+  const p = document.getElementById('passInput').value;
+  if (p === PASSORD) {
+    document.getElementById('loginView').style.display = 'none';
+    document.getElementById('adminView').style.display = 'block';
+    lastData();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+};
 
-// EKSPORT
-function genererEksport(){
-  const p=beregnPoeng();
-  const rows=SPILLERE.map(s=>({navn:s,...p[s]})).sort((a,b)=>(b.maal+b.assist+b.assist2+b.oyeblikk+b.avgjorende)-(a.maal+a.assist+a.assist2+a.oyeblikk+a.avgjorende));
-  let kode='<tr><th>Spiller</th><th>⚽</th><th>🎯</th><th>🎯2.</th><th>⭐</th><th>🏆</th></tr>\n';
-  rows.forEach(r=>{kode+=`        <tr><td>${r.navn}</td><td>${r.maal||''}</td><td>${r.assist||''}</td><td>${r.assist2||''}</td><td>${r.oyeblikk||''}</td><td>${r.avgjorende||''}</td></tr>\n`;});
-  document.getElementById('eksportKode').value=kode;
+window.doLogout = function() {
+  document.getElementById('loginView').style.display = 'block';
+  document.getElementById('adminView').style.display = 'none';
+  document.getElementById('passInput').value = '';
+};
 
-  let kampKode='';
-  if(!kamper.length){kampKode='(Ingen kamper ennå)';}
-  else{kamper.forEach(k=>{const res=k.vaareMaal+' – '+k.deresMaal;const c=k.vaareMaal>k.deresMaal?'#1B6B3A':k.vaareMaal<k.deresMaal?'#A81C1C':'#B35C00';kampKode+=`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F0F3F6;"><div><div style="font-weight:800;color:#0B2240;">vs. ${k.motstander}</div><div style="font-size:0.75rem;color:#6B7A8D;">${k.dato||''}</div></div><div style="font-size:1.3rem;font-weight:900;color:${c};">${res}</div></div>\n`;});}
-  document.getElementById('eksportKamper').value=kampKode;
-  toast('Klar!');
-}
+window.oppdaterHendelseForm = function() {
+  const t = document.getElementById('hendelseType').value;
+  document.getElementById('malForm').style.display = t==='mal' ? 'block' : 'none';
+  document.getElementById('momentForm').style.display = t==='moment' ? 'block' : 'none';
+  document.getElementById('avgjørendeForm').style.display = t==='avgjorende' ? 'block' : 'none';
+};
 
-function kopierEksport(){const el=document.getElementById('eksportKode');el.select();el.setSelectionRange(0,99999);document.execCommand('copy');toast('✓ Kopiert!');}
-function kopierKamper(){const el=document.getElementById('eksportKamper');el.select();el.setSelectionRange(0,99999);document.execCommand('copy');toast('✓ Kopiert!');}
+window.velgKamp = function(id) {
+  valgtKampId = id;
+  document.getElementById('hendelseForm').style.display = id ? 'block' : 'none';
+};
 
-// BACKUP
-function lageSikkerhetskopi(){document.getElementById('backupData').value=JSON.stringify({kamper,dato:new Date().toISOString()});toast('Backup klar!');}
-function kopierBackup(){const el=document.getElementById('backupData');el.select();document.execCommand('copy');toast('Kopiert!');}
-function gjenopprettBackup(){
-  try{const d=JSON.parse(document.getElementById('backupInput').value);if(d.kamper){kamper=d.kamper;lagreData();renderKampListe();renderPoeng();toast('✓ Gjenopprettet!');}}
-  catch(e){toast('Ugyldig backup');}
-}
+window.lagreKamp = async function() {
+  const dato = document.getElementById('kampDato').value.trim();
+  const mot = document.getElementById('kampMot').value.trim();
+  const vare = parseInt(document.getElementById('kampVare').value)||0;
+  const deres = parseInt(document.getElementById('kampDeres').value)||0;
+  if (!dato||!mot) { toast('Fyll inn dato og motstander'); return; }
+  await addDoc(collection(db,'kamper'), {dato,mot,vare,deres,tidspunkt:serverTimestamp()});
+  document.getElementById('kampDato').value='';
+  document.getElementById('kampMot').value='';
+  document.getElementById('kampVare').value='0';
+  document.getElementById('kampDeres').value='0';
+  toast('✅ Kamp lagret!');
+};
 
-// TOAST
-function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+window.lagreHendelse = async function() {
+  if (!valgtKampId) { toast('Velg en kamp først'); return; }
+  const type = document.getElementById('hendelseType').value;
+  let data = {kampId:valgtKampId, type, tidspunkt:serverTimestamp()};
+  if (type==='mal') {
+    const scorer = getChip('scorerChips');
+    if (!scorer) { toast('Velg scorer'); return; }
+    data.scorer = scorer;
+    data.assist = getChip('assistChips');
+    data.assist2 = getChip('assist2Chips');
+  } else if (type==='moment') {
+    const spiller = getChip('momentChips');
+    if (!spiller) { toast('Velg spiller'); return; }
+    data.spiller = spiller;
+    data.tekst = document.getElementById('momentTekst').value.trim();
+  } else if (type==='avgjorende') {
+    const spiller = getChip('avgjørendeChips');
+    if (!spiller) { toast('Velg spiller'); return; }
+    data.spiller = spiller;
+  }
+  await addDoc(collection(db,'hendelser'), data);
+  toast('✅ Hendelse lagret!');
+};
 
-lastData();
-if(sessionStorage.getItem('adminOK')){renderKampListe();renderPoeng();}
+window.slettSiste = async function() {
+  if (!hendelser.length) { toast('Ingen hendelser å slette'); return; }
+  if (!confirm('Slett siste hendelse?')) return;
+  const siste = hendelser[hendelser.length-1];
+  await deleteDoc(doc(db,'hendelser',siste.id));
+  toast('🗑 Siste hendelse slettet');
+};
+
 </script>
 </body>
 </html>
