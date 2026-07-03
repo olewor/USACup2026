@@ -152,6 +152,34 @@ input:focus,select:focus{border-color:var(--blue);}
   <div class="sec">📊 Poengtabell</div>
   <div id="poengTabell"><div class="spinner">Laster...</div></div>
 
+  <!-- PROGRAM -->
+  <div class="sec">📅 Dagsprogram i USA</div>
+  <div class="card">
+    <div class="info">Legg inn aktiviteter dag for dag – vises live i USA Prog-fanen</div>
+    <div class="grid2">
+      <div>
+        <label>Dato</label>
+        <input type="text" id="progDato" placeholder="f.eks. 14. juli">
+      </div>
+      <div>
+        <label>Tid (lokal)</label>
+        <input type="text" id="progTid" placeholder="f.eks. 09:00">
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:8px;">
+      <div>
+        <label>Norsk tid</label>
+        <input type="text" id="progTidNorsk" placeholder="f.eks. 16:00">
+      </div>
+      <div>
+        <label>Aktivitet</label>
+        <input type="text" id="progAktivitet" placeholder="f.eks. Frokost · Hall B">
+      </div>
+    </div>
+    <button class="btn btn-green" onclick="lagreProgram()" style="margin-top:10px;">💾 Legg til i program</button>
+    <div id="progListe" style="margin-top:12px;"></div>
+  </div>
+
   <!-- SLETT -->
   <div class="sec">🗑 Administrasjon</div>
   <div class="card">
@@ -361,6 +389,43 @@ window.lagreHendelse = async function() {
   await addDoc(collection(db,'hendelser'), data);
   toast('✅ Hendelse lagret!');
 };
+
+window.lagreProgram = async function() {
+  const dato = document.getElementById('progDato').value.trim();
+  const tid = document.getElementById('progTid').value.trim();
+  const tidNorsk = document.getElementById('progTidNorsk').value.trim();
+  const aktivitet = document.getElementById('progAktivitet').value.trim();
+  if (!dato||!aktivitet) { toast('Fyll inn dato og aktivitet'); return; }
+  await addDoc(collection(db,'program'), {dato, tid, tidNorsk, aktivitet, tidspunkt:serverTimestamp()});
+  document.getElementById('progDato').value='';
+  document.getElementById('progTid').value='';
+  document.getElementById('progTidNorsk').value='';
+  document.getElementById('progAktivitet').value='';
+  toast('✅ Lagt til i program!');
+};
+
+window.slettProgram = async function(id) {
+  if (!confirm('Slett denne aktiviteten?')) return;
+  await deleteDoc(doc(db,'program',id));
+  toast('🗑 Slettet');
+};
+
+// Live program liste i admin
+onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid','asc')), snap => {
+  const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+  const el = document.getElementById('progListe');
+  if (!items.length) { el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>'; return; }
+  const dager = {};
+  items.forEach(i => { if(!dager[i.dato])dager[i.dato]=[]; dager[i.dato].push(i); });
+  el.innerHTML = Object.entries(dager).map(([dato,akt])=>`
+    <div style="margin-bottom:8px;">
+      <div style="font-size:0.75rem;font-weight:800;color:#0B2240;margin-bottom:4px;">${dato}</div>
+      ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
+        <span>${a.tid?`<strong>${a.tid}</strong> `:''} ${a.aktivitet}</span>
+        <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;font-size:0.85rem;">✕</button>
+      </div>`).join('')}
+    </div>`).join('');
+});
 
 window.slettSiste = async function() {
   if (!hendelser.length) { toast('Ingen hendelser å slette'); return; }

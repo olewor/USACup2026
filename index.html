@@ -175,32 +175,21 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
 
   <!-- USA PROGRAM -->
   <div class="panel" id="usaprog">
-    <details>
-      <summary>🧳 Pakkeliste <span style="font-size:0.75rem;color:#6B7A8D;font-weight:600;">Trykk for å åpne</span></summary>
-      <div class="pack-body">
-        <div class="pack-rule"><strong>Icelandair:</strong> Håndbagasje maks 10 kg · 55×40×23 cm<br>Innsjekket maks 23 kg · 158 cm totalt</div>
-        <div class="pack-section">📋 Dokumenter</div>
-        <div class="pack-item">✅ Pass (gyldig)<br>✅ ESTA – må registreres FØR avreise<br>✅ Reiseforsikring</div>
-        <div class="pack-section">🎒 Håndbagasje</div>
-        <div class="pack-item">✅ <span style="color:#1F5C8B;font-weight:700;">Blå kamptøy</span> (drakt, shorts, strømper) – blå drakt prioriteres<br>✅ Leggbeskytter<br>✅ Fotballsko<br>✅ Reiseskjorte (ha på ved avreise)<br>✅ Lader, verdisaker</div>
-        <div class="pack-section">🧳 Innsjekket – minst mulig!</div>
-        <div class="pack-item">✅ Gul drakt (i innsjekket)<br>✅ Treningsklær + joggesko<br>✅ Evt. medisiner<br>✅ Toalettsaker<br>✅ Hverdagsklær<br>✅ Bag til/fra kamper (om du ikke bruker håndbagasjen)<br>✅ Håndklær (evt. kjøpe i USA via DoorDash)</div>
-        <div class="pack-section">⚽ Felles utstyr (laget tar med)</div>
-        <div class="pack-item">✅ 3 fotballer, kjegler, vester, ballpumpe<br>✅ Medisinbag: tape, bandasje, paracet/ibux</div>
-        <div class="pack-section">🛒 Kjøpes via DoorDash ved ankomst</div>
-        <div class="pack-item">🛍 Kjølebag<br>🛍 Vann til alle<br>🛍 Vaskemiddel<br>🛍 Isposer<br>🛍 Middag fredag + forbruksvarer fredag–søndag</div>
-        <div style="background:#FFF0D6;border-left:3px solid #B35C00;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#B35C00;margin-top:10px;">🏠 På hjemreise: vi prøver å ta med mest mulig fotballtøy fra spillerne i lagsbagen – for å spare plass i egen koffert.</div>
-      </div>
-    </details>
-    <div class="sec-heading">Program i USA</div>
+
+    <!-- Tid-toggle -->
     <div style="display:flex;gap:8px;margin-bottom:10px;">
       <button onclick="setTidzone('lokal',this)" id="btn-lokal" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;background:#0B2240;color:white;">🕐 Lokal tid</button>
       <button onclick="setTidzone('norsk',this)" id="btn-norsk" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;background:#F0F3F6;color:#666;">🇳🇴 Norsk tid</button>
     </div>
+
+    <!-- Static days rendered by JS -->
     <div id="usaDays"></div>
+
+    <!-- Firebase live program -->
+    <div id="liveProgram"></div>
+
   </div>
 
-  <!-- HVEM/HVA -->
   <div class="panel" id="hvemhva">
     <div class="sec-heading">Rom og ansvar</div>
 
@@ -408,46 +397,49 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
       <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box">✓</div><div class="cl-text">Pass + boardingkort samlet ved innsjekk</div></div>
     </div>
 
-    <div style="text-align:center;padding:16px 0 4px;font-size:0.78rem;color:#6B7A8D;">Huk av etter hvert som du pakker 🎒</div>
+    <div style="text-align:center;padding:10px 0 4px;">
+      <div style="font-size:0.78rem;color:#6B7A8D;margin-bottom:8px;">Huk av etter hvert som du pakker 🎒 · Lagres automatisk</div>
+      <button onclick="resetCL()" style="background:none;border:1px solid #C0CCDA;border-radius:8px;padding:6px 14px;font-size:0.78rem;color:#888;cursor:pointer;">↺ Nullstill</button>
+    </div>
 
   </div>
 
   <!-- USA GAMES -->
   <div class="panel" id="games">
-    <div class="sec-heading">Poengkort</div>
-    <div class="scoreboard">
-      <div class="score-hdr">
-        <div class="score-title">🏆 Sesongens poeng</div>
-        <div class="score-sub">Mål · Assist · 2. assist · Øyeblikk · Matchavgjørende</div>
-      </div>
-      <table class="score-table">
-        <tr><th>Spiller</th><th>⚽</th><th>🎯</th><th>🎯2.</th><th>⭐</th><th>🏆</th></tr>
-        <tr><td>Aila</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Zaz</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Julie</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Opdal</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Sofie O</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Sarah B</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Martine</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Linnea</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Kaja F</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Marie</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Malin</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Kaja</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Bea</td><td></td><td></td><td></td><td></td><td></td></tr>
-        <tr><td>Hanna</td><td></td><td></td><td></td><td></td><td></td></tr>
-      </table>
+    <style>
+      .games-hdr{background:#0B2240;color:white;border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;}
+      .games-hdr h2{font-size:1rem;font-weight:800;}
+      .games-hdr p{font-size:0.75rem;opacity:0.65;margin-top:2px;}
+      .kamp-card{background:white;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,0.07);}
+      .kamp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+      .kamp-vs{font-weight:800;font-size:0.95rem;color:#0B2240;}
+      .kamp-dato{font-size:0.75rem;color:#888;}
+      .kamp-score{font-size:1.4rem;font-weight:800;color:#0B2240;}
+      .kamp-status{font-size:0.72rem;font-weight:700;border-radius:6px;padding:2px 8px;}
+      .s-win{background:#D6EFE0;color:#1B6B3A;}
+      .s-loss{background:#FDEAEA;color:#A81C1C;}
+      .s-draw{background:#FFF0D6;color:#B35C00;}
+      .mal-row{font-size:0.82rem;color:#444;padding:3px 0;border-top:1px solid #F0F3F6;margin-top:4px;}
+      .ptabell{width:100%;border-collapse:collapse;font-size:0.82rem;}
+      .ptabell th{text-align:left;padding:6px 4px;border-bottom:2px solid #E4EAF0;color:#666;font-size:0.72rem;text-transform:uppercase;}
+      .ptabell td{padding:8px 4px;border-bottom:1px solid #F0F3F6;}
+      .ptabell td:not(:first-child){text-align:center;font-weight:700;}
+      .no-data{text-align:center;color:#888;font-size:0.85rem;padding:20px;}
+      .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#1B6B3A;margin-right:5px;animation:pulse 1.5s infinite;}
+      @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    </style>
+
+    <div class="games-hdr">
+      <h2>🏆 USA Cup 2026</h2>
+      <p><span class="live-dot"></span>Live oppdatert</p>
     </div>
-    <div class="scoreboard">
-      <div class="score-hdr">
-        <div class="score-title">🇺🇸 USA Cup – kamper</div>
-        <div class="score-sub">Legges inn under turneringen</div>
-      </div>
-      <div style="text-align:center;padding:24px;color:#6B7A8D;">
-        <div style="font-size:1.8rem;margin-bottom:8px;">⚽</div>
-        <div style="font-weight:700;margin-bottom:4px;">Kampresultater kommer</div>
-        <div style="font-size:0.8rem;">Oppdateres under turneringen</div>
-      </div>
+
+    <div id="g-loading" style="text-align:center;padding:20px;color:#888;">Laster resultater...</div>
+    <div id="g-kamper"></div>
+
+    <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#666;margin:16px 0 8px;">📊 Poengtabell</div>
+    <div class="kamp-card">
+      <div id="g-poeng"><div class="no-data">Ingen hendelser ennå</div></div>
     </div>
   </div>
 
@@ -705,6 +697,142 @@ if (isIos && !window.navigator.standalone && !localStorage.getItem('iosDismissed
   setTimeout(() => document.getElementById('iosHint').style.display = 'block', 2000);
 }
 function dismissIos() { document.getElementById('iosHint').style.display='none'; localStorage.setItem('iosDismissed','1'); }
+
+function toggleCL(el){
+  el.classList.toggle('done');
+  saveCL();
+}
+function saveCL(){
+  const state={};
+  document.querySelectorAll('.cl-item').forEach((el,i)=>{state[i]=el.classList.contains('done');});
+  try{localStorage.setItem('pakkeliste_v1',JSON.stringify(state));}catch(e){}
+}
+function loadCL(){
+  try{
+    const saved=localStorage.getItem('pakkeliste_v1');
+    if(!saved)return;
+    const state=JSON.parse(saved);
+    document.querySelectorAll('.cl-item').forEach((el,i)=>{
+      if(state[i])el.classList.add('done');
+    });
+  }catch(e){}
+}
+function resetCL(){
+  if(!confirm('Nullstill pakkelisten?'))return;
+  document.querySelectorAll('.cl-item').forEach(el=>el.classList.remove('done'));
+  try{localStorage.removeItem('pakkeliste_v1');}catch(e){}
+}
+document.addEventListener('DOMContentLoaded', loadCL);
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getFirestore, collection, orderBy, query, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCuo0k8-iD2nFhOzhC79Nf9wPK1dRBUYEw",
+  authDomain: "usacup2026-66732.firebaseapp.com",
+  projectId: "usacup2026-66732",
+  storageBucket: "usacup2026-66732.firebasestorage.app",
+  messagingSenderId: "712752858233",
+  appId: "1:712752858233:web:efa8fcecd32d3f02d340a8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const SPILLERE = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Linnea','Kaja F','Marie','Malin','Kaja','Bea','Hanna'];
+
+// ============ USA GAMES (kamper + poeng) ============
+let kamper = [], hendelser = [];
+
+onSnapshot(query(collection(db,'kamper'), orderBy('tidspunkt','asc')), snap => {
+  kamper = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderGames();
+});
+onSnapshot(query(collection(db,'hendelser'), orderBy('tidspunkt','asc')), snap => {
+  hendelser = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderGames();
+});
+
+function renderGames() {
+  document.getElementById('g-loading').style.display = 'none';
+  const kEl = document.getElementById('g-kamper');
+  if (!kamper.length) {
+    kEl.innerHTML = '<div class="no-data">Ingen kamper spilt ennå</div>';
+  } else {
+    kEl.innerHTML = kamper.slice().reverse().map(k => {
+      const st = k.vare>k.deres?'win':k.vare<k.deres?'loss':'draw';
+      const stTxt = k.vare>k.deres?'✅ Seier':k.vare<k.deres?'❌ Tap':'🤝 Uavgjort';
+      const mal = hendelser.filter(h=>h.kampId===k.id&&h.type==='mal');
+      return `<div class="kamp-card">
+        <div class="kamp-top">
+          <div><div class="kamp-vs">vs ${k.mot}</div><div class="kamp-dato">${k.dato}</div></div>
+          <div style="text-align:right;"><div class="kamp-score">${k.vare} – ${k.deres}</div><span class="kamp-status s-${st}">${stTxt}</span></div>
+        </div>
+        ${mal.map(m=>`<div class="mal-row">⚽ <strong>${m.scorer||'?'}</strong>${m.assist?` <span style="color:#888">🎯 ${m.assist}</span>`:''}${m.assist2?` <span style="color:#888">· ${m.assist2}</span>`:''}</div>`).join('')}
+      </div>`;
+    }).join('');
+  }
+  const poeng = {};
+  SPILLERE.forEach(s=>poeng[s]={mal:0,assist:0,assist2:0,moment:0,avgjorende:0});
+  hendelser.forEach(h=>{
+    if(h.type==='mal'){
+      if(h.scorer&&poeng[h.scorer])poeng[h.scorer].mal++;
+      if(h.assist&&poeng[h.assist])poeng[h.assist].assist++;
+      if(h.assist2&&poeng[h.assist2])poeng[h.assist2].assist2++;
+    } else if(h.type==='moment'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].moment++;
+    else if(h.type==='avgjorende'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].avgjorende++;
+  });
+  const med = SPILLERE.filter(s=>Object.values(poeng[s]).some(v=>v>0))
+    .sort((a,b)=>(poeng[b].mal+poeng[b].assist)-(poeng[a].mal+poeng[a].assist));
+  const pEl = document.getElementById('g-poeng');
+  if (!med.length) {
+    pEl.innerHTML = '<div class="no-data">Ingen hendelser registrert ennå</div>';
+  } else {
+    pEl.innerHTML = `<table class="ptabell">
+      <tr><th>Spiller</th><th>⚽</th><th>🎯</th><th>🎯2</th><th>⭐</th><th>🏆</th></tr>
+      ${med.map(s=>`<tr><td style="font-weight:600;">${s}</td>
+        <td>${poeng[s].mal||''}</td><td>${poeng[s].assist||''}</td>
+        <td>${poeng[s].assist2||''}</td><td>${poeng[s].moment||''}</td>
+        <td>${poeng[s].avgjorende||''}</td></tr>`).join('')}
+    </table>`;
+  }
+}
+
+// ============ LIVE PROGRAM (Firebase) ============
+onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid','asc')), snap => {
+  const items = snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderLiveProgram(items);
+});
+
+function renderLiveProgram(items) {
+  const el = document.getElementById('liveProgram');
+  if (!items.length) { el.innerHTML=''; return; }
+
+  // Group by dato
+  const dager = {};
+  items.forEach(i => {
+    if (!dager[i.dato]) dager[i.dato] = [];
+    dager[i.dato].push(i);
+  });
+
+  el.innerHTML = Object.entries(dager).map(([dato, aktiviteter]) => `
+    <div class="day-card" style="margin-bottom:10px;">
+      <div class="day-hdr" style="background:#1B6B3A;">
+        <div style="font-size:1.3rem;">📅</div>
+        <div><div class="day-lbl">Program</div><div class="day-dt">${dato}</div></div>
+      </div>
+      <div class="day-body">
+        ${aktiviteter.map(a => {
+          const aktivTid = (typeof aktivTidzone !== 'undefined' && aktivTidzone === 'norsk' && a.tidNorsk) ? a.tidNorsk : a.tid;
+          return `<div class="m-entry">${aktivTid ? `<span class="m-time">${aktivTid}</span> ` : ''}<span class="m-txt">${a.aktivitet}</span></div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
 </script>
 </body>
 </html>
