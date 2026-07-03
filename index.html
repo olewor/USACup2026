@@ -498,7 +498,7 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F3F6;">
           <div>
             <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Ole</div>
-            <div style="font-size:0.82rem;color:#6B7A8D;">Lagsleder</div>
+            <div style="font-size:0.82rem;color:#6B7A8D;">Trener</div>
           </div>
           <a href="tel:+4792656752" style="display:flex;align-items:center;gap:6px;background:#1B6B3A;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
             📱 92 65 67 52
@@ -510,18 +510,18 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
             <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Øyvind</div>
             <div style="font-size:0.82rem;color:#6B7A8D;">Trener</div>
           </div>
-          <a href="tel:+4545290092" style="display:flex;align-items:center;gap:6px;background:#1F5C8B;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
-            📱 +45 29 00 92
+          <a href="tel:+4745290092" style="display:flex;align-items:center;gap:6px;background:#1F5C8B;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+            📱 45 29 00 92
           </a>
         </div>
 
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">
           <div>
             <div style="font-weight:800;font-size:0.95rem;color:#0B2240;">Iver</div>
-            <div style="font-size:0.82rem;color:#6B7A8D;">Trener</div>
+            <div style="font-size:0.82rem;color:#6B7A8D;">Lagleder</div>
           </div>
           <a href="tel:+4741407660" style="display:flex;align-items:center;gap:6px;background:#1F5C8B;color:white;border-radius:10px;padding:9px 14px;font-size:0.88rem;font-weight:700;text-decoration:none;">
-            📱 414 07 660
+            📱 41 40 76 60
           </a>
         </div>
 
@@ -578,14 +578,10 @@ function showTab(id, btn) {
 // EVENTS
 const today = new Date(); today.setHours(0,0,0,0);
 const events = [
-  { date:'2026-06-24', day:'24', month:'JUN', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Gjennomført ✓', link:null },
-  { date:'2026-06-29', day:'29', month:'JUN', type:'Kick-off ⚽', tc:'t-event', title:'Kick-off USA Cup', detail:'18:30 Trening · 20:00 Grilling · Bading · Marie O', link:'bane_29jun.html' },
-  { date:'2026-07-01', day:'01', month:'JUL', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Vedlikehold · Samme vekt', link:'sporty_01jul.html' },
-  { date:'2026-07-02', day:'02', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'17:00 Styrke · 17:30 Fotball', link:'bane_02jul.html' },
   { date:'2026-07-05', day:'05', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening AKA', detail:'Program kommer', link:'bane_05jul.html' },
-  { date:'2026-07-07', day:'07', month:'JUL', type:'Treningskamp', tc:'t-kamp', title:'Treningskamp?', detail:'Ikke bekreftet', link:null },
+  { date:'2026-07-07', day:'07', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Tyristrand', detail:'Defensivt · Soneforsvar · Corner', link:'bane_07jul.html' },
   { date:'2026-07-08', day:'08', month:'JUL', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Lett aktivering · Nedtrapping', link:'sporty_08jul.html' },
-  { date:'2026-07-09', day:'09', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'Siste trening hjemme', link:'bane_09jul.html' },
+  { date:'2026-07-09', day:'09', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'Siste trening · Fotballtennis · Lett spill', link:'bane_09jul.html' },
 ];
 const list = document.getElementById('eventList');
 events.forEach(ev => {
@@ -639,13 +635,14 @@ const usaDays = [
   ]},
   { dag:'Mandag', dato:'13. juli', emoji:'🎓', color:'#B35C00', items:[
     {tid:'10:00', norsk:'17:00', txt:'Utsjekk Airbnb'},
-    {tid:'', txt:'Reiser til college'},
-    {tid:'', txt:'Lett treningsøkt · Bli kjent med anlegget'},
+    {tid:'', norsk:'', txt:'Reiser til college'},
+    {tid:'12:00', norsk:'19:00', txt:'Lett treningsøkt / laginnsjekk · Ta med ID'},
   ]},
   { dag:'Tirsdag', dato:'14. juli', emoji:'⚽', color:'#A81C1C', items:[
-    {tid:'', txt:'Første kamp!'},
-    {tid:'', txt:'Semifinaler VM'},
-    {tid:'', txt:'Åpningsseremoni'},
+    {tid:'', norsk:'', txt:'Første kamp – tidspunkt kommer'},
+    {tid:'', norsk:'', txt:'Lunsj college – tidspunkt kommer'},
+    {tid:'16:00', norsk:'23:00', txt:'Forberedelse innmarsj / åpningsseremoni 🇳🇴'},
+    {tid:'', norsk:'', txt:'Rød trøye + norske effekter!'},
   ]},
   { dag:'Onsdag', dato:'15. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
   { dag:'Torsdag', dato:'16. juli', emoji:'⚽', color:'#A81C1C', items:[{tid:'', txt:'Program kommer...'}]},
