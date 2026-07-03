@@ -162,6 +162,7 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
   <button class="tab-btn" onclick="showTab('hvemhva',this)">🏠<br>Hvem/Hva</button>
   <button class="tab-btn" onclick="showTab('games',this)">🏆<br>USA Games</button>
   <button class="tab-btn" onclick="showTab('kontakt',this)">📞<br>Kontakt</button>
+  <button class="tab-btn" id="adminTab" style="display:none;" onclick="showTab('adminpanel',this)">🔧<br>Admin</button>
 </div>
 
 <!-- CONTENT -->
@@ -527,6 +528,125 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
 
   </div>
 
+  <!-- ADMIN PANEL -->
+  <div class="panel" id="adminpanel">
+    <style>
+      .adm-card{background:white;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+      .adm-sec{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#666;margin:14px 0 6px;}
+      .adm-label{display:block;font-size:0.82rem;font-weight:600;color:#444;margin-bottom:4px;margin-top:8px;}
+      .adm-input{width:100%;padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;outline:none;}
+      .adm-input:focus{border-color:#1F5C8B;}
+      .adm-btn{display:block;width:100%;padding:12px;border:none;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:8px;}
+      .adm-green{background:#1B6B3A;color:white;}
+      .adm-red{background:#A81C1C;color:white;}
+      .adm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+      .adm-info{background:#D5E8F0;border-left:3px solid #1F5C8B;border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:#1F5C8B;margin-bottom:8px;}
+      .prog-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;}
+      .adm-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1B6B3A;color:white;padding:10px 20px;border-radius:20px;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.3s;z-index:999;pointer-events:none;}
+      .adm-toast.show{opacity:1;}
+    </style>
+
+    <div id="admLoginView">
+      <div class="adm-card" style="margin-top:10px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">🔧</div>
+        <div style="font-weight:800;font-size:1rem;color:#0B2240;margin-bottom:12px;">Trener-admin</div>
+        <label class="adm-label">Passord</label>
+        <input class="adm-input" type="password" id="admPass" placeholder="Passord..." onkeydown="if(event.key==='Enter')admLogin()">
+        <button class="adm-btn adm-green" onclick="admLogin()" style="margin-top:10px;">Logg inn</button>
+        <div id="admErr" style="color:#A81C1C;font-size:0.82rem;margin-top:6px;display:none;">Feil passord</div>
+      </div>
+    </div>
+
+    <div id="admMainView" style="display:none;">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:0.8rem;color:#666;">✓ Innlogget</div>
+        <button onclick="admLogout()" style="background:none;border:none;color:#A81C1C;font-size:0.8rem;font-weight:600;cursor:pointer;">Logg ut</button>
+      </div>
+
+      <!-- DAGSPROGRAM -->
+      <div class="adm-sec">📅 Dagsprogram</div>
+      <div class="adm-card">
+        <div class="adm-info">Tid vises i lokal tid – norsk tid beregnes automatisk (+7 t)</div>
+        <div class="adm-grid">
+          <div>
+            <label class="adm-label">Dato</label>
+            <input class="adm-input" type="text" id="admDato" placeholder="f.eks. 14. juli">
+          </div>
+          <div>
+            <label class="adm-label">Tid (lokal)</label>
+            <input class="adm-input" type="text" id="admTid" placeholder="09:00">
+          </div>
+        </div>
+        <label class="adm-label">Aktivitet</label>
+        <input class="adm-input" type="text" id="admAkt" placeholder="f.eks. Frokost · Hall B">
+        <button class="adm-btn adm-green" onclick="admLeggTilProgram()">+ Legg til</button>
+        <div id="admProgListe" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- KAMP -->
+      <div class="adm-sec">⚽ Registrer kamp</div>
+      <div class="adm-card">
+        <div class="adm-grid">
+          <div>
+            <label class="adm-label">Dato/runde</label>
+            <input class="adm-input" type="text" id="admKampDato" placeholder="14. juli · Gruppe A">
+          </div>
+          <div>
+            <label class="adm-label">Motstander</label>
+            <input class="adm-input" type="text" id="admKampMot" placeholder="Sverige B">
+          </div>
+        </div>
+        <div class="adm-grid" style="margin-top:6px;">
+          <div>
+            <label class="adm-label">Våre mål</label>
+            <input class="adm-input" type="number" id="admKampV" value="0" min="0">
+          </div>
+          <div>
+            <label class="adm-label">Deres mål</label>
+            <input class="adm-input" type="number" id="admKampD" value="0" min="0">
+          </div>
+        </div>
+        <button class="adm-btn adm-green" onclick="admLagreKamp()">💾 Lagre kamp</button>
+      </div>
+
+      <!-- HENDELSE -->
+      <div class="adm-sec">🎯 Registrer hendelse</div>
+      <div class="adm-card">
+        <div id="admKampVelger"><div class="adm-info">Ingen kamper ennå</div></div>
+        <div id="admHendelseForm" style="display:none;">
+          <label class="adm-label">Type</label>
+          <select class="adm-input" id="admHType" onchange="admOppdaterForm()">
+            <option value="mal">⚽ Mål</option>
+            <option value="moment">⭐ Øyeblikk</option>
+            <option value="avgjorende">🏆 Avgjørende</option>
+          </select>
+          <div id="admMalForm">
+            <label class="adm-label">Scorer</label>
+            <div id="admScorer" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;"></div>
+            <label class="adm-label">Assist</label>
+            <div id="admAssist" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;"></div>
+          </div>
+          <div id="admMomentForm" style="display:none;">
+            <label class="adm-label">Spiller</label>
+            <div id="admMomentSp" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;"></div>
+            <label class="adm-label">Beskrivelse</label>
+            <input class="adm-input" type="text" id="admMomentTxt" placeholder="Beskrivelse...">
+          </div>
+          <div id="admAvgjForm" style="display:none;">
+            <label class="adm-label">Spiller</label>
+            <div id="admAvgjSp" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;"></div>
+          </div>
+          <button class="adm-btn adm-green" onclick="admLagreHendelse()">💾 Lagre</button>
+          <button class="adm-btn adm-red" onclick="admSlettSiste()" style="margin-top:4px;">🗑 Slett siste hendelse</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="adm-toast" id="admToast"></div>
+  </div>
+
+
 </div><!-- /content -->
 
 <!-- PWA -->
@@ -560,6 +680,26 @@ function tick() {
 tick(); setInterval(tick, 1000);
 
 // TABS
+let _tapCount=0, _tapTimer=null;
+function secretTap(){
+  _tapCount++;
+  clearTimeout(_tapTimer);
+  _tapTimer=setTimeout(()=>_tapCount=0, 2000);
+  if(_tapCount>=5){
+    _tapCount=0;
+    const tab=document.getElementById('adminTab');
+    const panel=document.getElementById('adminpanel');
+    if(tab && panel){
+      const show=tab.style.display==='none';
+      tab.style.display=show?'flex':'none';
+      if(!show && panel.classList.contains('active')){
+        showTab('trening',document.querySelector('.tab-btn'));
+      }
+      if(show) alert('🔧 Admin-modus aktivert');
+    }
+  }
+}
+
 function showTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -833,6 +973,192 @@ function renderLiveProgram(items) {
   `).join('');
 }
 
+
+
+// ============ ADMIN PANEL ============
+const ADM_PASS = 'usacup2026';
+const ADM_SP = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Linnea','Kaja F','Marie','Malin','Kaja','Bea','Hanna'];
+let admKampId = null;
+let admKamper = [];
+let admHendelser = [];
+let admInited = false;
+
+function admToast(msg){
+  const t=document.getElementById('admToast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+window.admLogin = function(){
+  if(document.getElementById('admPass').value===ADM_PASS){
+    document.getElementById('admLoginView').style.display='none';
+    document.getElementById('admMainView').style.display='block';
+    if(!admInited){admInited=true;admInitFirebase();}
+  } else {
+    document.getElementById('admErr').style.display='block';
+  }
+};
+
+window.admLogout = function(){
+  document.getElementById('admLoginView').style.display='block';
+  document.getElementById('admMainView').style.display='none';
+  document.getElementById('admPass').value='';
+};
+
+function admChips(containerId, spillere, allowNone=false){
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  el.innerHTML='';
+  if(allowNone){
+    const b=document.createElement('button');
+    b.textContent='Ingen'; b.className='spchip';
+    b.style.cssText='padding:5px 10px;border-radius:16px;border:2px solid #C0CCDA;background:white;font-size:0.8rem;font-weight:600;cursor:pointer;';
+    b.onclick=()=>{el.querySelectorAll('button').forEach(x=>x.style.background='white');b.style.background='#0B2240';b.style.color='white';b.dataset.sel='1';};
+    el.appendChild(b);
+  }
+  spillere.forEach(s=>{
+    const b=document.createElement('button');
+    b.textContent=s;
+    b.style.cssText='padding:5px 10px;border-radius:16px;border:2px solid #C0CCDA;background:white;font-size:0.8rem;font-weight:600;cursor:pointer;color:#333;';
+    b.onclick=()=>{el.querySelectorAll('button').forEach(x=>{x.style.background='white';x.style.color='#333';delete x.dataset.sel;});b.style.background='#0B2240';b.style.color='white';b.dataset.sel='1';};
+    el.appendChild(b);
+  });
+}
+
+function admGetChip(containerId){
+  const el=document.getElementById(containerId);
+  if(!el)return null;
+  const sel=el.querySelector('button[data-sel]');
+  return sel?(sel.textContent==='Ingen'?null:sel.textContent):null;
+}
+
+window.admOppdaterForm = function(){
+  const t=document.getElementById('admHType').value;
+  document.getElementById('admMalForm').style.display=t==='mal'?'block':'none';
+  document.getElementById('admMomentForm').style.display=t==='moment'?'block':'none';
+  document.getElementById('admAvgjForm').style.display=t==='avgjorende'?'block':'none';
+};
+
+function admInitFirebase(){
+  admChips('admScorer', ADM_SP);
+  admChips('admAssist', ADM_SP, true);
+  admChips('admMomentSp', ADM_SP);
+  admChips('admAvgjSp', ADM_SP);
+
+  onSnapshot(query(collection(db,'kamper'),orderBy('tidspunkt','asc')),snap=>{
+    admKamper=snap.docs.map(d=>({id:d.id,...d.data()}));
+    admRendKamper();
+  });
+  onSnapshot(query(collection(db,'hendelser'),orderBy('tidspunkt','asc')),snap=>{
+    admHendelser=snap.docs.map(d=>({id:d.id,...d.data()}));
+  });
+  onSnapshot(query(collection(db,'program'),orderBy('dato','asc'),orderBy('tid','asc')),snap=>{
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}));
+    admRendProgram(items);
+  });
+}
+
+function admRendProgram(items){
+  const el=document.getElementById('admProgListe');
+  if(!el)return;
+  if(!items.length){el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>';return;}
+  const dager={};
+  items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
+  el.innerHTML=Object.entries(dager).map(([dato,akt])=>`
+    <div style="margin-bottom:6px;">
+      <div style="font-size:0.72rem;font-weight:800;color:#0B2240;margin-bottom:3px;">${dato}</div>
+      ${akt.map(a=>`<div class="prog-row">
+        <span>${a.tid?`<strong>${a.tid}</strong> `:''} ${a.aktivitet}</span>
+        <button onclick="admSlettProg('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;font-size:0.9rem;">✕</button>
+      </div>`).join('')}
+    </div>`).join('');
+}
+
+function admRendKamper(){
+  const el=document.getElementById('admKampVelger');
+  if(!el)return;
+  if(!admKamper.length){el.innerHTML='<div class="adm-info">Ingen kamper ennå</div>';document.getElementById('admHendelseForm').style.display='none';return;}
+  el.innerHTML='<select class="adm-input" id="admKampSel" onchange="window.admVelgKamp(this.value)">' +
+    '<option value="">-- Velg kamp --</option>' +
+    admKamper.map(k=>`<option value="${k.id}">${k.dato} · vs ${k.mot} (${k.vare}–${k.deres})</option>`).join('') +
+    '</select>';
+  document.getElementById('admHendelseForm').style.display=admKampId?'block':'none';
+}
+
+window.admVelgKamp = function(id){
+  admKampId=id;
+  document.getElementById('admHendelseForm').style.display=id?'block':'none';
+};
+
+window.admLeggTilProgram = async function(){
+  const dato=document.getElementById('admDato').value.trim();
+  const tid=document.getElementById('admTid').value.trim();
+  const akt=document.getElementById('admAkt').value.trim();
+  if(!dato||!akt){admToast('Fyll inn dato og aktivitet');return;}
+  // Auto-calculate norsk tid (+7 hours)
+  let tidNorsk='';
+  if(tid){
+    const [h,m]=(tid+':00').split(':').map(Number);
+    const nh=(h+7)%24;
+    const plus=(h+7)>=24?' (+1)':'';
+    tidNorsk=String(nh).padStart(2,'0')+':'+String(m).padStart(2,'0')+plus;
+  }
+  await addDoc(collection(db,'program'),{dato,tid,tidNorsk,aktivitet:akt,tidspunkt:serverTimestamp()});
+  document.getElementById('admDato').value='';
+  document.getElementById('admTid').value='';
+  document.getElementById('admAkt').value='';
+  admToast('✅ Lagt til!');
+};
+
+window.admSlettProg = async function(id){
+  if(!confirm('Slett?'))return;
+  await deleteDoc(doc(db,'program',id));
+  admToast('🗑 Slettet');
+};
+
+window.admLagreKamp = async function(){
+  const dato=document.getElementById('admKampDato').value.trim();
+  const mot=document.getElementById('admKampMot').value.trim();
+  const vare=parseInt(document.getElementById('admKampV').value)||0;
+  const deres=parseInt(document.getElementById('admKampD').value)||0;
+  if(!dato||!mot){admToast('Fyll inn dato og motstander');return;}
+  await addDoc(collection(db,'kamper'),{dato,mot,vare,deres,tidspunkt:serverTimestamp()});
+  document.getElementById('admKampDato').value='';
+  document.getElementById('admKampMot').value='';
+  document.getElementById('admKampV').value='0';
+  document.getElementById('admKampD').value='0';
+  admToast('✅ Kamp lagret!');
+};
+
+window.admLagreHendelse = async function(){
+  if(!admKampId){admToast('Velg kamp først');return;}
+  const type=document.getElementById('admHType').value;
+  let data={kampId:admKampId,type,tidspunkt:serverTimestamp()};
+  if(type==='mal'){
+    const scorer=admGetChip('admScorer');
+    if(!scorer){admToast('Velg scorer');return;}
+    data.scorer=scorer;
+    data.assist=admGetChip('admAssist');
+  } else if(type==='moment'){
+    const sp=admGetChip('admMomentSp');
+    if(!sp){admToast('Velg spiller');return;}
+    data.spiller=sp;
+    data.tekst=document.getElementById('admMomentTxt').value.trim();
+  } else if(type==='avgjorende'){
+    const sp=admGetChip('admAvgjSp');
+    if(!sp){admToast('Velg spiller');return;}
+    data.spiller=sp;
+  }
+  await addDoc(collection(db,'hendelser'),data);
+  admToast('✅ Hendelse lagret!');
+};
+
+window.admSlettSiste = async function(){
+  if(!admHendelser.length){admToast('Ingen hendelser');return;}
+  if(!confirm('Slett siste hendelse?'))return;
+  await deleteDoc(doc(db,'hendelser',admHendelser[admHendelser.length-1].id));
+  admToast('🗑 Slettet');
+};
 </script>
 </body>
 </html>
