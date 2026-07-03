@@ -155,28 +155,35 @@ input:focus,select:focus{border-color:var(--blue);}
   <!-- PROGRAM -->
   <div class="sec">📅 Dagsprogram i USA</div>
   <div class="card">
-    <div class="info">Legg inn aktiviteter dag for dag – vises live i USA Prog-fanen</div>
-    <div class="grid2">
-      <div>
-        <label>Dato</label>
-        <input type="text" id="progDato" placeholder="f.eks. 14. juli">
-      </div>
-      <div>
-        <label>Tid (lokal)</label>
-        <input type="text" id="progTid" placeholder="f.eks. 09:00">
-      </div>
-    </div>
+    <div class="info">Velg dag, tid og aktivitet – norsk tid beregnes automatisk. Vises live i USA Prog-fanen.</div>
+    <label>Dag</label>
+    <select id="progDato">
+      <option value="">-- Velg dag --</option>
+      <option value="Lørdag 11. juli">Lørdag 11. juli</option>
+      <option value="Søndag 12. juli">Søndag 12. juli</option>
+      <option value="Mandag 13. juli">Mandag 13. juli</option>
+      <option value="Tirsdag 14. juli">Tirsdag 14. juli</option>
+      <option value="Onsdag 15. juli">Onsdag 15. juli</option>
+      <option value="Torsdag 16. juli">Torsdag 16. juli</option>
+      <option value="Fredag 17. juli">Fredag 17. juli</option>
+      <option value="Lørdag 18. juli">Lørdag 18. juli</option>
+      <option value="Søndag 19. juli">Søndag 19. juli</option>
+    </select>
     <div class="grid2" style="margin-top:8px;">
       <div>
-        <label>Norsk tid</label>
-        <input type="text" id="progTidNorsk" placeholder="f.eks. 16:00">
+        <label>Fra (lokal tid)</label>
+        <input type="time" id="progFra" style="padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;width:100%;">
       </div>
       <div>
-        <label>Aktivitet</label>
-        <input type="text" id="progAktivitet" placeholder="f.eks. Frokost · Hall B">
+        <label>Til (lokal tid)</label>
+        <input type="time" id="progTil" style="padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;width:100%;">
       </div>
     </div>
-    <button class="btn btn-green" onclick="lagreProgram()" style="margin-top:10px;">💾 Legg til i program</button>
+    <label style="margin-top:8px;">Aktivitet</label>
+    <input type="text" id="progAktivitet" placeholder="f.eks. Kamp vs Sverige · Hall B">
+    <label style="margin-top:8px;">Tilleggstekst (valgfritt)</label>
+    <input type="text" id="progEkstra" placeholder="f.eks. Ta med blå drakt">
+    <button class="btn btn-green" onclick="lagreProgram()" style="margin-top:10px;">💾 Legg til</button>
     <div id="progListe" style="margin-top:12px;"></div>
   </div>
 
@@ -390,17 +397,32 @@ window.lagreHendelse = async function() {
   toast('✅ Hendelse lagret!');
 };
 
+function autoNorsk(tid) {
+  if (!tid) return '';
+  const [h, m] = tid.split(':').map(Number);
+  const nh = (h + 7) % 24;
+  const plus = (h + 7) >= 24 ? ' (+1)' : '';
+  return String(nh).padStart(2,'0') + ':' + String(m).padStart(2,'0') + plus;
+}
+
 window.lagreProgram = async function() {
-  const dato = document.getElementById('progDato').value.trim();
-  const tid = document.getElementById('progTid').value.trim();
-  const tidNorsk = document.getElementById('progTidNorsk').value.trim();
+  const dato = document.getElementById('progDato').value;
+  const fra = document.getElementById('progFra').value;
+  const til = document.getElementById('progTil').value;
   const aktivitet = document.getElementById('progAktivitet').value.trim();
-  if (!dato||!aktivitet) { toast('Fyll inn dato og aktivitet'); return; }
-  await addDoc(collection(db,'program'), {dato, tid, tidNorsk, aktivitet, tidspunkt:serverTimestamp()});
-  document.getElementById('progDato').value='';
-  document.getElementById('progTid').value='';
-  document.getElementById('progTidNorsk').value='';
+  const ekstra = document.getElementById('progEkstra').value.trim();
+  if (!dato || !aktivitet) { toast('Velg dag og fyll inn aktivitet'); return; }
+  const fraNorsk = autoNorsk(fra);
+  const tilNorsk = autoNorsk(til);
+  await addDoc(collection(db,'program'), {
+    dato, fra, til, fraNorsk, tilNorsk,
+    aktivitet, ekstra,
+    tidspunkt: serverTimestamp()
+  });
+  document.getElementById('progFra').value='';
+  document.getElementById('progTil').value='';
   document.getElementById('progAktivitet').value='';
+  document.getElementById('progEkstra').value='';
   toast('✅ Lagt til i program!');
 };
 

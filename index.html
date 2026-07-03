@@ -949,14 +949,12 @@ onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid',
 function renderLiveProgram(items) {
   const el = document.getElementById('liveProgram');
   if (!items.length) { el.innerHTML=''; return; }
-
-  // Group by dato
   const dager = {};
   items.forEach(i => {
     if (!dager[i.dato]) dager[i.dato] = [];
     dager[i.dato].push(i);
   });
-
+  const norsk = (typeof aktivTidzone !== 'undefined' && aktivTidzone === 'norsk');
   el.innerHTML = Object.entries(dager).map(([dato, aktiviteter]) => `
     <div class="day-card" style="margin-bottom:10px;">
       <div class="day-hdr" style="background:#1B6B3A;">
@@ -965,8 +963,13 @@ function renderLiveProgram(items) {
       </div>
       <div class="day-body">
         ${aktiviteter.map(a => {
-          const aktivTid = (typeof aktivTidzone !== 'undefined' && aktivTidzone === 'norsk' && a.tidNorsk) ? a.tidNorsk : a.tid;
-          return `<div class="m-entry">${aktivTid ? `<span class="m-time">${aktivTid}</span> ` : ''}<span class="m-txt">${a.aktivitet}</span></div>`;
+          const fra = norsk ? (a.fraNorsk||a.fra) : a.fra;
+          const til = norsk ? (a.tilNorsk||a.til) : a.til;
+          const tidStr = fra ? (til ? `${fra}–${til}` : fra) : '';
+          return `<div class="m-entry">
+            ${tidStr ? `<span class="m-time">${tidStr}</span> ` : ''}
+            <span class="m-txt">${a.aktivitet}${a.ekstra ? `<br><span style="font-size:0.78rem;color:#6B7A8D;">${a.ekstra}</span>` : ''}</span>
+          </div>`;
         }).join('')}
       </div>
     </div>
