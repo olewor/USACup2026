@@ -129,6 +129,11 @@ input:focus,select:focus{border-color:var(--blue);}
           <input type="text" id="kampBane" placeholder="f.eks. Field 12">
         </div>
       </div>
+      <label>Underlag</label>
+      <select id="kampUnderlag">
+        <option value="gress">Gress</option>
+        <option value="kunstgress">Kunstgress</option>
+      </select>
       <label>Type</label>
       <select id="kampType" onchange="toggleSluttspill()">
         <option value="gruppe">Gruppespill</option>
@@ -151,6 +156,13 @@ input:focus,select:focus{border-color:var(--blue);}
         <span style="font-weight:600;font-size:0.85rem;">📺 Kampen streames</span>
       </label>
       <button class="btn btn-green" onclick="lagreKamp()">💾 Opprett kamp</button>
+    </div>
+
+    <!-- IMPORT -->
+    <div class="card" style="background:#FFF8E8;">
+      <div style="font-weight:700;font-size:0.88rem;color:#0B2240;margin-bottom:4px;">⚡ Importer gruppespillkamper</div>
+      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Legger inn de tre gruppespillkampene automatisk (North Star, Blackhawks, HEADS)</div>
+      <button class="btn btn-amber" onclick="importerKamper()">📥 Importer 3 kamper</button>
     </div>
 
     <!-- KAMPLISTE -->
@@ -399,6 +411,23 @@ function initData(){
   });
 }
 
+window.importerKamper = async function(){
+  if(!confirm('Importer 3 gruppespillkamper?'))return;
+  const kamper_import = [
+    {dato:'Tirsdag 14. juli', tid:'10:10', mot:'North Star FC Winona', bane:'NSC Field 30 (gress)', underlag:'gress', kampnr:'#715', stream:false},
+    {dato:'Onsdag 15. juli', tid:'20:45', mot:'St. Paul Blackhawks 08G Red', bane:'NSC Field 61 – Stadium North (kunstgress)', underlag:'kunstgress', kampnr:'#729', stream:true},
+    {dato:'Torsdag 16. juli', tid:'12:15', mot:'HEADS United', bane:'NSC Field 50 (gress)', underlag:'gress', kampnr:'#724', stream:false},
+  ];
+  for(const k of kamper_import){
+    await addDoc(collection(db,'kamper'),{
+      dato:k.dato, tid:k.tid, tidNorsk:autoNorsk(k.tid), mot:k.mot, bane:k.bane,
+      underlag:k.underlag, kampnr:k.kampnr, type:'gruppe', runde:'', stream:k.stream,
+      vare:0, deres:0, status:'kommende', tidspunkt:serverTimestamp()
+    });
+  }
+  toast('✅ 3 kamper importert!');
+};
+
 window.toggleSluttspill=function(){
   document.getElementById('sluttspillWrap').style.display=document.getElementById('kampType').value==='sluttspill'?'block':'none';
 };
@@ -412,9 +441,10 @@ window.lagreKamp=async function(){
   const type=document.getElementById('kampType').value;
   const runde=type==='sluttspill'?document.getElementById('kampRunde').value:'';
   const stream=document.getElementById('kampStream').checked;
+  const underlag=document.getElementById('kampUnderlag').value;
   if(!dato||!mot){toast('Fyll inn dato og motstander');return;}
   await addDoc(collection(db,'kamper'),{
-    dato,tid,tidNorsk:autoNorsk(tid),mot,bane,type,runde,stream,
+    dato,tid,tidNorsk:autoNorsk(tid),mot,bane,underlag,type,runde,stream,
     vare:0,deres:0,status:'kommende',tidspunkt:serverTimestamp()
   });
   document.getElementById('kampDato').value='';
@@ -438,7 +468,7 @@ function rendKampListe(){
         <div>
           <div class="kamp-title">vs ${k.mot}</div>
           <div class="kamp-sub">${k.dato}${tidStr?' · '+tidStr:''}${rundeStr}</div>
-          <div class="kamp-sub">${k.bane?'📍 '+k.bane:''}${k.stream?' · 📺 Streames':''}</div>
+          <div class="kamp-sub">${k.bane?'📍 '+k.bane:''}${k.underlag?' · '+(k.underlag==='kunstgress'?'🟢 Kunstgress':'🌱 Gress'):''}${k.stream?' · 📺 Streames':''}</div>
           <span class="status status-${k.status}">${stTxt}</span>
         </div>
         <div style="text-align:right;">
