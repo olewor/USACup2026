@@ -9,52 +9,68 @@
 :root{--navy:#0F2D4A;--blue:#1F5C8B;--green:#1B6B3A;--amber:#B35C00;--red:#A81C1C;--grey:#666;--light:#F0F3F6;--radius:12px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#E8EDF2;color:#333;}
-.topbar{background:var(--navy);color:white;padding:14px 16px;text-align:center;}
+.topbar{background:var(--navy);color:white;padding:14px 16px;text-align:center;position:sticky;top:0;z-index:100;}
 .topbar h1{font-size:1.1rem;font-weight:800;}
 .topbar p{font-size:0.75rem;opacity:0.6;margin-top:2px;}
+.back-btn{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);color:white;border:none;border-radius:8px;padding:8px 12px;font-size:0.85rem;font-weight:700;cursor:pointer;}
 .main{max-width:640px;margin:0 auto;padding:14px 12px 60px;}
 .card{background:white;border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
 .sec{font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--grey);margin:16px 0 8px;}
 label{display:block;font-size:0.82rem;font-weight:600;color:#444;margin-bottom:4px;margin-top:10px;}
-input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;background:white;color:#333;outline:none;}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;background:white;color:#333;outline:none;font-family:inherit;}
 input:focus,select:focus{border-color:var(--blue);}
 .btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:10px;}
 .btn-green{background:var(--green);color:white;}
 .btn-blue{background:var(--blue);color:white;}
 .btn-red{background:var(--red);color:white;}
+.btn-amber{background:var(--amber);color:white;}
 .btn-grey{background:#C0CCDA;color:white;}
-.pill{display:inline-block;font-size:0.72rem;font-weight:700;border-radius:10px;padding:2px 8px;margin:2px;}
-.pill-gold{background:#FFF0D6;color:#B35C00;}
-.pill-blue{background:#D5E8F0;color:#1F5C8B;}
-.pill-green{background:#D6EFE0;color:#1B6B3A;}
-.pill-red{background:#FDEAEA;color:#A81C1C;}
-.pill-purple{background:#F3E5F5;color:#7B1FA0;}
 .info{background:#D5E8F0;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:var(--blue);margin-bottom:10px;}
 .warn{background:#FFF0D6;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:8px 10px;font-size:0.82rem;color:var(--amber);margin-bottom:10px;}
-.kamp-item{border:1px solid #E4EAF0;border-radius:10px;padding:12px;margin-bottom:8px;}
-.kamp-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
-.kamp-title{font-weight:700;font-size:0.9rem;}
-.kamp-res{font-size:1.1rem;font-weight:800;color:var(--navy);}
-.status{display:inline-block;font-size:0.72rem;font-weight:700;border-radius:6px;padding:2px 8px;}
-.status-win{background:#D6EFE0;color:#1B6B3A;}
-.status-loss{background:#FDEAEA;color:#A81C1C;}
-.status-draw{background:#FFF0D6;color:#B35C00;}
-#loginView{display:block;}
-#adminView{display:none;}
-.spinner{text-align:center;padding:20px;color:var(--grey);font-size:0.9rem;}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B6B3A;color:white;padding:10px 20px;border-radius:20px;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.3s;z-index:999;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1B6B3A;color:white;padding:10px 20px;border-radius:20px;font-size:0.85rem;font-weight:600;opacity:0;transition:opacity 0.3s;z-index:999;pointer-events:none;}
 .toast.show{opacity:1;}
-.spellerchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
 .spchip{padding:6px 12px;border-radius:20px;border:2px solid #C0CCDA;background:white;font-size:0.82rem;font-weight:600;cursor:pointer;color:#444;}
 .spchip.sel{background:var(--navy);border-color:var(--navy);color:white;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.spellerchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.kamp-item{border:1px solid #E4EAF0;border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;transition:background 0.15s;}
+.kamp-item:active{background:#F4F6F8;}
+.kamp-hdr{display:flex;justify-content:space-between;align-items:center;}
+.kamp-title{font-weight:700;font-size:0.95rem;color:#0B2240;}
+.kamp-sub{font-size:0.75rem;color:#888;margin-top:2px;}
+.kamp-res{font-size:1.2rem;font-weight:800;color:#0B2240;}
+.status{display:inline-block;font-size:0.7rem;font-weight:700;border-radius:6px;padding:2px 8px;margin-top:3px;}
+.status-kommende{background:#E4EAF0;color:#666;}
+.status-live{background:#A81C1C;color:white;animation:pulse 1.5s infinite;}
+.status-pause{background:#B35C00;color:white;}
+.status-ferdig{background:#D6EFE0;color:#1B6B3A;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.view{display:none;}
+.view.active{display:block;}
+.chk-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--light);cursor:pointer;}
+.chk-item:last-child{border-bottom:none;}
+.chk-box{width:22px;height:22px;border:2px solid #C0CCDA;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.8rem;margin-top:1px;color:transparent;}
+.chk-item.done .chk-box{background:var(--green);border-color:var(--green);color:white;}
+.chk-item.done .chk-txt{text-decoration:line-through;color:#999;}
+.chk-txt{font-size:0.87rem;line-height:1.4;}
+.chk-who{font-size:0.72rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:0.04em;}
+.big-score{display:flex;align-items:center;justify-content:center;gap:20px;margin:16px 0;}
+.score-col{text-align:center;}
+.score-num{font-size:2.5rem;font-weight:800;color:#0B2240;line-height:1;}
+.score-lbl{font-size:0.75rem;color:#888;margin-top:4px;}
+.score-pm{display:flex;gap:6px;margin-top:8px;justify-content:center;}
+.score-pm button{width:36px;height:36px;border-radius:8px;border:none;font-size:1.2rem;font-weight:800;cursor:pointer;}
+.pm-plus{background:#1B6B3A;color:white;}
+.pm-minus{background:#E4EAF0;color:#666;}
+.live-clock{text-align:center;font-size:1.5rem;font-weight:800;color:#A81C1C;margin:10px 0;}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <h1>⚽ Admin – USA Cup 2026</h1>
-  <p>Kampregistrering og poenggiving</p>
+  <button class="back-btn" id="backBtn" style="display:none;" onclick="visHoved()">‹ Tilbake</button>
+  <h1>⚽ Admin – USA Cup</h1>
+  <p id="topSub">Kampoppsett og poeng</p>
 </div>
 
 <div class="main">
@@ -71,54 +87,151 @@ input:focus,select:focus{border-color:var(--blue);}
   </div>
 </div>
 
-<!-- ADMIN -->
-<div id="adminView">
+<!-- ============ HOVEDVISNING ============ -->
+<div id="adminView" style="display:none;">
 
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-    <div style="font-size:0.8rem;color:var(--grey);">Innlogget som trener ✓</div>
+    <div style="font-size:0.8rem;color:var(--grey);">Innlogget ✓</div>
     <button onclick="doLogout()" style="background:none;border:none;color:var(--red);font-size:0.8rem;font-weight:600;cursor:pointer;">Logg ut</button>
   </div>
 
-  <!-- NY KAMP -->
-  <div class="sec">➕ Registrer kamp</div>
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <label>Dato / runde</label>
-        <input type="text" id="kampDato" placeholder="f.eks. 14. juli · Gruppe A">
-      </div>
-      <div>
-        <label>Motstander</label>
-        <input type="text" id="kampMot" placeholder="f.eks. Sverige B">
-      </div>
-    </div>
-    <div class="grid2" style="margin-top:8px;">
-      <div>
-        <label>Våre mål</label>
-        <input type="number" id="kampVare" min="0" value="0">
-      </div>
-      <div>
-        <label>Deres mål</label>
-        <input type="number" id="kampDeres" min="0" value="0">
-      </div>
-    </div>
-    <button class="btn btn-green" onclick="lagreKamp()">💾 Lagre kamp</button>
-  </div>
+  <!-- HOVED: Kampliste + opprett + program + taktikk -->
+  <div class="view active" id="viewHoved">
 
-  <!-- LIVE KAMPKONTROLL -->
-  <div class="sec">🔴 Live kampkontroll</div>
-  <div class="card">
-    <div id="liveKontroll"><div class="info">Ingen kamp pågår</div></div>
-  </div>
-
-  <!-- REGISTRER HENDELSE -->
-  <div class="sec">🎯 Registrer hendelse</div>
-  <div class="card">
-    <div id="kampVelger">
-      <div class="info">Ingen kamper registrert ennå</div>
-    </div>
-    <div id="hendelseForm" style="display:none;">
+    <!-- OPPRETT KAMP -->
+    <div class="sec">➕ Ny kamp</div>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <label>Dato</label>
+          <select id="kampDato">
+            <option value="">-- Velg --</option>
+            <option>Tirsdag 14. juli</option>
+            <option>Onsdag 15. juli</option>
+            <option>Torsdag 16. juli</option>
+            <option>Fredag 17. juli</option>
+            <option>Lørdag 18. juli</option>
+            <option>Søndag 19. juli</option>
+          </select>
+        </div>
+        <div>
+          <label>Klokkeslett (lokal)</label>
+          <input type="time" id="kampTid">
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:8px;">
+        <div>
+          <label>Motstander</label>
+          <input type="text" id="kampMot" placeholder="f.eks. Sverige B">
+        </div>
+        <div>
+          <label>Bane</label>
+          <input type="text" id="kampBane" placeholder="f.eks. Field 12">
+        </div>
+      </div>
       <label>Type</label>
+      <select id="kampType" onchange="toggleSluttspill()">
+        <option value="gruppe">Gruppespill</option>
+        <option value="sluttspill">Sluttspill</option>
+      </select>
+      <div id="sluttspillWrap" style="display:none;">
+        <label>Sluttspill-runde</label>
+        <select id="kampRunde">
+          <option>Sluttspill A</option>
+          <option>Sluttspill B</option>
+          <option>Åttendedelsfinale</option>
+          <option>Kvartfinale</option>
+          <option>Semifinale</option>
+          <option>Bronsefinale</option>
+          <option>Finale</option>
+        </select>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:12px;cursor:pointer;">
+        <input type="checkbox" id="kampStream" style="width:auto;">
+        <span style="font-weight:600;font-size:0.85rem;">📺 Kampen streames</span>
+      </label>
+      <button class="btn btn-green" onclick="lagreKamp()">💾 Opprett kamp</button>
+    </div>
+
+    <!-- KAMPLISTE -->
+    <div class="sec">🏆 Kamper – klikk for å styre</div>
+    <div id="kampListe"><div class="info">Ingen kamper ennå</div></div>
+
+    <!-- PROGRAM -->
+    <div class="sec">📅 Dagsprogram</div>
+    <div class="card">
+      <div class="info">Norsk tid beregnes automatisk (+7 t)</div>
+      <label>Dag</label>
+      <select id="progDato">
+        <option value="">-- Velg dag --</option>
+        <option>Lørdag 11. juli</option>
+        <option>Søndag 12. juli</option>
+        <option>Mandag 13. juli</option>
+        <option>Tirsdag 14. juli</option>
+        <option>Onsdag 15. juli</option>
+        <option>Torsdag 16. juli</option>
+        <option>Fredag 17. juli</option>
+        <option>Lørdag 18. juli</option>
+        <option>Søndag 19. juli</option>
+      </select>
+      <div class="grid2" style="margin-top:8px;">
+        <div><label>Fra (lokal)</label><input type="time" id="progFra"></div>
+        <div><label>Til (lokal)</label><input type="time" id="progTil"></div>
+      </div>
+      <label>Aktivitet</label>
+      <input type="text" id="progAktivitet" placeholder="f.eks. Kamp vs Sverige">
+      <label>Tilleggstekst (valgfritt)</label>
+      <input type="text" id="progEkstra" placeholder="f.eks. Ta med blå drakt">
+      <button class="btn btn-green" onclick="lagreProgram()">+ Legg til</button>
+      <div id="progListe" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- TAKTIKK -->
+    <div class="sec">🎯 Taktikk (dødball)</div>
+    <div class="card">
+      <div class="info">Fylles inn og vises live i Taktikk-fanen</div>
+      <div id="taktikkForms"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ KAMPSTYRING (én kamp) ============ -->
+  <div class="view" id="viewKamp">
+    <div class="card">
+      <div id="kampStyringHdr"></div>
+      <div id="kampStyringKontroll"></div>
+    </div>
+    <div id="kampStyringMeny"></div>
+  </div>
+
+  <!-- ============ POENGREGISTRERING ============ -->
+  <div class="view" id="viewPoeng">
+    <div class="card">
+      <div id="poengKampInfo" style="text-align:center;margin-bottom:8px;"></div>
+      <div class="live-clock" id="poengKlokke">⏱ 0'</div>
+      <div class="big-score">
+        <div class="score-col">
+          <div class="score-num" id="poengVare">0</div>
+          <div class="score-lbl">Oss</div>
+          <div class="score-pm">
+            <button class="pm-minus" onclick="justerMal('vare',-1)">−</button>
+            <button class="pm-plus" onclick="justerMal('vare',1)">+</button>
+          </div>
+        </div>
+        <div style="font-size:1.5rem;color:#ccc;">–</div>
+        <div class="score-col">
+          <div class="score-num" id="poengDeres">0</div>
+          <div class="score-lbl">Dem</div>
+          <div class="score-pm">
+            <button class="pm-minus" onclick="justerMal('deres',-1)">−</button>
+            <button class="pm-plus" onclick="justerMal('deres',1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label>Type hendelse</label>
       <select id="hendelseType" onchange="oppdaterHendelseForm()">
         <option value="mal">⚽ Mål</option>
         <option value="straffemål">🎯 Straffemål</option>
@@ -135,144 +248,46 @@ input:focus,select:focus{border-color:var(--blue);}
         <label style="margin-top:10px;">2. assist</label>
         <div class="spellerchips" id="assist2Chips"></div>
       </div>
-
       <div id="strafferedningForm" style="display:none;">
-        <label>Spiller (keeper)</label>
+        <label>Keeper</label>
         <div class="spellerchips" id="strafferedningChips"></div>
       </div>
-
       <div id="momentForm" style="display:none;">
         <label>Spiller</label>
         <div class="spellerchips" id="momentChips"></div>
         <label style="margin-top:10px;">Beskrivelse</label>
-        <input type="text" id="momentTekst" placeholder="f.eks. Fantastisk redning i overtid">
+        <input type="text" id="momentTekst" placeholder="Beskrivelse...">
       </div>
-
       <div id="avgjørendeForm" style="display:none;">
         <label>Spiller</label>
         <div class="spellerchips" id="avgjørendeChips"></div>
       </div>
+      <button class="btn btn-blue" onclick="lagreHendelse()">💾 Registrer hendelse</button>
+    </div>
 
-      <button class="btn btn-blue" onclick="lagreHendelse()" style="margin-top:14px;">💾 Lagre hendelse</button>
+    <div class="card">
+      <div class="sec" style="margin-top:0;">Registrerte hendelser</div>
+      <div id="poengHendelser"></div>
+      <button class="btn btn-red" onclick="slettSiste()" style="margin-top:8px;">🗑 Slett siste</button>
     </div>
   </div>
 
-  <!-- TAKTIKK -->
-  <div class="sec">🎯 Taktikk</div>
-  <div class="card">
-    <div class="info">Fyll inn hvem som gjør hva – vises live i Taktikk-fanen</div>
-
-    <div style="margin-bottom:12px;">
-      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🚩 Corner</div>
-      <div id="takt-form-corner">
-        <div style="display:flex;gap:6px;margin-bottom:4px;" class="takt-row-input">
-          <input class="takt-input" data-lbl="Høyre corner" placeholder="Hvem tar høyre corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <input class="takt-input" data-lbl="Venstre corner" placeholder="Hvem tar venstre corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <input class="takt-input" data-lbl="Kort corner" placeholder="Hvem tar kort corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-      </div>
-      <div id="takt-preview-corner" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
-      <button class="btn btn-green" onclick="lagreTaktikk('corner')" style="padding:8px;">💾 Lagre corner</button>
-    </div>
-
-    <div style="margin-bottom:12px;padding-top:10px;border-top:1px solid #E4EAF0;">
-      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">⚽ Straffe</div>
-      <div id="takt-form-straffe">
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <input class="takt-input" data-lbl="Straffespark" placeholder="Hvem tar straffe" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <input class="takt-input" data-lbl="Reserve" placeholder="Reserve" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-      </div>
-      <div id="takt-preview-straffe" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
-      <button class="btn btn-green" onclick="lagreTaktikk('straffe')" style="padding:8px;">💾 Lagre straffe</button>
-    </div>
-
-    <div style="margin-bottom:12px;padding-top:10px;border-top:1px solid #E4EAF0;">
-      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🎯 Frispark</div>
-      <div id="takt-form-frispark">
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <input class="takt-input" data-lbl="Frispark nær (skudd)" placeholder="Skudd fra nær" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <input class="takt-input" data-lbl="Frispark langt (innlegg)" placeholder="Innlegg fra langt" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <input class="takt-input" data-lbl="Rask frispark" placeholder="Hvem starter raskt" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-      </div>
-      <div id="takt-preview-frispark" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
-      <button class="btn btn-green" onclick="lagreTaktikk('frispark')" style="padding:8px;">💾 Lagre frispark</button>
-    </div>
-
-    <div style="padding-top:10px;border-top:1px solid #E4EAF0;">
-      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🤾 Innkast</div>
-      <div id="takt-form-kast">
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <input class="takt-input" data-lbl="Innkast venstre" placeholder="Innkast fra venstre" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:6px;">
-          <input class="takt-input" data-lbl="Innkast høyre" placeholder="Innkast fra høyre" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
-        </div>
-      </div>
-      <div id="takt-preview-kast" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
-      <button class="btn btn-green" onclick="lagreTaktikk('kast')" style="padding:8px;">💾 Lagre innkast</button>
+  <!-- ============ SJEKKLISTE FØR ============ -->
+  <div class="view" id="viewSjekkFor">
+    <div class="card">
+      <div id="sjekkForHdr" style="text-align:center;font-weight:800;color:#0B2240;margin-bottom:4px;"></div>
+      <div class="sec" style="margin-top:8px;">✅ Sjekkliste FØR kamp</div>
+      <div id="sjekkForListe"></div>
     </div>
   </div>
 
-  <!-- KAMPHISTORIKK -->
-  <div class="sec">📋 Kamphistorikk</div>
-  <div id="kampListe"><div class="spinner">Laster...</div></div>
-
-  <!-- POENGTABELL -->
-  <div class="sec">📊 Poengtabell</div>
-  <div id="poengTabell"><div class="spinner">Laster...</div></div>
-
-  <!-- PROGRAM -->
-  <div class="sec">📅 Dagsprogram i USA</div>
-  <div class="card">
-    <div class="info">Velg dag, tid og aktivitet – norsk tid beregnes automatisk. Vises live i USA Prog-fanen.</div>
-    <label>Dag</label>
-    <select id="progDato">
-      <option value="">-- Velg dag --</option>
-      <option value="Lørdag 11. juli">Lørdag 11. juli</option>
-      <option value="Søndag 12. juli">Søndag 12. juli</option>
-      <option value="Mandag 13. juli">Mandag 13. juli</option>
-      <option value="Tirsdag 14. juli">Tirsdag 14. juli</option>
-      <option value="Onsdag 15. juli">Onsdag 15. juli</option>
-      <option value="Torsdag 16. juli">Torsdag 16. juli</option>
-      <option value="Fredag 17. juli">Fredag 17. juli</option>
-      <option value="Lørdag 18. juli">Lørdag 18. juli</option>
-      <option value="Søndag 19. juli">Søndag 19. juli</option>
-    </select>
-    <div class="grid2" style="margin-top:8px;">
-      <div>
-        <label>Fra (lokal tid)</label>
-        <input type="time" id="progFra" style="padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;width:100%;">
-      </div>
-      <div>
-        <label>Til (lokal tid)</label>
-        <input type="time" id="progTil" style="padding:10px 12px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.9rem;width:100%;">
-      </div>
+  <!-- ============ SJEKKLISTE ETTER ============ -->
+  <div class="view" id="viewSjekkEtter">
+    <div class="card">
+      <div id="sjekkEtterHdr" style="text-align:center;font-weight:800;color:#0B2240;margin-bottom:4px;"></div>
+      <div class="sec" style="margin-top:8px;">🔄 Sjekkliste ETTER kamp</div>
+      <div id="sjekkEtterListe"></div>
     </div>
-    <label style="margin-top:8px;">Aktivitet</label>
-    <input type="text" id="progAktivitet" placeholder="f.eks. Kamp vs Sverige · Hall B">
-    <label style="margin-top:8px;">Tilleggstekst (valgfritt)</label>
-    <input type="text" id="progEkstra" placeholder="f.eks. Ta med blå drakt">
-    <button class="btn btn-green" onclick="lagreProgram()" style="margin-top:10px;">💾 Legg til</button>
-    <div id="progListe" style="margin-top:12px;"></div>
-  </div>
-
-  <!-- SLETT -->
-  <div class="sec">🗑 Administrasjon</div>
-  <div class="card">
-    <div class="warn">Slett siste hendelse om du registrerte feil</div>
-    <button class="btn btn-red" onclick="slettSiste()">🗑 Slett siste hendelse</button>
   </div>
 
 </div>
@@ -282,7 +297,7 @@ input:focus,select:focus{border-color:var(--blue);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, orderBy, query, onSnapshot, serverTimestamp, getDoc, setDoc }
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, orderBy, query, onSnapshot, serverTimestamp, setDoc }
   from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -293,277 +308,372 @@ const firebaseConfig = {
   messagingSenderId: "712752858233",
   appId: "1:712752858233:web:efa8fcecd32d3f02d340a8"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const PASSORD = 'usacup2026';
 const SPILLERE = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Linnea','Kaja F','Marie','Malin','Kaja','Bea','Hanna'];
 
-let valgtKampId = null;
-let kamper = [];
-let hendelser = [];
-let liveKampId = null;
+// Sjekkliste-maler (faste)
+const SJEKK_FOR = [
+  {who:'Iver – Utstyr', items:['Vann','Elektrolytter','3× baller','Kjegler']},
+  {who:'Øyvind – Medisinbag', items:['Ankler: Marie, Opdal, Zaz, Linnea','Kne: Aila','Rygg: Julie']},
+  {who:'Ole – Spillermøte', items:['Spillere OK','Oppdatere taktikk dødball','Oppvarming']},
+];
+const SJEKK_ETTER = [
+  {who:'Iver', items:['Væske i alle','Karbohydrater','Elektrolytter']},
+  {who:'Øyvind', items:['Ta av tape','Ise ned']},
+  {who:'Ole', items:['Bistå Iver og Øyvind']},
+];
 
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+let kamper=[], hendelser=[], aktivKampId=null;
+let poengKlokkeTimer=null;
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+function getMinutter(k){
+  if(!k||!k.startTid)return 0;
+  const start=k.startTid.toDate?k.startTid.toDate():new Date(k.startTid);
+  const pausedMs=k.pausedMs||0;
+  const now=k.status==='pause'?(k.pauseTidspunkt?.toDate?k.pauseTidspunkt.toDate():new Date()):new Date();
+  return Math.max(0,Math.floor((now-start-pausedMs)/60000));
+}
+function autoNorsk(tid){
+  if(!tid)return '';
+  const [h,m]=tid.split(':').map(Number);
+  const nh=(h+7)%24;const plus=(h+7)>=24?' (+1)':'';
+  return String(nh).padStart(2,'0')+':'+String(m).padStart(2,'0')+plus;
 }
 
-function chips(containerId, spillere, allowNone=false) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  el.innerHTML = '';
-  if (allowNone) {
-    const b = document.createElement('button');
-    b.textContent = 'Ingen'; b.className = 'spchip';
-    b.onclick = () => { el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
-    el.appendChild(b);
-  }
-  spillere.forEach(s => {
-    const b = document.createElement('button');
-    b.textContent = s; b.className = 'spchip';
-    b.onclick = () => { el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); };
-    el.appendChild(b);
+// Chips
+function chips(id,list,allowNone=false){
+  const el=document.getElementById(id);if(!el)return;el.innerHTML='';
+  if(allowNone){const b=document.createElement('button');b.textContent='Ingen';b.className='spchip';b.onclick=()=>{el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};el.appendChild(b);}
+  list.forEach(s=>{const b=document.createElement('button');b.textContent=s;b.className='spchip';b.onclick=()=>{el.querySelectorAll('.spchip').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};el.appendChild(b);});
+}
+function getChip(id){const el=document.getElementById(id);if(!el)return null;const s=el.querySelector('.spchip.sel');return s?(s.textContent==='Ingen'?null:s.textContent):null;}
+
+// ===== LOGIN =====
+window.doLogin=function(){
+  if(document.getElementById('passInput').value===PASSORD){
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('adminView').style.display='block';
+    initData();
+    initTaktikkForms();
+  } else document.getElementById('loginErr').style.display='block';
+};
+window.doLogout=function(){
+  document.getElementById('loginView').style.display='block';
+  document.getElementById('adminView').style.display='none';
+  document.getElementById('passInput').value='';
+};
+
+// ===== NAVIGATION =====
+function visView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('backBtn').style.display=id==='viewHoved'?'none':'block';
+}
+window.visHoved=function(){visView('viewHoved');aktivKampId=null;if(poengKlokkeTimer){clearInterval(poengKlokkeTimer);poengKlokkeTimer=null;}document.getElementById('topSub').textContent='Kampoppsett og poeng';};
+
+// ===== DATA =====
+function initData(){
+  onSnapshot(query(collection(db,'kamper'),orderBy('tidspunkt','asc')),snap=>{
+    kamper=snap.docs.map(d=>({id:d.id,...d.data()}));
+    rendKampListe();
+    if(aktivKampId)rendKampStyring();
   });
-}
-
-function getChip(containerId) {
-  const el = document.getElementById(containerId);
-  if (!el) return null;
-  const sel = el.querySelector('.spchip.sel');
-  return sel ? (sel.textContent === 'Ingen' ? null : sel.textContent) : null;
-}
-
-function getMinutter(kamp) {
-  if (!kamp.startTid) return 0;
-  const start = kamp.startTid.toDate ? kamp.startTid.toDate() : new Date(kamp.startTid);
-  const pausedMs = (kamp.pausedMs || 0);
-  return Math.floor((new Date() - start - pausedMs) / 60000);
-}
-
-chips('scorerChips', SPILLERE);
-chips('assistChips', SPILLERE, true);
-chips('assist2Chips', SPILLERE, true);
-chips('momentChips', SPILLERE);
-chips('avgjørendeChips', SPILLERE);
-chips('strafferedningChips', SPILLERE);
-
-function lastData() {
-  onSnapshot(query(collection(db,'kamper'), orderBy('tidspunkt','asc')), snap => {
-    kamper = snap.docs.map(d => ({id:d.id,...d.data()}));
-    rendKamper();
-    rendLiveKontroll();
+  onSnapshot(query(collection(db,'hendelser'),orderBy('tidspunkt','asc')),snap=>{
+    hendelser=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(aktivKampId)rendPoengHendelser();
   });
-  onSnapshot(query(collection(db,'hendelser'), orderBy('tidspunkt','asc')), snap => {
-    hendelser = snap.docs.map(d => ({id:d.id,...d.data()}));
-    rendPoeng();
-    rendKamper();
+  onSnapshot(query(collection(db,'program'),orderBy('dato','asc'),orderBy('fra','asc')),snap=>{
+    rendProgram(snap.docs.map(d=>({id:d.id,...d.data()})));
   });
-  // Taktikk listener
-  onSnapshot(collection(db,'taktikk'), snap => {
-    snap.docs.forEach(d => {
-      const el = document.getElementById('takt-preview-' + d.id);
-      if (el) {
-        const data = d.data();
-        el.innerHTML = Object.entries(data).map(([k,v])=>`<div style="font-size:0.78rem;padding:3px 0;border-bottom:1px solid #F0F3F6;">${k}: <strong>${v}</strong></div>`).join('') || '<span style="color:#888;font-size:0.78rem;">Tom</span>';
-      }
+  onSnapshot(collection(db,'taktikk'),snap=>{
+    snap.docs.forEach(d=>{
+      const data=d.data();
+      const el=document.getElementById('takt-preview-'+d.id);
+      if(el)el.innerHTML=Object.entries(data).map(([k,v])=>`<div style="font-size:0.76rem;padding:2px 0;">${k}: <strong>${v}</strong></div>`).join('')||'<span style="color:#aaa;">Tom</span>';
     });
   });
 }
 
-// ============ LIVE KAMP KONTROLL ============
-function rendLiveKontroll() {
-  const el = document.getElementById('liveKontroll');
-  if (!el) return;
-  const liveKamp = kamper.find(k => k.status === 'live' || k.status === 'pause');
-
-  if (!liveKamp) {
-    el.innerHTML = '<div class="info">Ingen kamp pågår</div>';
-    liveKampId = null;
-    return;
-  }
-
-  liveKampId = liveKamp.id;
-  const min = getMinutter(liveKamp);
-  const isPause = liveKamp.status === 'pause';
-
-  el.innerHTML = `
-    <div style="background:#A81C1C;color:white;border-radius:10px;padding:12px;margin-bottom:10px;text-align:center;">
-      <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;opacity:0.8;">${isPause ? '⏸ PAUSE' : '🔴 LIVE'}</div>
-      <div style="font-size:1.8rem;font-weight:800;margin:4px 0;">vs ${liveKamp.mot}</div>
-      <div style="font-size:1.2rem;font-weight:700;">${liveKamp.vare||0} – ${liveKamp.deres||0}</div>
-      <div style="font-size:0.78rem;opacity:0.8;margin-top:2px;">${isPause ? 'Pause' : `⏱ ${min}'`}</div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-      ${isPause
-        ? `<button class="btn btn-green" onclick="kampStatus('${liveKamp.id}','live')">▶ 2. omgang</button>`
-        : `<button class="btn" style="background:#B35C00;color:white;" onclick="kampStatus('${liveKamp.id}','pause')">⏸ Pause</button>`
-      }
-      <button class="btn btn-red" onclick="kampStatus('${liveKamp.id}','ferdig')">🏁 Slutt</button>
-    </div>
-    <div class="grid2">
-      <div>
-        <label>Mål oss</label>
-        <input type="number" id="liveVare" value="${liveKamp.vare||0}" min="0" style="padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;width:100%;font-size:1.1rem;text-align:center;">
-      </div>
-      <div>
-        <label>Mål dem</label>
-        <input type="number" id="liveDeres" value="${liveKamp.deres||0}" min="0" style="padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;width:100%;font-size:1.1rem;text-align:center;">
-      </div>
-    </div>
-    <button class="btn btn-blue" onclick="oppdaterResultat('${liveKamp.id}')" style="margin-top:6px;">💾 Oppdater resultat</button>
-  `;
-}
-
-window.kampStatus = async function(id, status) {
-  const kamp = kamper.find(k=>k.id===id);
-  if (!kamp) return;
-  const update = {status};
-  if (status === 'live' && !kamp.startTid) {
-    update.startTid = serverTimestamp();
-  } else if (status === 'pause') {
-    update.pauseTidspunkt = serverTimestamp();
-  } else if (status === 'live' && kamp.pauseTidspunkt) {
-    // Resume: add paused time
-    const pauseStart = kamp.pauseTidspunkt.toDate ? kamp.pauseTidspunkt.toDate() : new Date();
-    const pausedMs = (kamp.pausedMs || 0) + (new Date() - pauseStart);
-    update.pausedMs = pausedMs;
-  }
-  await updateDoc(doc(db,'kamper',id), update);
-  toast(status === 'ferdig' ? '🏁 Kamp avsluttet!' : status === 'pause' ? '⏸ Pause' : '▶ Kampens gang!');
+window.toggleSluttspill=function(){
+  document.getElementById('sluttspillWrap').style.display=document.getElementById('kampType').value==='sluttspill'?'block':'none';
 };
 
-window.oppdaterResultat = async function(id) {
-  const vare = parseInt(document.getElementById('liveVare').value)||0;
-  const deres = parseInt(document.getElementById('liveDeres').value)||0;
-  await updateDoc(doc(db,'kamper',id), {vare, deres});
-  toast('✅ Resultat oppdatert!');
-};
-
-// ============ KAMP REGISTRERING ============
-window.lagreKamp = async function() {
-  const dato = document.getElementById('kampDato').value.trim();
-  const mot = document.getElementById('kampMot').value.trim();
-  if (!dato||!mot) { toast('Fyll inn dato og motstander'); return; }
-  await addDoc(collection(db,'kamper'), {dato, mot, vare:0, deres:0, status:'kommende', tidspunkt:serverTimestamp()});
+// ===== OPPRETT KAMP =====
+window.lagreKamp=async function(){
+  const dato=document.getElementById('kampDato').value;
+  const tid=document.getElementById('kampTid').value;
+  const mot=document.getElementById('kampMot').value.trim();
+  const bane=document.getElementById('kampBane').value.trim();
+  const type=document.getElementById('kampType').value;
+  const runde=type==='sluttspill'?document.getElementById('kampRunde').value:'';
+  const stream=document.getElementById('kampStream').checked;
+  if(!dato||!mot){toast('Fyll inn dato og motstander');return;}
+  await addDoc(collection(db,'kamper'),{
+    dato,tid,tidNorsk:autoNorsk(tid),mot,bane,type,runde,stream,
+    vare:0,deres:0,status:'kommende',tidspunkt:serverTimestamp()
+  });
   document.getElementById('kampDato').value='';
+  document.getElementById('kampTid').value='';
   document.getElementById('kampMot').value='';
+  document.getElementById('kampBane').value='';
+  document.getElementById('kampStream').checked=false;
   toast('✅ Kamp opprettet!');
 };
 
-window.startKamp = async function(id) {
-  await updateDoc(doc(db,'kamper',id), {status:'live', startTid:serverTimestamp(), vare:0, deres:0, pausedMs:0});
-  toast('🔴 Kamp startet!');
-};
-
-// ============ HENDELSER ============
-window.oppdaterHendelseForm = function() {
-  const t = document.getElementById('hendelseType').value;
-  document.getElementById('malForm').style.display = t==='mal'||t==='straffemål' ? 'block' : 'none';
-  document.getElementById('strafferedningForm').style.display = t==='strafferedning' ? 'block' : 'none';
-  document.getElementById('momentForm').style.display = t==='moment' ? 'block' : 'none';
-  document.getElementById('avgjørendeForm').style.display = t==='avgjorende' ? 'block' : 'none';
-};
-
-window.velgKamp = function(id) {
-  valgtKampId = id;
-  document.getElementById('hendelseForm').style.display = id ? 'block' : 'none';
-};
-
-window.lagreHendelse = async function() {
-  const kampId = valgtKampId || liveKampId;
-  if (!kampId) { toast('Velg kamp'); return; }
-  const type = document.getElementById('hendelseType').value;
-  const kamp = kamper.find(k=>k.id===kampId);
-  const min = kamp ? getMinutter(kamp) : null;
-  let data = {kampId, type, min, tidspunkt:serverTimestamp()};
-
-  if (type==='mal'||type==='straffemål') {
-    const scorer = getChip('scorerChips');
-    if (!scorer) { toast('Velg scorer'); return; }
-    data.scorer = scorer;
-    data.assist = getChip('assistChips');
-    data.assist2 = getChip('assist2Chips');
-  } else if (type==='strafferedning') {
-    const sp = getChip('strafferedningChips');
-    if (!sp) { toast('Velg spiller'); return; }
-    data.spiller = sp;
-  } else if (type==='moment') {
-    const sp = getChip('momentChips');
-    if (!sp) { toast('Velg spiller'); return; }
-    data.spiller = sp;
-    data.tekst = document.getElementById('momentTekst').value.trim();
-  } else if (type==='avgjorende') {
-    const sp = getChip('avgjørendeChips');
-    if (!sp) { toast('Velg spiller'); return; }
-    data.spiller = sp;
-  }
-  await addDoc(collection(db,'hendelser'), data);
-  toast('✅ Lagret!');
-};
-
-window.slettSiste = async function() {
-  if (!hendelser.length) { toast('Ingen hendelser'); return; }
-  if (!confirm('Slett siste hendelse?')) return;
-  await deleteDoc(doc(db,'hendelser',hendelser[hendelser.length-1].id));
-  toast('🗑 Slettet');
-};
-
-// ============ TAKTIKK ============
-window.lagreTaktikk = async function(kategori) {
-  const inputs = document.querySelectorAll(`#takt-form-${kategori} .takt-input`);
-  const data = {};
-  inputs.forEach(inp => {
-    if (inp.dataset.lbl && inp.value.trim()) data[inp.dataset.lbl] = inp.value.trim();
-  });
-  await setDoc(doc(db,'taktikk',kategori), data);
-  toast(`✅ ${kategori} lagret!`);
-};
-
-// ============ PROGRAM ============
-function autoNorsk(tid) {
-  if (!tid) return '';
-  const [h,m] = tid.split(':').map(Number);
-  const nh = (h+7)%24;
-  const plus = (h+7)>=24?' (+1)':'';
-  return String(nh).padStart(2,'0')+':'+String(m).padStart(2,'0')+plus;
+// ===== KAMPLISTE =====
+function rendKampListe(){
+  const el=document.getElementById('kampListe');if(!el)return;
+  if(!kamper.length){el.innerHTML='<div class="info">Ingen kamper ennå</div>';return;}
+  el.innerHTML=kamper.map(k=>{
+    const stTxt={kommende:'Kommende',live:'🔴 LIVE',pause:'⏸ Pause',ferdig:'Ferdig'}[k.status]||k.status;
+    const tidStr=k.tid?`${k.tid} (🇳🇴 ${k.tidNorsk||''})`:'';
+    const rundeStr=k.type==='sluttspill'?` · ${k.runde}`:'';
+    return `<div class="kamp-item" onclick="apneKamp('${k.id}')">
+      <div class="kamp-hdr">
+        <div>
+          <div class="kamp-title">vs ${k.mot}</div>
+          <div class="kamp-sub">${k.dato}${tidStr?' · '+tidStr:''}${rundeStr}</div>
+          <div class="kamp-sub">${k.bane?'📍 '+k.bane:''}${k.stream?' · 📺 Streames':''}</div>
+          <span class="status status-${k.status}">${stTxt}</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="kamp-res">${k.vare||0}–${k.deres||0}</div>
+          <div style="color:#ccc;font-size:1.2rem;">›</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-window.lagreProgram = async function() {
-  const dato = document.getElementById('progDato').value;
-  const fra = document.getElementById('progFra').value;
-  const til = document.getElementById('progTil').value;
-  const aktivitet = document.getElementById('progAktivitet').value.trim();
-  const ekstra = document.getElementById('progEkstra').value.trim();
-  if (!dato||!aktivitet) { toast('Velg dag og aktivitet'); return; }
-  await addDoc(collection(db,'program'), {
-    dato, fra, til, fraNorsk:autoNorsk(fra), tilNorsk:autoNorsk(til),
-    aktivitet, ekstra, tidspunkt:serverTimestamp()
-  });
-  document.getElementById('progFra').value='';
-  document.getElementById('progTil').value='';
-  document.getElementById('progAktivitet').value='';
-  document.getElementById('progEkstra').value='';
-  toast('✅ Lagt til!');
+// ===== ÅPNE KAMP (styring) =====
+window.apneKamp=function(id){
+  aktivKampId=id;
+  visView('viewKamp');
+  rendKampStyring();
+  const k=kamper.find(x=>x.id===id);
+  document.getElementById('topSub').textContent='vs '+(k?k.mot:'');
 };
 
-window.slettProgram = async function(id) {
-  if (!confirm('Slett?')) return;
-  await deleteDoc(doc(db,'program',id));
+function rendKampStyring(){
+  const k=kamper.find(x=>x.id===aktivKampId);
+  if(!k){visHoved();return;}
+  const min=getMinutter(k);
+  const isLive=k.status==='live',isPause=k.status==='pause',isFerdig=k.status==='ferdig';
+
+  document.getElementById('kampStyringHdr').innerHTML=`
+    <div style="text-align:center;">
+      <div style="font-size:1.3rem;font-weight:800;color:#0B2240;">vs ${k.mot}</div>
+      <div style="font-size:0.8rem;color:#888;">${k.dato}${k.tid?' · '+k.tid+' (🇳🇴 '+(k.tidNorsk||'')+')':''}</div>
+      <div style="font-size:0.8rem;color:#888;">${k.bane?'📍 '+k.bane:''}${k.type==='sluttspill'?' · '+k.runde:''}${k.stream?' · 📺':''}</div>
+      <div style="font-size:2rem;font-weight:800;color:#0B2240;margin-top:8px;">${k.vare||0} – ${k.deres||0}</div>
+      <span class="status status-${k.status}">${{kommende:'Kommende',live:'🔴 LIVE '+min+"'",pause:'⏸ Pause',ferdig:'Ferdig'}[k.status]}</span>
+    </div>`;
+
+  let kontroll='';
+  if(k.status==='kommende'){
+    kontroll=`<button class="btn btn-green" onclick="startKamp('${k.id}')">▶ Start kamp</button>`;
+  } else if(isLive){
+    kontroll=`<div class="grid2"><button class="btn btn-amber" onclick="kampStatus('${k.id}','pause')">⏸ Pause</button><button class="btn btn-red" onclick="avsluttKamp('${k.id}')">🏁 Avslutt</button></div>`;
+  } else if(isPause){
+    kontroll=`<div class="grid2"><button class="btn btn-green" onclick="kampStatus('${k.id}','live')">▶ Fortsett</button><button class="btn btn-red" onclick="avsluttKamp('${k.id}')">🏁 Avslutt</button></div>`;
+  } else if(isFerdig){
+    kontroll=`<div class="info">Kampen er ferdig</div>`;
+  }
+  document.getElementById('kampStyringKontroll').innerHTML=kontroll;
+
+  // Meny
+  document.getElementById('kampStyringMeny').innerHTML=`
+    <div class="card" onclick="apnePoeng()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-weight:700;color:#0B2240;">🎯 Poengregistrering</div><div style="font-size:0.78rem;color:#888;">Mål, assist, straffe, øyeblikk</div></div>
+      <div style="color:#ccc;font-size:1.3rem;">›</div>
+    </div>
+    <div class="card" onclick="apneSjekkFor()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-weight:700;color:#0B2240;">✅ Sjekkliste FØR kamp</div><div style="font-size:0.78rem;color:#888;">Utstyr, taping, spillermøte</div></div>
+      <div style="color:#ccc;font-size:1.3rem;">›</div>
+    </div>
+    <div class="card" onclick="apneSjekkEtter()" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      <div><div style="font-weight:700;color:#0B2240;">🔄 Sjekkliste ETTER kamp</div><div style="font-size:0.78rem;color:#888;">Væske, tape av, ising</div></div>
+      <div style="color:#ccc;font-size:1.3rem;">›</div>
+    </div>
+    <button class="btn btn-red" onclick="slettKamp('${k.id}')" style="margin-top:12px;">🗑 Slett kamp</button>`;
+}
+
+window.startKamp=async function(id){
+  await updateDoc(doc(db,'kamper',id),{status:'live',startTid:serverTimestamp(),pausedMs:0,vare:0,deres:0});
+  toast('🔴 Kampen er i gang!');
+  setTimeout(()=>apnePoeng(),400);
+};
+window.kampStatus=async function(id,status){
+  const k=kamper.find(x=>x.id===id);if(!k)return;
+  const upd={status};
+  if(status==='pause')upd.pauseTidspunkt=serverTimestamp();
+  else if(status==='live'&&k.pauseTidspunkt){
+    const ps=k.pauseTidspunkt.toDate?k.pauseTidspunkt.toDate():new Date();
+    upd.pausedMs=(k.pausedMs||0)+(new Date()-ps);
+  }
+  await updateDoc(doc(db,'kamper',id),upd);
+  toast(status==='pause'?'⏸ Pause':'▶ Fortsetter');
+};
+window.avsluttKamp=async function(id){
+  if(!confirm('Avslutte kampen?'))return;
+  await updateDoc(doc(db,'kamper',id),{status:'ferdig'});
+  toast('🏁 Kamp avsluttet');
+  visHoved();
+};
+window.slettKamp=async function(id){
+  if(!confirm('Slett hele kampen? Kan ikke angres.'))return;
+  await deleteDoc(doc(db,'kamper',id));
+  toast('🗑 Kamp slettet');
+  visHoved();
+};
+
+// ===== POENGREGISTRERING =====
+window.apnePoeng=function(){
+  visView('viewPoeng');
+  chips('scorerChips',SPILLERE);chips('assistChips',SPILLERE,true);chips('assist2Chips',SPILLERE,true);
+  chips('strafferedningChips',SPILLERE);chips('momentChips',SPILLERE);chips('avgjørendeChips',SPILLERE);
+  rendPoengInfo();
+  rendPoengHendelser();
+  if(poengKlokkeTimer)clearInterval(poengKlokkeTimer);
+  poengKlokkeTimer=setInterval(rendPoengInfo,15000);
+};
+
+function rendPoengInfo(){
+  const k=kamper.find(x=>x.id===aktivKampId);if(!k)return;
+  document.getElementById('poengKampInfo').innerHTML=`<div style="font-weight:800;color:#0B2240;">vs ${k.mot}</div><div style="font-size:0.78rem;color:#888;">${k.dato}</div>`;
+  const min=getMinutter(k);
+  document.getElementById('poengKlokke').textContent=k.status==='pause'?'⏸ Pause':`⏱ ${min}'`;
+  document.getElementById('poengVare').textContent=k.vare||0;
+  document.getElementById('poengDeres').textContent=k.deres||0;
+}
+
+window.justerMal=async function(felt,delta){
+  const k=kamper.find(x=>x.id===aktivKampId);if(!k)return;
+  const ny=Math.max(0,(k[felt]||0)+delta);
+  await updateDoc(doc(db,'kamper',aktivKampId),{[felt]:ny});
+};
+
+window.oppdaterHendelseForm=function(){
+  const t=document.getElementById('hendelseType').value;
+  document.getElementById('malForm').style.display=(t==='mal'||t==='straffemål')?'block':'none';
+  document.getElementById('strafferedningForm').style.display=t==='strafferedning'?'block':'none';
+  document.getElementById('momentForm').style.display=t==='moment'?'block':'none';
+  document.getElementById('avgjørendeForm').style.display=t==='avgjorende'?'block':'none';
+};
+
+window.lagreHendelse=async function(){
+  if(!aktivKampId){toast('Ingen aktiv kamp');return;}
+  const type=document.getElementById('hendelseType').value;
+  const k=kamper.find(x=>x.id===aktivKampId);
+  const min=getMinutter(k);
+  let data={kampId:aktivKampId,type,min,tidspunkt:serverTimestamp()};
+  if(type==='mal'||type==='straffemål'){
+    const sc=getChip('scorerChips');if(!sc){toast('Velg scorer');return;}
+    data.scorer=sc;data.assist=getChip('assistChips');data.assist2=getChip('assist2Chips');
+    // Auto-increment score
+    await updateDoc(doc(db,'kamper',aktivKampId),{vare:(k.vare||0)+1});
+  } else if(type==='strafferedning'){
+    const sp=getChip('strafferedningChips');if(!sp){toast('Velg keeper');return;}data.spiller=sp;
+  } else if(type==='moment'){
+    const sp=getChip('momentChips');if(!sp){toast('Velg spiller');return;}data.spiller=sp;data.tekst=document.getElementById('momentTekst').value.trim();
+  } else if(type==='avgjorende'){
+    const sp=getChip('avgjørendeChips');if(!sp){toast('Velg spiller');return;}data.spiller=sp;
+  }
+  await addDoc(collection(db,'hendelser'),data);
+  toast('✅ Registrert!');
+  // Reset chips
+  document.querySelectorAll('#viewPoeng .spchip.sel').forEach(x=>x.classList.remove('sel'));
+  if(document.getElementById('momentTekst'))document.getElementById('momentTekst').value='';
+};
+
+function rendPoengHendelser(){
+  const el=document.getElementById('poengHendelser');if(!el)return;
+  const h=hendelser.filter(x=>x.kampId===aktivKampId);
+  if(!h.length){el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen hendelser ennå</div>';return;}
+  const ikon={mal:'⚽',straffemål:'🎯',strafferedning:'🧤',moment:'⭐',avgjorende:'🏆'};
+  el.innerHTML=h.map(x=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #F0F3F6;font-size:0.83rem;">
+    <span>${ikon[x.type]||''} ${x.min!=null?x.min+"' ":''}${x.scorer||x.spiller||''}${x.assist?' 🎯'+x.assist:''}${x.tekst?' – '+x.tekst:''}</span>
+  </div>`).join('');
+}
+
+window.slettSiste=async function(){
+  const h=hendelser.filter(x=>x.kampId===aktivKampId);
+  if(!h.length){toast('Ingen hendelser');return;}
+  if(!confirm('Slett siste hendelse?'))return;
+  const siste=h[h.length-1];
+  // If it was a goal, decrement score
+  if(siste.type==='mal'||siste.type==='straffemål'){
+    const k=kamper.find(x=>x.id===aktivKampId);
+    await updateDoc(doc(db,'kamper',aktivKampId),{vare:Math.max(0,(k.vare||0)-1)});
+  }
+  await deleteDoc(doc(db,'hendelser',siste.id));
   toast('🗑 Slettet');
 };
 
-onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid','asc')), snap => {
-  const items = snap.docs.map(d=>({id:d.id,...d.data()}));
-  const el = document.getElementById('progListe');
-  if (!el) return;
-  if (!items.length) { el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>'; return; }
-  const dager={};
-  items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
-  el.innerHTML = Object.entries(dager).map(([dato,akt])=>`
+// ===== SJEKKLISTER =====
+window.apneSjekkFor=function(){visView('viewSjekkFor');rendSjekk('for');};
+window.apneSjekkEtter=function(){visView('viewSjekkEtter');rendSjekk('etter');};
+
+function rendSjekk(type){
+  const mal=type==='for'?SJEKK_FOR:SJEKK_ETTER;
+  const k=kamper.find(x=>x.id===aktivKampId);
+  const hdrEl=document.getElementById(type==='for'?'sjekkForHdr':'sjekkEtterHdr');
+  const listEl=document.getElementById(type==='for'?'sjekkForListe':'sjekkEtterListe');
+  hdrEl.textContent='vs '+(k?k.mot:'');
+  // localStorage per kamp+type
+  const key='sjekk_'+aktivKampId+'_'+type;
+  let state={};try{state=JSON.parse(localStorage.getItem(key)||'{}');}catch(e){}
+  let html='';
+  mal.forEach((grp,gi)=>{
+    html+=`<div class="chk-who" style="margin-top:${gi>0?'14px':'4px'};">${grp.who}</div>`;
+    grp.items.forEach((item,ii)=>{
+      const id=gi+'_'+ii;
+      const done=state[id]?'done':'';
+      html+=`<div class="chk-item ${done}" onclick="toggleSjekk('${type}','${id}',this)"><div class="chk-box">✓</div><div class="chk-txt">${item}</div></div>`;
+    });
+  });
+  html+=`<button class="btn btn-grey" onclick="nullstillSjekk('${type}')" style="margin-top:14px;">↺ Nullstill</button>`;
+  listEl.innerHTML=html;
+}
+
+window.toggleSjekk=function(type,id,el){
+  el.classList.toggle('done');
+  const key='sjekk_'+aktivKampId+'_'+type;
+  let state={};try{state=JSON.parse(localStorage.getItem(key)||'{}');}catch(e){}
+  state[id]=el.classList.contains('done');
+  localStorage.setItem(key,JSON.stringify(state));
+};
+window.nullstillSjekk=function(type){
+  if(!confirm('Nullstille sjekklisten?'))return;
+  localStorage.removeItem('sjekk_'+aktivKampId+'_'+type);
+  rendSjekk(type);
+};
+
+// ===== PROGRAM =====
+window.lagreProgram=async function(){
+  const dato=document.getElementById('progDato').value;
+  const fra=document.getElementById('progFra').value;
+  const til=document.getElementById('progTil').value;
+  const akt=document.getElementById('progAktivitet').value.trim();
+  const ekstra=document.getElementById('progEkstra').value.trim();
+  if(!dato||!akt){toast('Velg dag og aktivitet');return;}
+  await addDoc(collection(db,'program'),{dato,fra,til,fraNorsk:autoNorsk(fra),tilNorsk:autoNorsk(til),aktivitet:akt,ekstra,tidspunkt:serverTimestamp()});
+  document.getElementById('progFra').value='';document.getElementById('progTil').value='';
+  document.getElementById('progAktivitet').value='';document.getElementById('progEkstra').value='';
+  toast('✅ Lagt til!');
+};
+window.slettProgram=async function(id){if(!confirm('Slett?'))return;await deleteDoc(doc(db,'program',id));toast('🗑 Slettet');};
+
+function rendProgram(items){
+  const el=document.getElementById('progListe');if(!el)return;
+  if(!items.length){el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>';return;}
+  const dager={};items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
+  el.innerHTML=Object.entries(dager).map(([dato,akt])=>`
     <div style="margin-bottom:6px;">
       <div style="font-size:0.72rem;font-weight:800;color:#0B2240;margin-bottom:3px;">${dato}</div>
       ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
@@ -571,92 +681,34 @@ onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid',
         <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;flex-shrink:0;margin-left:6px;">✕</button>
       </div>`).join('')}
     </div>`).join('');
-});
+}
 
-// ============ RENDER KAMPER ============
-function rendKamper() {
-  const kv = document.getElementById('kampVelger');
-  if (!kv) return;
-
-  // Kampvelger for hendelser
-  const kommende = kamper.filter(k=>k.status!=='ferdig');
-  if (!kamper.length) {
-    kv.innerHTML = '<div class="info">Ingen kamper ennå</div>';
-    document.getElementById('hendelseForm').style.display='none';
-  } else {
-    kv.innerHTML = '<label>Velg kamp</label><select id="kampSelect" onchange="window.velgKamp(this.value)">' +
-      '<option value="">-- Velg kamp --</option>' +
-      kamper.map(k=>`<option value="${k.id}">${k.dato} · vs ${k.mot} (${k.vare||0}–${k.deres||0}) ${k.status==='live'?'🔴':k.status==='ferdig'?'✅':''}</option>`).join('') +
-      '</select>';
-  }
-
-  // Kamphistorikk
-  const kl = document.getElementById('kampListe');
-  if (!kl) return;
-  kl.innerHTML = kamper.slice().reverse().map(k => {
-    const isLive = k.status==='live'||k.status==='pause';
-    const mål = hendelser.filter(h=>h.kampId===k.id&&(h.type==='mal'||h.type==='straffemål'));
-    return `<div class="kamp-item">
-      <div class="kamp-hdr">
-        <div><div class="kamp-title">vs ${k.mot}</div><div style="font-size:0.75rem;color:#888;">${k.dato} · ${k.status}</div></div>
-        <div style="text-align:right;">
-          <div class="kamp-res">${k.vare||0} – ${k.deres||0}</div>
-          ${k.status==='kommende'?`<button onclick="window.startKamp('${k.id}')" style="background:#1B6B3A;color:white;border:none;border-radius:6px;padding:4px 10px;font-size:0.78rem;cursor:pointer;">▶ Start</button>`:''}
-        </div>
+// ===== TAKTIKK =====
+const TAKTIKK_KAT=[
+  {key:'corner',navn:'🚩 Corner',felt:['Høyre corner','Venstre corner','Kort corner']},
+  {key:'straffe',navn:'⚽ Straffe',felt:['Straffespark','Reserve']},
+  {key:'frispark',navn:'🎯 Frispark',felt:['Skudd (nær)','Innlegg (langt)','Rask start']},
+  {key:'kast',navn:'🤾 Innkast',felt:['Venstre side','Høyre side']},
+];
+function initTaktikkForms(){
+  const el=document.getElementById('taktikkForms');if(!el)return;
+  el.innerHTML=TAKTIKK_KAT.map(kat=>`
+    <div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #E4EAF0;">
+      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">${kat.navn}</div>
+      <div id="takt-form-${kat.key}">
+        ${kat.felt.map(f=>`<input class="takt-input" data-lbl="${f}" placeholder="${f}" style="margin-bottom:4px;">`).join('')}
       </div>
-      ${mål.map(m=>`<div style="font-size:0.82rem;color:#444;margin-top:3px;">⚽ ${m.scorer||'?'}${m.min?` ${m.min}'`:''}${m.type==='straffemål'?' (str.)':''}${m.assist?` 🎯 ${m.assist}`:''}</div>`).join('')}
-    </div>`;
-  }).join('');
+      <div id="takt-preview-${kat.key}" style="font-size:0.76rem;color:#888;margin:4px 0;"></div>
+      <button class="btn btn-green" onclick="lagreTaktikk('${kat.key}')" style="padding:8px;">💾 Lagre</button>
+    </div>`).join('');
 }
-
-function rendPoeng() {
-  const poeng = {};
-  SPILLERE.forEach(s=>poeng[s]={mal:0,assist:0,assist2:0,moment:0,avgjorende:0});
-  hendelser.forEach(h=>{
-    if(h.type==='mal'||h.type==='straffemål'){
-      if(h.scorer&&poeng[h.scorer])poeng[h.scorer].mal++;
-      if(h.assist&&poeng[h.assist])poeng[h.assist].assist++;
-      if(h.assist2&&poeng[h.assist2])poeng[h.assist2].assist2++;
-    } else if(h.type==='strafferedning'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].avgjorende++;
-    else if(h.type==='moment'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].moment++;
-    else if(h.type==='avgjorende'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].avgjorende++;
-  });
-  const sortert = SPILLERE.filter(s=>Object.values(poeng[s]).some(v=>v>0))
-    .sort((a,b)=>(poeng[b].mal+poeng[b].assist)-(poeng[a].mal+poeng[a].assist));
-  const pt = document.getElementById('poengTabell');
-  if (!pt) return;
-  if (!sortert.length) {
-    pt.innerHTML = '<div class="card" style="color:#888;text-align:center;font-size:0.85rem;padding:14px;">Ingen hendelser ennå</div>';
-    return;
-  }
-  pt.innerHTML = '<div class="card"><table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
-    '<tr style="border-bottom:2px solid #E4EAF0;"><th style="text-align:left;padding:6px 4px;color:#666;font-size:0.72rem;">Spiller</th><th style="color:#666;font-size:0.72rem;">⚽</th><th style="color:#666;font-size:0.72rem;">🎯</th><th style="color:#666;font-size:0.72rem;">🎯2</th><th style="color:#666;font-size:0.72rem;">⭐</th><th style="color:#666;font-size:0.72rem;">🏆</th></tr>' +
-    sortert.map(s=>`<tr style="border-bottom:1px solid #F0F3F6;">
-      <td style="padding:7px 4px;font-weight:600;">${s}</td>
-      <td style="text-align:center;">${poeng[s].mal||''}</td>
-      <td style="text-align:center;">${poeng[s].assist||''}</td>
-      <td style="text-align:center;">${poeng[s].assist2||''}</td>
-      <td style="text-align:center;">${poeng[s].moment||''}</td>
-      <td style="text-align:center;">${poeng[s].avgjorende||''}</td>
-    </tr>`).join('') + '</table></div>';
-}
-
-// Login
-window.doLogin = function() {
-  if (document.getElementById('passInput').value === PASSORD) {
-    document.getElementById('loginView').style.display='none';
-    document.getElementById('adminView').style.display='block';
-    lastData();
-  } else {
-    document.getElementById('loginErr').style.display='block';
-  }
+window.lagreTaktikk=async function(kat){
+  const inputs=document.querySelectorAll(`#takt-form-${kat} .takt-input`);
+  const data={};
+  inputs.forEach(inp=>{if(inp.dataset.lbl&&inp.value.trim())data[inp.dataset.lbl]=inp.value.trim();});
+  await setDoc(doc(db,'taktikk',kat),data);
+  toast('✅ Lagret!');
 };
-window.doLogout = function() {
-  document.getElementById('loginView').style.display='block';
-  document.getElementById('adminView').style.display='none';
-  document.getElementById('passInput').value='';
-};
-
 </script>
 </body>
 </html>
