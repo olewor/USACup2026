@@ -105,6 +105,12 @@ input:focus,select:focus{border-color:var(--blue);}
     <button class="btn btn-green" onclick="lagreKamp()">💾 Lagre kamp</button>
   </div>
 
+  <!-- LIVE KAMPKONTROLL -->
+  <div class="sec">🔴 Live kampkontroll</div>
+  <div class="card">
+    <div id="liveKontroll"><div class="info">Ingen kamp pågår</div></div>
+  </div>
+
   <!-- REGISTRER HENDELSE -->
   <div class="sec">🎯 Registrer hendelse</div>
   <div class="card">
@@ -115,6 +121,8 @@ input:focus,select:focus{border-color:var(--blue);}
       <label>Type</label>
       <select id="hendelseType" onchange="oppdaterHendelseForm()">
         <option value="mal">⚽ Mål</option>
+        <option value="straffemål">🎯 Straffemål</option>
+        <option value="strafferedning">🧤 Strafferedning</option>
         <option value="moment">⭐ Øyeblikk</option>
         <option value="avgjorende">🏆 Avgjørende</option>
       </select>
@@ -126,6 +134,11 @@ input:focus,select:focus{border-color:var(--blue);}
         <div class="spellerchips" id="assistChips"></div>
         <label style="margin-top:10px;">2. assist</label>
         <div class="spellerchips" id="assist2Chips"></div>
+      </div>
+
+      <div id="strafferedningForm" style="display:none;">
+        <label>Spiller (keeper)</label>
+        <div class="spellerchips" id="strafferedningChips"></div>
       </div>
 
       <div id="momentForm" style="display:none;">
@@ -141,6 +154,74 @@ input:focus,select:focus{border-color:var(--blue);}
       </div>
 
       <button class="btn btn-blue" onclick="lagreHendelse()" style="margin-top:14px;">💾 Lagre hendelse</button>
+    </div>
+  </div>
+
+  <!-- TAKTIKK -->
+  <div class="sec">🎯 Taktikk</div>
+  <div class="card">
+    <div class="info">Fyll inn hvem som gjør hva – vises live i Taktikk-fanen</div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🚩 Corner</div>
+      <div id="takt-form-corner">
+        <div style="display:flex;gap:6px;margin-bottom:4px;" class="takt-row-input">
+          <input class="takt-input" data-lbl="Høyre corner" placeholder="Hvem tar høyre corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <input class="takt-input" data-lbl="Venstre corner" placeholder="Hvem tar venstre corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input class="takt-input" data-lbl="Kort corner" placeholder="Hvem tar kort corner" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+      </div>
+      <div id="takt-preview-corner" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
+      <button class="btn btn-green" onclick="lagreTaktikk('corner')" style="padding:8px;">💾 Lagre corner</button>
+    </div>
+
+    <div style="margin-bottom:12px;padding-top:10px;border-top:1px solid #E4EAF0;">
+      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">⚽ Straffe</div>
+      <div id="takt-form-straffe">
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <input class="takt-input" data-lbl="Straffespark" placeholder="Hvem tar straffe" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input class="takt-input" data-lbl="Reserve" placeholder="Reserve" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+      </div>
+      <div id="takt-preview-straffe" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
+      <button class="btn btn-green" onclick="lagreTaktikk('straffe')" style="padding:8px;">💾 Lagre straffe</button>
+    </div>
+
+    <div style="margin-bottom:12px;padding-top:10px;border-top:1px solid #E4EAF0;">
+      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🎯 Frispark</div>
+      <div id="takt-form-frispark">
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <input class="takt-input" data-lbl="Frispark nær (skudd)" placeholder="Skudd fra nær" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <input class="takt-input" data-lbl="Frispark langt (innlegg)" placeholder="Innlegg fra langt" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input class="takt-input" data-lbl="Rask frispark" placeholder="Hvem starter raskt" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+      </div>
+      <div id="takt-preview-frispark" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
+      <button class="btn btn-green" onclick="lagreTaktikk('frispark')" style="padding:8px;">💾 Lagre frispark</button>
+    </div>
+
+    <div style="padding-top:10px;border-top:1px solid #E4EAF0;">
+      <div style="font-weight:700;font-size:0.85rem;color:#0B2240;margin-bottom:6px;">🤾 Innkast</div>
+      <div id="takt-form-kast">
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <input class="takt-input" data-lbl="Innkast venstre" placeholder="Innkast fra venstre" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input class="takt-input" data-lbl="Innkast høyre" placeholder="Innkast fra høyre" style="flex:1;padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;font-size:0.85rem;">
+        </div>
+      </div>
+      <div id="takt-preview-kast" style="font-size:0.78rem;color:#888;margin-bottom:4px;"></div>
+      <button class="btn btn-green" onclick="lagreTaktikk('kast')" style="padding:8px;">💾 Lagre innkast</button>
     </div>
   </div>
 
@@ -201,7 +282,7 @@ input:focus,select:focus{border-color:var(--blue);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, onSnapshot, serverTimestamp }
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, orderBy, query, onSnapshot, serverTimestamp, getDoc, setDoc }
   from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -222,6 +303,7 @@ const SPILLERE = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Li
 let valgtKampId = null;
 let kamper = [];
 let hendelser = [];
+let liveKampId = null;
 
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -232,6 +314,7 @@ function toast(msg) {
 
 function chips(containerId, spillere, allowNone=false) {
   const el = document.getElementById(containerId);
+  if (!el) return;
   el.innerHTML = '';
   if (allowNone) {
     const b = document.createElement('button');
@@ -249,8 +332,16 @@ function chips(containerId, spillere, allowNone=false) {
 
 function getChip(containerId) {
   const el = document.getElementById(containerId);
+  if (!el) return null;
   const sel = el.querySelector('.spchip.sel');
   return sel ? (sel.textContent === 'Ingen' ? null : sel.textContent) : null;
+}
+
+function getMinutter(kamp) {
+  if (!kamp.startTid) return 0;
+  const start = kamp.startTid.toDate ? kamp.startTid.toDate() : new Date(kamp.startTid);
+  const pausedMs = (kamp.pausedMs || 0);
+  return Math.floor((new Date() - start - pausedMs) / 60000);
 }
 
 chips('scorerChips', SPILLERE);
@@ -258,98 +349,121 @@ chips('assistChips', SPILLERE, true);
 chips('assist2Chips', SPILLERE, true);
 chips('momentChips', SPILLERE);
 chips('avgjørendeChips', SPILLERE);
+chips('strafferedningChips', SPILLERE);
 
 function lastData() {
   onSnapshot(query(collection(db,'kamper'), orderBy('tidspunkt','asc')), snap => {
     kamper = snap.docs.map(d => ({id:d.id,...d.data()}));
     rendKamper();
+    rendLiveKontroll();
   });
   onSnapshot(query(collection(db,'hendelser'), orderBy('tidspunkt','asc')), snap => {
     hendelser = snap.docs.map(d => ({id:d.id,...d.data()}));
     rendPoeng();
+    rendKamper();
+  });
+  // Taktikk listener
+  onSnapshot(collection(db,'taktikk'), snap => {
+    snap.docs.forEach(d => {
+      const el = document.getElementById('takt-preview-' + d.id);
+      if (el) {
+        const data = d.data();
+        el.innerHTML = Object.entries(data).map(([k,v])=>`<div style="font-size:0.78rem;padding:3px 0;border-bottom:1px solid #F0F3F6;">${k}: <strong>${v}</strong></div>`).join('') || '<span style="color:#888;font-size:0.78rem;">Tom</span>';
+      }
+    });
   });
 }
 
-function rendKamper() {
-  const kv = document.getElementById('kampVelger');
-  if (!kamper.length) {
-    kv.innerHTML = '<div class="info">Ingen kamper ennå</div>';
-    document.getElementById('hendelseForm').style.display='none';
+// ============ LIVE KAMP KONTROLL ============
+function rendLiveKontroll() {
+  const el = document.getElementById('liveKontroll');
+  if (!el) return;
+  const liveKamp = kamper.find(k => k.status === 'live' || k.status === 'pause');
+
+  if (!liveKamp) {
+    el.innerHTML = '<div class="info">Ingen kamp pågår</div>';
+    liveKampId = null;
     return;
   }
-  kv.innerHTML = '<label>Velg kamp for hendelse</label><select id="kampSelect" onchange="window.velgKamp(this.value)">' +
-    '<option value="">-- Velg kamp --</option>' +
-    kamper.map(k=>`<option value="${k.id}">${k.dato} · vs ${k.mot} (${k.vare}–${k.deres})</option>`).join('') +
-    '</select>';
-  document.getElementById('hendelseForm').style.display = valgtKampId ? 'block' : 'none';
 
-  const kl = document.getElementById('kampListe');
-  kl.innerHTML = kamper.slice().reverse().map(k => {
-    const status = k.vare>k.deres ? 'win' : k.vare<k.deres ? 'loss' : 'draw';
-    const statusTxt = k.vare>k.deres ? '✅ Seier' : k.vare<k.deres ? '❌ Tap' : '🤝 Uavgjort';
-    const mal = hendelser.filter(h=>h.kampId===k.id&&h.type==='mal');
-    return `<div class="kamp-item">
-      <div class="kamp-hdr">
-        <div><div class="kamp-title">vs ${k.mot}</div><div style="font-size:0.75rem;color:#888;">${k.dato}</div></div>
-        <div style="text-align:right;"><div class="kamp-res">${k.vare} – ${k.deres}</div><span class="status status-${status}">${statusTxt}</span></div>
+  liveKampId = liveKamp.id;
+  const min = getMinutter(liveKamp);
+  const isPause = liveKamp.status === 'pause';
+
+  el.innerHTML = `
+    <div style="background:#A81C1C;color:white;border-radius:10px;padding:12px;margin-bottom:10px;text-align:center;">
+      <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;opacity:0.8;">${isPause ? '⏸ PAUSE' : '🔴 LIVE'}</div>
+      <div style="font-size:1.8rem;font-weight:800;margin:4px 0;">vs ${liveKamp.mot}</div>
+      <div style="font-size:1.2rem;font-weight:700;">${liveKamp.vare||0} – ${liveKamp.deres||0}</div>
+      <div style="font-size:0.78rem;opacity:0.8;margin-top:2px;">${isPause ? 'Pause' : `⏱ ${min}'`}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      ${isPause
+        ? `<button class="btn btn-green" onclick="kampStatus('${liveKamp.id}','live')">▶ 2. omgang</button>`
+        : `<button class="btn" style="background:#B35C00;color:white;" onclick="kampStatus('${liveKamp.id}','pause')">⏸ Pause</button>`
+      }
+      <button class="btn btn-red" onclick="kampStatus('${liveKamp.id}','ferdig')">🏁 Slutt</button>
+    </div>
+    <div class="grid2">
+      <div>
+        <label>Mål oss</label>
+        <input type="number" id="liveVare" value="${liveKamp.vare||0}" min="0" style="padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;width:100%;font-size:1.1rem;text-align:center;">
       </div>
-      ${mal.map(m=>`<div style="font-size:0.82rem;color:#444;margin-top:4px;">⚽ ${m.scorer||'?'}${m.assist?` 🎯 ${m.assist}`:''}${m.assist2?` · ${m.assist2}`:''}</div>`).join('')}
-    </div>`;
-  }).join('');
+      <div>
+        <label>Mål dem</label>
+        <input type="number" id="liveDeres" value="${liveKamp.deres||0}" min="0" style="padding:8px;border:1.5px solid #D0D8E4;border-radius:8px;width:100%;font-size:1.1rem;text-align:center;">
+      </div>
+    </div>
+    <button class="btn btn-blue" onclick="oppdaterResultat('${liveKamp.id}')" style="margin-top:6px;">💾 Oppdater resultat</button>
+  `;
 }
 
-function rendPoeng() {
-  const poeng = {};
-  SPILLERE.forEach(s => poeng[s]={mal:0,assist:0,assist2:0,moment:0,avgjorende:0});
-  hendelser.forEach(h => {
-    if (h.type==='mal') {
-      if (h.scorer && poeng[h.scorer]) poeng[h.scorer].mal++;
-      if (h.assist && poeng[h.assist]) poeng[h.assist].assist++;
-      if (h.assist2 && poeng[h.assist2]) poeng[h.assist2].assist2++;
-    } else if (h.type==='moment' && h.spiller && poeng[h.spiller]) poeng[h.spiller].moment++;
-    else if (h.type==='avgjorende' && h.spiller && poeng[h.spiller]) poeng[h.spiller].avgjorende++;
-  });
-  const sortert = SPILLERE.filter(s=>Object.values(poeng[s]).some(v=>v>0))
-    .sort((a,b)=>(poeng[b].mal+poeng[b].assist)-(poeng[a].mal+poeng[a].assist));
-  const pt = document.getElementById('poengTabell');
-  if (!sortert.length) {
-    pt.innerHTML = '<div class="card" style="color:#888;text-align:center;font-size:0.85rem;padding:16px;">Ingen hendelser registrert ennå</div>';
-    return;
+window.kampStatus = async function(id, status) {
+  const kamp = kamper.find(k=>k.id===id);
+  if (!kamp) return;
+  const update = {status};
+  if (status === 'live' && !kamp.startTid) {
+    update.startTid = serverTimestamp();
+  } else if (status === 'pause') {
+    update.pauseTidspunkt = serverTimestamp();
+  } else if (status === 'live' && kamp.pauseTidspunkt) {
+    // Resume: add paused time
+    const pauseStart = kamp.pauseTidspunkt.toDate ? kamp.pauseTidspunkt.toDate() : new Date();
+    const pausedMs = (kamp.pausedMs || 0) + (new Date() - pauseStart);
+    update.pausedMs = pausedMs;
   }
-  pt.innerHTML = '<div class="card"><table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
-    '<tr style="border-bottom:2px solid #E4EAF0;"><th style="text-align:left;padding:6px 4px;color:#666;font-size:0.72rem;text-transform:uppercase;">Spiller</th><th style="color:#666;font-size:0.72rem;">⚽</th><th style="color:#666;font-size:0.72rem;">🎯</th><th style="color:#666;font-size:0.72rem;">🎯2</th><th style="color:#666;font-size:0.72rem;">⭐</th><th style="color:#666;font-size:0.72rem;">🏆</th></tr>' +
-    sortert.map(s=>`<tr style="border-bottom:1px solid #F0F3F6;">
-      <td style="padding:7px 4px;font-weight:600;">${s}</td>
-      <td style="text-align:center;">${poeng[s].mal||''}</td>
-      <td style="text-align:center;">${poeng[s].assist||''}</td>
-      <td style="text-align:center;">${poeng[s].assist2||''}</td>
-      <td style="text-align:center;">${poeng[s].moment||''}</td>
-      <td style="text-align:center;">${poeng[s].avgjorende||''}</td>
-    </tr>`).join('') +
-    '</table></div>';
-}
-
-// Expose all functions to window
-window.doLogin = function() {
-  const p = document.getElementById('passInput').value;
-  if (p === PASSORD) {
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('adminView').style.display = 'block';
-    lastData();
-  } else {
-    document.getElementById('loginErr').style.display = 'block';
-  }
+  await updateDoc(doc(db,'kamper',id), update);
+  toast(status === 'ferdig' ? '🏁 Kamp avsluttet!' : status === 'pause' ? '⏸ Pause' : '▶ Kampens gang!');
 };
 
-window.doLogout = function() {
-  document.getElementById('loginView').style.display = 'block';
-  document.getElementById('adminView').style.display = 'none';
-  document.getElementById('passInput').value = '';
+window.oppdaterResultat = async function(id) {
+  const vare = parseInt(document.getElementById('liveVare').value)||0;
+  const deres = parseInt(document.getElementById('liveDeres').value)||0;
+  await updateDoc(doc(db,'kamper',id), {vare, deres});
+  toast('✅ Resultat oppdatert!');
 };
 
+// ============ KAMP REGISTRERING ============
+window.lagreKamp = async function() {
+  const dato = document.getElementById('kampDato').value.trim();
+  const mot = document.getElementById('kampMot').value.trim();
+  if (!dato||!mot) { toast('Fyll inn dato og motstander'); return; }
+  await addDoc(collection(db,'kamper'), {dato, mot, vare:0, deres:0, status:'kommende', tidspunkt:serverTimestamp()});
+  document.getElementById('kampDato').value='';
+  document.getElementById('kampMot').value='';
+  toast('✅ Kamp opprettet!');
+};
+
+window.startKamp = async function(id) {
+  await updateDoc(doc(db,'kamper',id), {status:'live', startTid:serverTimestamp(), vare:0, deres:0, pausedMs:0});
+  toast('🔴 Kamp startet!');
+};
+
+// ============ HENDELSER ============
 window.oppdaterHendelseForm = function() {
   const t = document.getElementById('hendelseType').value;
-  document.getElementById('malForm').style.display = t==='mal' ? 'block' : 'none';
+  document.getElementById('malForm').style.display = t==='mal'||t==='straffemål' ? 'block' : 'none';
+  document.getElementById('strafferedningForm').style.display = t==='strafferedning' ? 'block' : 'none';
   document.getElementById('momentForm').style.display = t==='moment' ? 'block' : 'none';
   document.getElementById('avgjørendeForm').style.display = t==='avgjorende' ? 'block' : 'none';
 };
@@ -359,50 +473,63 @@ window.velgKamp = function(id) {
   document.getElementById('hendelseForm').style.display = id ? 'block' : 'none';
 };
 
-window.lagreKamp = async function() {
-  const dato = document.getElementById('kampDato').value.trim();
-  const mot = document.getElementById('kampMot').value.trim();
-  const vare = parseInt(document.getElementById('kampVare').value)||0;
-  const deres = parseInt(document.getElementById('kampDeres').value)||0;
-  if (!dato||!mot) { toast('Fyll inn dato og motstander'); return; }
-  await addDoc(collection(db,'kamper'), {dato,mot,vare,deres,tidspunkt:serverTimestamp()});
-  document.getElementById('kampDato').value='';
-  document.getElementById('kampMot').value='';
-  document.getElementById('kampVare').value='0';
-  document.getElementById('kampDeres').value='0';
-  toast('✅ Kamp lagret!');
-};
-
 window.lagreHendelse = async function() {
-  if (!valgtKampId) { toast('Velg en kamp først'); return; }
+  const kampId = valgtKampId || liveKampId;
+  if (!kampId) { toast('Velg kamp'); return; }
   const type = document.getElementById('hendelseType').value;
-  let data = {kampId:valgtKampId, type, tidspunkt:serverTimestamp()};
-  if (type==='mal') {
+  const kamp = kamper.find(k=>k.id===kampId);
+  const min = kamp ? getMinutter(kamp) : null;
+  let data = {kampId, type, min, tidspunkt:serverTimestamp()};
+
+  if (type==='mal'||type==='straffemål') {
     const scorer = getChip('scorerChips');
     if (!scorer) { toast('Velg scorer'); return; }
     data.scorer = scorer;
     data.assist = getChip('assistChips');
     data.assist2 = getChip('assist2Chips');
+  } else if (type==='strafferedning') {
+    const sp = getChip('strafferedningChips');
+    if (!sp) { toast('Velg spiller'); return; }
+    data.spiller = sp;
   } else if (type==='moment') {
-    const spiller = getChip('momentChips');
-    if (!spiller) { toast('Velg spiller'); return; }
-    data.spiller = spiller;
+    const sp = getChip('momentChips');
+    if (!sp) { toast('Velg spiller'); return; }
+    data.spiller = sp;
     data.tekst = document.getElementById('momentTekst').value.trim();
   } else if (type==='avgjorende') {
-    const spiller = getChip('avgjørendeChips');
-    if (!spiller) { toast('Velg spiller'); return; }
-    data.spiller = spiller;
+    const sp = getChip('avgjørendeChips');
+    if (!sp) { toast('Velg spiller'); return; }
+    data.spiller = sp;
   }
   await addDoc(collection(db,'hendelser'), data);
-  toast('✅ Hendelse lagret!');
+  toast('✅ Lagret!');
 };
 
+window.slettSiste = async function() {
+  if (!hendelser.length) { toast('Ingen hendelser'); return; }
+  if (!confirm('Slett siste hendelse?')) return;
+  await deleteDoc(doc(db,'hendelser',hendelser[hendelser.length-1].id));
+  toast('🗑 Slettet');
+};
+
+// ============ TAKTIKK ============
+window.lagreTaktikk = async function(kategori) {
+  const inputs = document.querySelectorAll(`#takt-form-${kategori} .takt-input`);
+  const data = {};
+  inputs.forEach(inp => {
+    if (inp.dataset.lbl && inp.value.trim()) data[inp.dataset.lbl] = inp.value.trim();
+  });
+  await setDoc(doc(db,'taktikk',kategori), data);
+  toast(`✅ ${kategori} lagret!`);
+};
+
+// ============ PROGRAM ============
 function autoNorsk(tid) {
   if (!tid) return '';
-  const [h, m] = tid.split(':').map(Number);
-  const nh = (h + 7) % 24;
-  const plus = (h + 7) >= 24 ? ' (+1)' : '';
-  return String(nh).padStart(2,'0') + ':' + String(m).padStart(2,'0') + plus;
+  const [h,m] = tid.split(':').map(Number);
+  const nh = (h+7)%24;
+  const plus = (h+7)>=24?' (+1)':'';
+  return String(nh).padStart(2,'0')+':'+String(m).padStart(2,'0')+plus;
 }
 
 window.lagreProgram = async function() {
@@ -411,50 +538,123 @@ window.lagreProgram = async function() {
   const til = document.getElementById('progTil').value;
   const aktivitet = document.getElementById('progAktivitet').value.trim();
   const ekstra = document.getElementById('progEkstra').value.trim();
-  if (!dato || !aktivitet) { toast('Velg dag og fyll inn aktivitet'); return; }
-  const fraNorsk = autoNorsk(fra);
-  const tilNorsk = autoNorsk(til);
+  if (!dato||!aktivitet) { toast('Velg dag og aktivitet'); return; }
   await addDoc(collection(db,'program'), {
-    dato, fra, til, fraNorsk, tilNorsk,
-    aktivitet, ekstra,
-    tidspunkt: serverTimestamp()
+    dato, fra, til, fraNorsk:autoNorsk(fra), tilNorsk:autoNorsk(til),
+    aktivitet, ekstra, tidspunkt:serverTimestamp()
   });
   document.getElementById('progFra').value='';
   document.getElementById('progTil').value='';
   document.getElementById('progAktivitet').value='';
   document.getElementById('progEkstra').value='';
-  toast('✅ Lagt til i program!');
+  toast('✅ Lagt til!');
 };
 
 window.slettProgram = async function(id) {
-  if (!confirm('Slett denne aktiviteten?')) return;
+  if (!confirm('Slett?')) return;
   await deleteDoc(doc(db,'program',id));
   toast('🗑 Slettet');
 };
 
-// Live program liste i admin
 onSnapshot(query(collection(db,'program'), orderBy('dato','asc'), orderBy('tid','asc')), snap => {
   const items = snap.docs.map(d=>({id:d.id,...d.data()}));
   const el = document.getElementById('progListe');
+  if (!el) return;
   if (!items.length) { el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>'; return; }
-  const dager = {};
-  items.forEach(i => { if(!dager[i.dato])dager[i.dato]=[]; dager[i.dato].push(i); });
+  const dager={};
+  items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
   el.innerHTML = Object.entries(dager).map(([dato,akt])=>`
-    <div style="margin-bottom:8px;">
-      <div style="font-size:0.75rem;font-weight:800;color:#0B2240;margin-bottom:4px;">${dato}</div>
+    <div style="margin-bottom:6px;">
+      <div style="font-size:0.72rem;font-weight:800;color:#0B2240;margin-bottom:3px;">${dato}</div>
       ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
-        <span>${a.tid?`<strong>${a.tid}</strong> `:''} ${a.aktivitet}</span>
-        <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;font-size:0.85rem;">✕</button>
+        <div><strong>${a.aktivitet}</strong>${a.fra?`<br><span style="color:#888;font-size:0.75rem;">${a.fra}${a.til?'–'+a.til:''} → 🇳🇴 ${a.fraNorsk||''}${a.tilNorsk?'–'+a.tilNorsk:''}</span>`:''}${a.ekstra?`<br><span style="color:#1F5C8B;font-size:0.75rem;">${a.ekstra}</span>`:''}</div>
+        <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;flex-shrink:0;margin-left:6px;">✕</button>
       </div>`).join('')}
     </div>`).join('');
 });
 
-window.slettSiste = async function() {
-  if (!hendelser.length) { toast('Ingen hendelser å slette'); return; }
-  if (!confirm('Slett siste hendelse?')) return;
-  const siste = hendelser[hendelser.length-1];
-  await deleteDoc(doc(db,'hendelser',siste.id));
-  toast('🗑 Siste hendelse slettet');
+// ============ RENDER KAMPER ============
+function rendKamper() {
+  const kv = document.getElementById('kampVelger');
+  if (!kv) return;
+
+  // Kampvelger for hendelser
+  const kommende = kamper.filter(k=>k.status!=='ferdig');
+  if (!kamper.length) {
+    kv.innerHTML = '<div class="info">Ingen kamper ennå</div>';
+    document.getElementById('hendelseForm').style.display='none';
+  } else {
+    kv.innerHTML = '<label>Velg kamp</label><select id="kampSelect" onchange="window.velgKamp(this.value)">' +
+      '<option value="">-- Velg kamp --</option>' +
+      kamper.map(k=>`<option value="${k.id}">${k.dato} · vs ${k.mot} (${k.vare||0}–${k.deres||0}) ${k.status==='live'?'🔴':k.status==='ferdig'?'✅':''}</option>`).join('') +
+      '</select>';
+  }
+
+  // Kamphistorikk
+  const kl = document.getElementById('kampListe');
+  if (!kl) return;
+  kl.innerHTML = kamper.slice().reverse().map(k => {
+    const isLive = k.status==='live'||k.status==='pause';
+    const mål = hendelser.filter(h=>h.kampId===k.id&&(h.type==='mal'||h.type==='straffemål'));
+    return `<div class="kamp-item">
+      <div class="kamp-hdr">
+        <div><div class="kamp-title">vs ${k.mot}</div><div style="font-size:0.75rem;color:#888;">${k.dato} · ${k.status}</div></div>
+        <div style="text-align:right;">
+          <div class="kamp-res">${k.vare||0} – ${k.deres||0}</div>
+          ${k.status==='kommende'?`<button onclick="window.startKamp('${k.id}')" style="background:#1B6B3A;color:white;border:none;border-radius:6px;padding:4px 10px;font-size:0.78rem;cursor:pointer;">▶ Start</button>`:''}
+        </div>
+      </div>
+      ${mål.map(m=>`<div style="font-size:0.82rem;color:#444;margin-top:3px;">⚽ ${m.scorer||'?'}${m.min?` ${m.min}'`:''}${m.type==='straffemål'?' (str.)':''}${m.assist?` 🎯 ${m.assist}`:''}</div>`).join('')}
+    </div>`;
+  }).join('');
+}
+
+function rendPoeng() {
+  const poeng = {};
+  SPILLERE.forEach(s=>poeng[s]={mal:0,assist:0,assist2:0,moment:0,avgjorende:0});
+  hendelser.forEach(h=>{
+    if(h.type==='mal'||h.type==='straffemål'){
+      if(h.scorer&&poeng[h.scorer])poeng[h.scorer].mal++;
+      if(h.assist&&poeng[h.assist])poeng[h.assist].assist++;
+      if(h.assist2&&poeng[h.assist2])poeng[h.assist2].assist2++;
+    } else if(h.type==='strafferedning'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].avgjorende++;
+    else if(h.type==='moment'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].moment++;
+    else if(h.type==='avgjorende'&&h.spiller&&poeng[h.spiller]) poeng[h.spiller].avgjorende++;
+  });
+  const sortert = SPILLERE.filter(s=>Object.values(poeng[s]).some(v=>v>0))
+    .sort((a,b)=>(poeng[b].mal+poeng[b].assist)-(poeng[a].mal+poeng[a].assist));
+  const pt = document.getElementById('poengTabell');
+  if (!pt) return;
+  if (!sortert.length) {
+    pt.innerHTML = '<div class="card" style="color:#888;text-align:center;font-size:0.85rem;padding:14px;">Ingen hendelser ennå</div>';
+    return;
+  }
+  pt.innerHTML = '<div class="card"><table style="width:100%;border-collapse:collapse;font-size:0.82rem;">' +
+    '<tr style="border-bottom:2px solid #E4EAF0;"><th style="text-align:left;padding:6px 4px;color:#666;font-size:0.72rem;">Spiller</th><th style="color:#666;font-size:0.72rem;">⚽</th><th style="color:#666;font-size:0.72rem;">🎯</th><th style="color:#666;font-size:0.72rem;">🎯2</th><th style="color:#666;font-size:0.72rem;">⭐</th><th style="color:#666;font-size:0.72rem;">🏆</th></tr>' +
+    sortert.map(s=>`<tr style="border-bottom:1px solid #F0F3F6;">
+      <td style="padding:7px 4px;font-weight:600;">${s}</td>
+      <td style="text-align:center;">${poeng[s].mal||''}</td>
+      <td style="text-align:center;">${poeng[s].assist||''}</td>
+      <td style="text-align:center;">${poeng[s].assist2||''}</td>
+      <td style="text-align:center;">${poeng[s].moment||''}</td>
+      <td style="text-align:center;">${poeng[s].avgjorende||''}</td>
+    </tr>`).join('') + '</table></div>';
+}
+
+// Login
+window.doLogin = function() {
+  if (document.getElementById('passInput').value === PASSORD) {
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('adminView').style.display='block';
+    lastData();
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+};
+window.doLogout = function() {
+  document.getElementById('loginView').style.display='block';
+  document.getElementById('adminView').style.display='none';
+  document.getElementById('passInput').value='';
 };
 
 </script>
