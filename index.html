@@ -950,6 +950,14 @@ const SPILLERE = ['Aila','Zaz','Julie','Opdal','Sofie O','Sarah B','Martine','Li
 
 let kamper=[], hendelser=[], taktikk={}, liveTimer=null;
 
+// Fallback: if Firebase hasn't connected in preview/offline, show message
+setTimeout(()=>{
+  const loading=document.getElementById('k-loading');
+  if(loading && loading.style.display!=='none' && !kamper.length){
+    loading.innerHTML='📡 Kobler til database...<br><span style="font-size:0.75rem;">(Fungerer kun på nett – ikke i forhåndsvisning)</span>';
+  }
+},4000);
+
 onSnapshot(query(collection(db,'kamper'),orderBy('tidspunkt','asc')),snap=>{
   kamper=snap.docs.map(d=>({id:d.id,...d.data()}));
   renderKamper(); renderLiveBanner(); renderGames();
