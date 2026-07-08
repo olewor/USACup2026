@@ -773,42 +773,8 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-// EVENTS
-const today = new Date(); today.setHours(0,0,0,0);
-const events = [
-  { date:'2026-07-05', day:'05', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening AKA', detail:'Program kommer', link:'bane_05jul.html' },
-  { date:'2026-07-07', day:'07', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Tyristrand', detail:'Defensivt · Soneforsvar · Corner', link:'bane_07jul.html' },
-  { date:'2026-07-08', day:'08', month:'JUL', type:'Styrkeøkt', tc:'t-styrke', title:'Styrkeøkt på Sporty', detail:'Lett aktivering · Nedtrapping', link:'sporty_08jul.html' },
-  { date:'2026-07-09', day:'09', month:'JUL', type:'Trening', tc:'t-trening', title:'Trening Haugsbygd', detail:'Siste trening · Fotballtennis · Lett spill', link:'bane_09jul.html' },
-];
-const list = document.getElementById('eventList');
-events.forEach(ev => {
-  const evDate = new Date(ev.date); evDate.setHours(0,0,0,0);
-  const isPast = evDate < today;
-  const isToday = evDate.getTime() === today.getTime();
-  const tag = ev.link ? 'a' : 'div';
-  const card = document.createElement(tag);
-  if (ev.link) { card.href = ev.link; card.className = 'ev-card link'; }
-  else { card.className = 'ev-card'; }
-  const badge = ev.link ? null : (ev.date === '2026-07-07' ? '<div class="chip chip-red">?</div>' : '<div class="chip chip-grey">Kom.</div>');
-  card.innerHTML = `
-    <div class="ev-date" style="${isPast && !isToday ? 'opacity:0.45' : ''}">
-      <div class="ev-day">${ev.day}</div><div class="ev-month">${ev.month}</div>
-    </div>
-    <div class="ev-body">
-      <div>
-        <div class="ev-type ${ev.tc}">${isToday ? '<span class="today-pip"></span>' : ''}${ev.type}</div>
-        <div class="ev-title">${ev.title}</div>
-        <div class="ev-detail">${ev.detail}</div>
-      </div>
-      ${ev.link ? '<div class="ev-arrow">›</div>' : badge}
-    </div>`;
-  list.appendChild(card);
-});
-const av = document.createElement('div');
-av.className = 'avreise-card';
-av.innerHTML = '<div style="font-size:1.6rem;margin-bottom:6px;">✈️🇺🇸</div><div style="font-size:1rem;font-weight:800;color:#C8A84B;margin-bottom:3px;">Avreise – 10. juli</div><div style="font-size:0.8rem;opacity:0.75;">Oslo Lufthavn → Minneapolis · Avgang kl. 13:50</div>';
-list.appendChild(av);
+// (Kampliste håndteres nå av Firebase i egen modul)
+
 
 // USA DAYS
 const usaDays = [
