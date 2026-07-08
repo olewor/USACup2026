@@ -928,7 +928,10 @@ function resetCL(){
   document.querySelectorAll('.cl-item').forEach(el=>el.classList.remove('done'));
   try{localStorage.removeItem('pakkeliste_v1');}catch(e){}
 }
-document.addEventListener('DOMContentLoaded', loadCL);
+document.addEventListener('DOMContentLoaded', function(){
+  loadCL();
+  renderUsaDays();
+});
 </script>
 
 <script type="module">
