@@ -106,6 +106,7 @@ input:focus,select:focus{border-color:var(--blue);}
           <label>Dato</label>
           <select id="kampDato">
             <option value="">-- Velg --</option>
+            <option>Mandag 13. juli</option>
             <option>Tirsdag 14. juli</option>
             <option>Onsdag 15. juli</option>
             <option>Torsdag 16. juli</option>
@@ -161,9 +162,11 @@ input:focus,select:focus{border-color:var(--blue);}
 
     <!-- IMPORT -->
     <div class="card" style="background:#FFF8E8;">
-      <div style="font-weight:700;font-size:0.88rem;color:#0B2240;margin-bottom:4px;">⚡ Importer gruppespillkamper</div>
-      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Legger inn de tre gruppespillkampene automatisk (North Star, Blackhawks, HEADS)</div>
-      <button class="btn btn-amber" onclick="importerKamper()">📥 Importer 3 kamper</button>
+      <div style="font-weight:700;font-size:0.88rem;color:#0B2240;margin-bottom:4px;">⚡ Kampverktøy</div>
+      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Importer gruppespillet, eller rydd opp i dubletter.</div>
+      <button class="btn btn-amber" onclick="importerKamper()">📥 Importer 3 gruppespillkamper</button>
+      <button class="btn btn-grey" onclick="fjernDupliserteKamper()" style="margin-top:6px;">🧹 Fjern dupliserte kamper</button>
+      <div id="kampVerktoyStatus" style="font-size:0.78rem;color:#666;margin-top:6px;text-align:center;"></div>
     </div>
 
     <!-- KAMPLISTE -->
@@ -172,11 +175,20 @@ input:focus,select:focus{border-color:var(--blue);}
 
     <!-- PROGRAM -->
     <div class="sec">📅 Dagsprogram</div>
+    <div class="card" style="background:#FFF8E8;">
+      <div style="font-weight:700;font-size:0.88rem;color:#0B2240;margin-bottom:4px;">⚙️ Programverktøy</div>
+      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Flytt det faste programmet inn i databasen så du kan redigere alt herfra. Kjøres kun én gang.</div>
+      <button class="btn btn-amber" onclick="migrerProgram()">📥 Flytt fast program til database</button>
+      <button class="btn btn-grey" onclick="reparerDatoer()" style="margin-top:6px;">🔧 Reparer datoer</button>
+      <button class="btn btn-grey" onclick="fjernDupliserteProgram()" style="margin-top:6px;">🧹 Fjern dupliserte innslag</button>
+      <div id="migStatus" style="font-size:0.78rem;color:#666;margin-top:6px;text-align:center;"></div>
+    </div>
     <div class="card">
       <div class="info">Norsk tid beregnes automatisk (+7 t)</div>
       <label>Dag</label>
       <select id="progDato">
         <option value="">-- Velg dag --</option>
+        <option>Fredag 10. juli</option>
         <option>Lørdag 11. juli</option>
         <option>Søndag 12. juli</option>
         <option>Mandag 13. juli</option>
@@ -430,6 +442,45 @@ window.importerKamper = async function(){
   toast('✅ 3 kamper importert!');
 };
 
+window.fjernDupliserteKamper = async function(){
+  // Finner kamper med samme dato + motstander
+  const sett = new Map();
+  const duplikater = [];
+  kamper.forEach(k => {
+    const nokkel = (datoNr(k.dato) || '?') + '|' + (k.mot || '').trim().toLowerCase();
+    if(sett.has(nokkel)){
+      // Behold den som har flest data (spilt kamp), slett den andre
+      const beholdt = sett.get(nokkel);
+      const kHarData = (k.status !== 'kommende') || (k.vare||0) > 0 || (k.deres||0) > 0;
+      const bHarData = (beholdt.status !== 'kommende') || (beholdt.vare||0) > 0 || (beholdt.deres||0) > 0;
+      if(kHarData && !bHarData){
+        duplikater.push(beholdt);
+        sett.set(nokkel, k);
+      } else {
+        duplikater.push(k);
+      }
+    } else {
+      sett.set(nokkel, k);
+    }
+  });
+
+  if(!duplikater.length){ toast('Ingen dubletter funnet'); return; }
+
+  const liste = duplikater.map(d => `• ${d.dato} vs ${d.mot}`).join('\n');
+  if(!confirm(`Fant ${duplikater.length} dublett(er):\n\n${liste}\n\nSlette disse? Hendelser knyttet til dem slettes også.`)) return;
+
+  const st = document.getElementById('kampVerktoyStatus');
+  st.textContent = 'Rydder...';
+  for(const d of duplikater){
+    // Slett tilhørende hendelser
+    const tilhorende = hendelser.filter(h => h.kampId === d.id);
+    for(const h of tilhorende){ await deleteDoc(doc(db,'hendelser',h.id)); }
+    await deleteDoc(doc(db,'kamper',d.id));
+  }
+  st.textContent = `✅ ${duplikater.length} dublett(er) fjernet`;
+  toast('🧹 Dubletter fjernet!');
+};
+
 window.toggleSluttspill=function(){
   document.getElementById('sluttspillWrap').style.display=document.getElementById('kampType').value==='sluttspill'?'block':'none';
 };
@@ -475,7 +526,7 @@ window.redigerKamp=function(id,ev){
   const k=kamper.find(x=>x.id===id);
   if(!k)return;
   redigerKampId=id;
-  document.getElementById('kampDato').value=k.dato||'';
+  document.getElementById('kampDato').value=normaliserDato(k.dato)||'';
   document.getElementById('kampTid').value=k.tid||'';
   document.getElementById('kampMot').value=k.mot||'';
   document.getElementById('kampBane').value=k.bane||'';
@@ -500,10 +551,9 @@ window.avbrytKampEdit=function(){
 function rendKampListe(){
   const el=document.getElementById('kampListe');if(!el)return;
   if(!kamper.length){el.innerHTML='<div class="info">Ingen kamper ennå</div>';return;}
-  const DAG_ORD=['Tirsdag 14. juli','Onsdag 15. juli','Torsdag 16. juli','Fredag 17. juli','Lørdag 18. juli','Søndag 19. juli'];
   const sortert=kamper.slice().sort((a,b)=>{
-    const ia=DAG_ORD.indexOf(a.dato), ib=DAG_ORD.indexOf(b.dato);
-    if(ia!==ib) return (ia===-1?99:ia)-(ib===-1?99:ib);
+    const na=datoNr(a.dato)??99, nb=datoNr(b.dato)??99;
+    if(na!==nb) return na-nb;
     return tidTall(a.tid)-tidTall(b.tid);
   });
   el.innerHTML=sortert.map(k=>{
@@ -734,6 +784,112 @@ window.nullstillSjekk=function(type){
   rendSjekk(type);
 };
 
+// ===== DATO-NORMALISERING =====
+const KANONISKE_DAGER = {
+  10:'Fredag 10. juli', 11:'Lørdag 11. juli', 12:'Søndag 12. juli',
+  13:'Mandag 13. juli', 14:'Tirsdag 14. juli', 15:'Onsdag 15. juli',
+  16:'Torsdag 16. juli', 17:'Fredag 17. juli', 18:'Lørdag 18. juli',
+  19:'Søndag 19. juli'
+};
+function datoNr(s){
+  if(!s) return null;
+  const m = String(s).match(/(\d{1,2})\s*\.\s*juli/i);
+  return m ? parseInt(m[1]) : null;
+}
+function normaliserDato(s){
+  const n = datoNr(s);
+  return (n && KANONISKE_DAGER[n]) ? KANONISKE_DAGER[n] : (s || '');
+}
+
+// ===== MIGRERING AV FAST PROGRAM =====
+const FAST_PROGRAM = [
+  {d:10, fra:'11:00', akt:'Oppmøte Oslo lufthavn', ekstra:'Reiseskjorte'},
+  {d:10, fra:'13:50', akt:'OSL → Reykjavík (KEF) · FI 319', ekstra:''},
+  {d:10, fra:'14:45', til:'16:45', akt:'Mellomlanding Keflavik', ekstra:''},
+  {d:10, fra:'16:45', akt:'KEF → Minneapolis (MSP) · FI 657', ekstra:''},
+  {d:10, fra:'18:20', akt:'Ankomst Minneapolis · Terminal 2 – Humphrey', ekstra:''},
+  {d:10, fra:'', akt:'Buss til Airbnb', ekstra:'Middag og dagligvarer på døra'},
+  {d:11, fra:'10:00', akt:'🍳 Frokost', ekstra:''},
+  {d:11, fra:'11:00', akt:'⚽ Lett treningsøkt – Carondelet Fields', ekstra:''},
+  {d:11, fra:'13:00', akt:'🍽️ Lunsj', ekstra:''},
+  {d:11, fra:'14:30', akt:'🚶 Vi går mot Tiffanys Sports Lounge', ekstra:''},
+  {d:11, fra:'15:00', akt:'📺 Tiffanys Sports Lounge', ekstra:'2051 Ford Pkwy'},
+  {d:11, fra:'16:00', akt:'🇳🇴 Norge vs England – på storskjerm!', ekstra:''},
+  {d:11, fra:'18:00', akt:'🏠 Går hjem', ekstra:''},
+  {d:12, fra:'09:00', akt:'🍳 Frokost', ekstra:''},
+  {d:12, fra:'10:30', akt:'⚽ Lett treningsøkt – Carondelet Fields', ekstra:''},
+  {d:12, fra:'13:00', akt:'🚌 Avreise Mall of America', ekstra:'Buss 74 C og 54'},
+  {d:12, fra:'13:45', akt:'🛍️ Mall of America', ekstra:''},
+  {d:12, fra:'19:00', akt:'🚌 Avreise hjem', ekstra:''},
+  {d:12, fra:'20:00', akt:'🏠 Huset · 📺 Kvartfinale VM', ekstra:''},
+  {d:13, fra:'10:00', akt:'Utsjekk Airbnb', ekstra:''},
+  {d:13, fra:'', akt:'Reiser til college', ekstra:''},
+  {d:13, fra:'12:00', akt:'Lett treningsøkt / laginnsjekk', ekstra:'Ta med ID'},
+  {d:14, fra:'', akt:'🍽️ Lunsj college', ekstra:'Tidspunkt kommer'},
+  {d:14, fra:'14:00', akt:'📺 Semifinale VM', ekstra:''},
+  {d:14, fra:'16:00', akt:'🇳🇴 Forberedelse innmarsj / åpningsseremoni', ekstra:''},
+  {d:14, fra:'16:30', akt:'🍽️ Vi spiser i nærheten', ekstra:''},
+  {d:14, fra:'18:15', akt:'📍 Oppmøte åpningsseremoni', ekstra:''},
+  {d:17, fra:'', akt:'🏆 Sluttspillet starter', ekstra:''},
+  {d:18, fra:'', akt:'🏆 Finaler', ekstra:''},
+  {d:19, fra:'16:00', akt:'🏆 VM-finale', ekstra:''},
+  {d:19, fra:'19:30', akt:'MSP → Reykjavík (KEF) · FI 656', ekstra:''},
+  {d:19, fra:'06:35', akt:'Ankomst Keflavik', ekstra:'ca. 1t 15 min mellomlanding'},
+  {d:19, fra:'07:50', akt:'KEF → Oslo (OSL) · FI 318', ekstra:''},
+  {d:19, fra:'12:35', akt:'Ankomst Oslo', ekstra:''},
+];
+
+window.fjernDupliserteProgram = async function(){
+  const sett = new Map();
+  const duplikater = [];
+  alleProgram.forEach(p => {
+    const nokkel = (datoNr(p.dato)||'?') + '|' + (p.fra||'') + '|' + (p.aktivitet||'').trim().toLowerCase();
+    if(sett.has(nokkel)) duplikater.push(p); else sett.set(nokkel, p);
+  });
+  if(!duplikater.length){ toast('Ingen dubletter funnet'); return; }
+  if(!confirm(`Fant ${duplikater.length} dupliserte programinnslag. Slette dem?`)) return;
+  const st = document.getElementById('migStatus');
+  st.textContent = 'Rydder...';
+  for(const d of duplikater){ await deleteDoc(doc(db,'program',d.id)); }
+  st.textContent = `✅ ${duplikater.length} dublett(er) fjernet`;
+  toast('🧹 Dubletter fjernet!');
+};
+
+window.migrerProgram = async function(){
+  if(alleProgram.length > 20 && !confirm('⚠️ Det ligger allerede mange innslag i databasen.\n\nDette kan lage dubletter. Fortsette likevel?')) return;
+  if(!confirm('Flytter det faste programmet inn i databasen.\n\nEtterpå kan du redigere alt herfra. Kjør kun én gang!\n\nFortsette?')) return;
+  const st = document.getElementById('migStatus');
+  st.textContent = 'Overfører...';
+  let n = 0;
+  for(const p of FAST_PROGRAM){
+    await addDoc(collection(db,'program'), {
+      dato: KANONISKE_DAGER[p.d],
+      fra: p.fra || '',
+      til: p.til || '',
+      fraNorsk: autoNorsk(p.fra),
+      tilNorsk: autoNorsk(p.til),
+      aktivitet: p.akt,
+      ekstra: p.ekstra || '',
+      tidspunkt: serverTimestamp()
+    });
+    n++;
+    st.textContent = `Overfører... ${n}/${FAST_PROGRAM.length}`;
+  }
+  await setDoc(doc(db,'config','program'), {migrert: true});
+  st.textContent = `✅ ${n} innslag overført. Alt kan nå redigeres.`;
+  toast('✅ Program flyttet til database!');
+};
+
+window.reparerDatoer = async function(){
+  const feil = alleProgram.filter(p => p.dato !== normaliserDato(p.dato));
+  if(!feil.length){ toast('Alle datoer er allerede riktige'); return; }
+  if(!confirm(`Retter ${feil.length} innslag med feil datoformat. Fortsette?`)) return;
+  for(const p of feil){
+    await updateDoc(doc(db,'program',p.id), {dato: normaliserDato(p.dato)});
+  }
+  toast(`✅ ${feil.length} datoer rettet!`);
+};
+
 // ===== PROGRAM =====
 let redigerProgId=null;
 
@@ -768,7 +924,7 @@ window.redigerProgram=function(id){
   const p=alleProgram.find(x=>x.id===id);
   if(!p)return;
   redigerProgId=id;
-  document.getElementById('progDato').value=p.dato||'';
+  document.getElementById('progDato').value=normaliserDato(p.dato)||'';
   document.getElementById('progFra').value=p.fra||'';
   document.getElementById('progTil').value=p.til||'';
   document.getElementById('progAktivitet').value=p.aktivitet||'';
@@ -789,7 +945,6 @@ window.avbrytProgEdit=function(){
 window.slettProgram=async function(id){if(!confirm('Slett?'))return;await deleteDoc(doc(db,'program',id));toast('🗑 Slettet');};
 
 let alleProgram=[];
-const DAG_REKKEFOLGE=['Lørdag 11. juli','Søndag 12. juli','Mandag 13. juli','Tirsdag 14. juli','Onsdag 15. juli','Torsdag 16. juli','Fredag 17. juli','Lørdag 18. juli','Søndag 19. juli'];
 
 function tidTall(t){if(!t)return 9999;const p=String(t).split(':');return (parseInt(p[0])||0)*60+(parseInt(p[1])||0);}
 
@@ -798,17 +953,17 @@ function rendProgram(items){
   const el=document.getElementById('progListe');if(!el)return;
   if(!items.length){el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>';return;}
   const dager={};
-  items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
+  items.forEach(i=>{const d=normaliserDato(i.dato)||'(ukjent dag)';if(!dager[d])dager[d]=[];dager[d].push(i);});
   const sorterteDager=Object.keys(dager).sort((a,b)=>{
-    const ia=DAG_REKKEFOLGE.indexOf(a), ib=DAG_REKKEFOLGE.indexOf(b);
-    return (ia===-1?99:ia)-(ib===-1?99:ib);
+    const na=datoNr(a), nb=datoNr(b);
+    return (na===null?99:na)-(nb===null?99:nb);
   });
   el.innerHTML=sorterteDager.map(dato=>{
     const akt=dager[dato].sort((a,b)=>tidTall(a.fra)-tidTall(b.fra));
     return `<div style="margin-bottom:8px;">
       <div style="font-size:0.72rem;font-weight:800;color:#0B2240;margin-bottom:3px;">${dato}</div>
       ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
-        <div style="flex:1;"><strong>${a.aktivitet}</strong>${a.fra?`<br><span style="color:#888;font-size:0.75rem;">${a.fra}${a.til?'–'+a.til:''} → 🇳🇴 ${a.fraNorsk||''}${a.tilNorsk?'–'+a.tilNorsk:''}</span>`:''}${a.ekstra?`<br><span style="color:#1F5C8B;font-size:0.75rem;">${a.ekstra}</span>`:''}</div>
+        <div style="flex:1;"><strong>${a.aktivitet}</strong>${a.dato!==normaliserDato(a.dato)?' <span style="font-size:0.68rem;background:#FFF0D6;color:#B35C00;border-radius:4px;padding:1px 5px;">feil dato</span>':''}${a.fra?`<br><span style="color:#888;font-size:0.75rem;">${a.fra}${a.til?'–'+a.til:''} → 🇳🇴 ${a.fraNorsk||''}${a.tilNorsk?'–'+a.tilNorsk:''}</span>`:''}${a.ekstra?`<br><span style="color:#1F5C8B;font-size:0.75rem;">${a.ekstra}</span>`:''}</div>
         <div style="display:flex;gap:4px;flex-shrink:0;margin-left:6px;">
           <button onclick="window.redigerProgram('${a.id}')" style="background:none;border:none;color:#1F5C8B;cursor:pointer;font-size:1rem;padding:2px 4px;">✎</button>
           <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;font-size:1rem;padding:2px 4px;">✕</button>
