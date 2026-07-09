@@ -778,9 +778,32 @@ function showTab(id, btn) {
 
 // USA DAYS
 const usaDays = [
-  { dag:'Fredag',  dato:'10. juli', emoji:'✈️', color:'#0B2240', items:[] },
-  { dag:'Lørdag',  dato:'11. juli', emoji:'🇳🇴', color:'#1B6B3A', items:[] },
-  { dag:'Søndag',  dato:'12. juli', emoji:'🛍️', color:'#1F5C8B', items:[] },
+  { dag:'Fredag', dato:'10. juli', emoji:'✈️', color:'#0B2240', items:[
+    {tid:'11:00', norsk:'11:00', txt:'Oppmøte Oslo lufthavn · Reiseskjorte'},
+    {tid:'13:50', norsk:'13:50', txt:'OSL → Reykjavík (KEF) · FI 319'},
+    {tid:'14:45', norsk:'16:45', txt:'Ankomst Reykjavík (KEF)'},
+    {tid:'14:45', norsk:'16:45', txt:'Mellomlanding Keflavik · ca. 2 timer'},
+    {tid:'16:45', norsk:'18:45', txt:'KEF → Minneapolis (MSP) · FI 657'},
+    {tid:'18:20', norsk:'01:20 (+1)', txt:'Ankomst Minneapolis · Terminal 2 – Humphrey'},
+    {tid:'', norsk:'', txt:'Buss til Airbnb · Middag og dagligvarer på døra'},
+  ]},
+  { dag:'Lørdag', dato:'11. juli', emoji:'🇳🇴', color:'#1B6B3A', items:[
+    {tid:'10:00', norsk:'17:00', txt:'🍳 Frokost'},
+    {tid:'11:00', norsk:'18:00', txt:'⚽ Lett treningsøkt – Carondelet Fields'},
+    {tid:'13:00', norsk:'20:00', txt:'🍽️ Lunsj'},
+    {tid:'14:30', norsk:'21:30', txt:'🚶 Vi går mot Tiffanys Sports Lounge'},
+    {tid:'15:00', norsk:'22:00', txt:'📺 Tiffanys Sports Lounge – 2051 Ford Pkwy'},
+    {tid:'16:00', norsk:'23:00', txt:'🇳🇴 Norge vs England – på storskjerm!'},
+    {tid:'18:00', norsk:'01:00', txt:'🏠 Går hjem'},
+  ]},
+  { dag:'Søndag', dato:'12. juli', emoji:'🛍️', color:'#1F5C8B', items:[
+    {tid:'09:00', norsk:'16:00', txt:'🍳 Frokost'},
+    {tid:'10:30', norsk:'17:30', txt:'⚽ Lett treningsøkt – Carondelet Fields'},
+    {tid:'13:00', norsk:'20:00', txt:'🚌 Avreise Mall of America – Buss 74 C og 54'},
+    {tid:'13:45', norsk:'20:45', txt:'🛍️ Mall of America'},
+    {tid:'19:00', norsk:'02:00', txt:'🚌 Avreise hjem'},
+    {tid:'20:00', norsk:'03:00', txt:'🏠 Huset · 📺 Kvartfinale VM'},
+  ]},
   { dag:'Mandag',  dato:'13. juli', emoji:'🎓', color:'#B35C00', items:[] },
   { dag:'Tirsdag', dato:'14. juli', emoji:'⚽', color:'#A81C1C', items:[] },
   { dag:'Onsdag',  dato:'15. juli', emoji:'⚽', color:'#A81C1C', items:[] },
@@ -830,15 +853,13 @@ function renderUsaDays(){
     const dagNr = datoNr(d.dato);
     const rader = [];
 
-    // Statiske innslag (skjules når programmet er flyttet til databasen)
-    if(!programMigrert){
-      d.items.forEach(i => rader.push({
-        sort: tidTilTall(i.tid),
-        tid: norsk ? (i.norsk || '') : (i.tid || ''),
-        txt: i.txt,
-        ekstra: ''
-      }));
-    }
+    // Statiske innslag (kun 10.–12. juli; resten styres fra admin)
+    d.items.forEach(i => rader.push({
+      sort: tidTilTall(i.tid),
+      tid: norsk ? (i.norsk || '') : (i.tid || ''),
+      txt: i.txt,
+      ekstra: ''
+    }));
 
     // Firebase-program
     fbProgram.filter(p => datoNr(p.dato) === dagNr).forEach(p => {
