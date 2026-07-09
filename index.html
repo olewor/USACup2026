@@ -847,11 +847,18 @@ function setTidzone(tz) {
 }
 
 // Firebase-data som fylles inn av modulen
-let fbProgram = [], fbKamper = [];
+let fbProgram = [], fbKamper = [], programMigrert = false;
 window.setFbProgram = function(items){ fbProgram = items || []; renderUsaDays(); };
 window.setFbKamper = function(items){ fbKamper = items || []; renderUsaDays(); };
+window.setProgramMigrert = function(v){ programMigrert = !!v; renderUsaDays(); };
 
-// Sorterer tidsstrenger "HH:MM"
+// "14.juli", "14. juli", "Tirsdag 14. juli" -> dagnummer 14
+function datoNr(s){
+  if(!s) return null;
+  const m = String(s).match(/(\d{1,2})\s*\.\s*juli/i);
+  return m ? parseInt(m[1]) : null;
+}
+
 function tidTilTall(t){
   if(!t) return 9999;
   const p = String(t).split(':');
@@ -865,18 +872,21 @@ function renderUsaDays(){
   el.innerHTML = '';
 
   usaDays.forEach(d => {
-    const dagNokkel = d.dag + ' ' + d.dato;  // f.eks. "Tirsdag 14. juli"
+    const dagNr = datoNr(d.dato);
+    const rader = [];
 
-    // Statiske innslag
-    const rader = d.items.map(i => ({
-      sort: tidTilTall(i.tid),
-      tid: norsk ? (i.norsk || '') : (i.tid || ''),
-      txt: i.txt,
-      ekstra: ''
-    }));
+    // Statiske innslag (skjules når programmet er flyttet til databasen)
+    if(!programMigrert){
+      d.items.forEach(i => rader.push({
+        sort: tidTilTall(i.tid),
+        tid: norsk ? (i.norsk || '') : (i.tid || ''),
+        txt: i.txt,
+        ekstra: ''
+      }));
+    }
 
-    // Firebase-program for denne dagen
-    fbProgram.filter(p => p.dato === dagNokkel).forEach(p => {
+    // Firebase-program
+    fbProgram.filter(p => datoNr(p.dato) === dagNr).forEach(p => {
       const fra = norsk ? (p.fraNorsk || p.fra) : p.fra;
       const til = norsk ? (p.tilNorsk || p.til) : p.til;
       rader.push({
@@ -887,8 +897,8 @@ function renderUsaDays(){
       });
     });
 
-    // Kamper for denne dagen
-    fbKamper.filter(k => k.dato === dagNokkel).forEach(k => {
+    // Kamper
+    fbKamper.filter(k => datoNr(k.dato) === dagNr).forEach(k => {
       const tid = norsk ? (k.tidNorsk || k.tid) : k.tid;
       const detaljer = [
         k.bane ? '📍 ' + k.bane : '',
@@ -921,7 +931,6 @@ function renderUsaDays(){
     el.appendChild(card);
   });
 }
-
 
 renderUsaDays();
 
@@ -1012,6 +1021,11 @@ onSnapshot(collection(db,'taktikk'),snap=>{
 onSnapshot(collection(db,'program'),snap=>{
   const items=snap.docs.map(d=>({id:d.id,...d.data()}));
   if(window.setFbProgram) window.setFbProgram(items);
+});
+onSnapshot(collection(db,'config'),snap=>{
+  snap.docs.forEach(d=>{
+    if(d.id==='program' && window.setProgramMigrert) window.setProgramMigrert(d.data().migrert);
+  });
 });
 
 function getMinutter(k){
