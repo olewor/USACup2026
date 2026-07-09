@@ -177,8 +177,8 @@ input:focus,select:focus{border-color:var(--blue);}
     <div class="sec">📅 Dagsprogram</div>
     <div class="card" style="background:#FFF8E8;">
       <div style="font-weight:700;font-size:0.88rem;color:#0B2240;margin-bottom:4px;">⚙️ Programverktøy</div>
-      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Flytt det faste programmet inn i databasen så du kan redigere alt herfra. Kjøres kun én gang.</div>
-      <button class="btn btn-amber" onclick="migrerProgram()">📥 Flytt fast program til database</button>
+      <div style="font-size:0.8rem;color:#666;margin-bottom:8px;">Legger inn faste punkter fra mandag 13. juli og utover. 10.–12. juli ligger fast i appen. Kjøres kun én gang.</div>
+      <button class="btn btn-amber" onclick="migrerProgram()">📥 Legg inn fast program (13.–19. juli)</button>
       <button class="btn btn-grey" onclick="reparerDatoer()" style="margin-top:6px;">🔧 Reparer datoer</button>
       <button class="btn btn-grey" onclick="fjernDupliserteProgram()" style="margin-top:6px;">🧹 Fjern dupliserte innslag</button>
       <div id="migStatus" style="font-size:0.78rem;color:#666;margin-top:6px;text-align:center;"></div>
@@ -803,25 +803,6 @@ function normaliserDato(s){
 
 // ===== MIGRERING AV FAST PROGRAM =====
 const FAST_PROGRAM = [
-  {d:10, fra:'11:00', akt:'Oppmøte Oslo lufthavn', ekstra:'Reiseskjorte'},
-  {d:10, fra:'13:50', akt:'OSL → Reykjavík (KEF) · FI 319', ekstra:''},
-  {d:10, fra:'14:45', til:'16:45', akt:'Mellomlanding Keflavik', ekstra:''},
-  {d:10, fra:'16:45', akt:'KEF → Minneapolis (MSP) · FI 657', ekstra:''},
-  {d:10, fra:'18:20', akt:'Ankomst Minneapolis · Terminal 2 – Humphrey', ekstra:''},
-  {d:10, fra:'', akt:'Buss til Airbnb', ekstra:'Middag og dagligvarer på døra'},
-  {d:11, fra:'10:00', akt:'🍳 Frokost', ekstra:''},
-  {d:11, fra:'11:00', akt:'⚽ Lett treningsøkt – Carondelet Fields', ekstra:''},
-  {d:11, fra:'13:00', akt:'🍽️ Lunsj', ekstra:''},
-  {d:11, fra:'14:30', akt:'🚶 Vi går mot Tiffanys Sports Lounge', ekstra:''},
-  {d:11, fra:'15:00', akt:'📺 Tiffanys Sports Lounge', ekstra:'2051 Ford Pkwy'},
-  {d:11, fra:'16:00', akt:'🇳🇴 Norge vs England – på storskjerm!', ekstra:''},
-  {d:11, fra:'18:00', akt:'🏠 Går hjem', ekstra:''},
-  {d:12, fra:'09:00', akt:'🍳 Frokost', ekstra:''},
-  {d:12, fra:'10:30', akt:'⚽ Lett treningsøkt – Carondelet Fields', ekstra:''},
-  {d:12, fra:'13:00', akt:'🚌 Avreise Mall of America', ekstra:'Buss 74 C og 54'},
-  {d:12, fra:'13:45', akt:'🛍️ Mall of America', ekstra:''},
-  {d:12, fra:'19:00', akt:'🚌 Avreise hjem', ekstra:''},
-  {d:12, fra:'20:00', akt:'🏠 Huset · 📺 Kvartfinale VM', ekstra:''},
   {d:13, fra:'10:00', akt:'Utsjekk Airbnb', ekstra:''},
   {d:13, fra:'', akt:'Reiser til college', ekstra:''},
   {d:13, fra:'12:00', akt:'Lett treningsøkt / laginnsjekk', ekstra:'Ta med ID'},
@@ -857,7 +838,7 @@ window.fjernDupliserteProgram = async function(){
 
 window.migrerProgram = async function(){
   if(alleProgram.length > 20 && !confirm('⚠️ Det ligger allerede mange innslag i databasen.\n\nDette kan lage dubletter. Fortsette likevel?')) return;
-  if(!confirm('Flytter det faste programmet inn i databasen.\n\nEtterpå kan du redigere alt herfra. Kjør kun én gang!\n\nFortsette?')) return;
+  if(!confirm('Legger inn faste punkter for 13.–19. juli i databasen.\n\nEtterpå kan du redigere alt herfra. Kjør kun én gang!\n\nFortsette?')) return;
   const st = document.getElementById('migStatus');
   st.textContent = 'Overfører...';
   let n = 0;
