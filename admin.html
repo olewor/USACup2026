@@ -155,7 +155,8 @@ input:focus,select:focus{border-color:var(--blue);}
         <input type="checkbox" id="kampStream" style="width:auto;">
         <span style="font-weight:600;font-size:0.85rem;">📺 Kampen streames</span>
       </label>
-      <button class="btn btn-green" onclick="lagreKamp()">💾 Opprett kamp</button>
+      <button class="btn btn-green" id="kampBtn" onclick="lagreKamp()">💾 Opprett kamp</button>
+      <button class="btn btn-grey" id="kampAvbryt" onclick="avbrytKampEdit()" style="display:none;">✕ Avbryt redigering</button>
     </div>
 
     <!-- IMPORT -->
@@ -194,7 +195,8 @@ input:focus,select:focus{border-color:var(--blue);}
       <input type="text" id="progAktivitet" placeholder="f.eks. Kamp vs Sverige">
       <label>Tilleggstekst (valgfritt)</label>
       <input type="text" id="progEkstra" placeholder="f.eks. Ta med blå drakt">
-      <button class="btn btn-green" onclick="lagreProgram()">+ Legg til</button>
+      <button class="btn btn-green" id="progBtn" onclick="lagreProgram()">+ Legg til</button>
+      <button class="btn btn-grey" id="progAvbryt" onclick="avbrytProgEdit()" style="display:none;">✕ Avbryt redigering</button>
       <div id="progListe" style="margin-top:12px;"></div>
     </div>
 
@@ -399,7 +401,7 @@ function initData(){
     hendelser=snap.docs.map(d=>({id:d.id,...d.data()}));
     if(aktivKampId)rendPoengHendelser();
   });
-  onSnapshot(query(collection(db,'program'),orderBy('dato','asc'),orderBy('fra','asc')),snap=>{
+  onSnapshot(collection(db,'program'),snap=>{
     rendProgram(snap.docs.map(d=>({id:d.id,...d.data()})));
   });
   onSnapshot(collection(db,'taktikk'),snap=>{
@@ -433,6 +435,8 @@ window.toggleSluttspill=function(){
 };
 
 // ===== OPPRETT KAMP =====
+let redigerKampId=null;
+
 window.lagreKamp=async function(){
   const dato=document.getElementById('kampDato').value;
   const tid=document.getElementById('kampTid').value;
@@ -443,23 +447,66 @@ window.lagreKamp=async function(){
   const stream=document.getElementById('kampStream').checked;
   const underlag=document.getElementById('kampUnderlag').value;
   if(!dato||!mot){toast('Fyll inn dato og motstander');return;}
-  await addDoc(collection(db,'kamper'),{
-    dato,tid,tidNorsk:autoNorsk(tid),mot,bane,underlag,type,runde,stream,
-    vare:0,deres:0,status:'kommende',tidspunkt:serverTimestamp()
-  });
+  const data={dato,tid,tidNorsk:autoNorsk(tid),mot,bane,underlag,type,runde,stream};
+  if(redigerKampId){
+    await updateDoc(doc(db,'kamper',redigerKampId),data);
+    toast('✅ Kamp oppdatert!');
+    avbrytKampEdit();
+  } else {
+    data.vare=0; data.deres=0; data.status='kommende'; data.tidspunkt=serverTimestamp();
+    await addDoc(collection(db,'kamper'),data);
+    toast('✅ Kamp opprettet!');
+    nullstillKampSkjema();
+  }
+};
+
+function nullstillKampSkjema(){
   document.getElementById('kampDato').value='';
   document.getElementById('kampTid').value='';
   document.getElementById('kampMot').value='';
   document.getElementById('kampBane').value='';
   document.getElementById('kampStream').checked=false;
-  toast('✅ Kamp opprettet!');
+  document.getElementById('kampType').value='gruppe';
+  toggleSluttspill();
+}
+
+window.redigerKamp=function(id,ev){
+  if(ev) ev.stopPropagation();
+  const k=kamper.find(x=>x.id===id);
+  if(!k)return;
+  redigerKampId=id;
+  document.getElementById('kampDato').value=k.dato||'';
+  document.getElementById('kampTid').value=k.tid||'';
+  document.getElementById('kampMot').value=k.mot||'';
+  document.getElementById('kampBane').value=k.bane||'';
+  document.getElementById('kampUnderlag').value=k.underlag||'gress';
+  document.getElementById('kampType').value=k.type||'gruppe';
+  toggleSluttspill();
+  if(k.runde) document.getElementById('kampRunde').value=k.runde;
+  document.getElementById('kampStream').checked=!!k.stream;
+  document.getElementById('kampBtn').textContent='💾 Lagre endringer';
+  document.getElementById('kampAvbryt').style.display='block';
+  document.getElementById('kampDato').scrollIntoView({behavior:'smooth',block:'center'});
+};
+
+window.avbrytKampEdit=function(){
+  redigerKampId=null;
+  nullstillKampSkjema();
+  document.getElementById('kampBtn').textContent='💾 Opprett kamp';
+  document.getElementById('kampAvbryt').style.display='none';
 };
 
 // ===== KAMPLISTE =====
 function rendKampListe(){
   const el=document.getElementById('kampListe');if(!el)return;
   if(!kamper.length){el.innerHTML='<div class="info">Ingen kamper ennå</div>';return;}
-  el.innerHTML=kamper.map(k=>{
+  const DAG_ORD=['Tirsdag 14. juli','Onsdag 15. juli','Torsdag 16. juli','Fredag 17. juli','Lørdag 18. juli','Søndag 19. juli'];
+  const sortert=kamper.slice().sort((a,b)=>{
+    const ia=DAG_ORD.indexOf(a.dato), ib=DAG_ORD.indexOf(b.dato);
+    if(ia!==ib) return (ia===-1?99:ia)-(ib===-1?99:ib);
+    return tidTall(a.tid)-tidTall(b.tid);
+  });
+  el.innerHTML=sortert.map(k=>{
     const stTxt={kommende:'Kommende',live:'🔴 LIVE',pause:'⏸ Pause',ferdig:'Ferdig'}[k.status]||k.status;
     const tidStr=k.tid?`${k.tid} (🇳🇴 ${k.tidNorsk||''})`:'';
     const rundeStr=k.type==='sluttspill'?` · ${k.runde}`:'';
@@ -471,8 +518,11 @@ function rendKampListe(){
           <div class="kamp-sub">${k.bane?'📍 '+k.bane:''}${k.underlag?' · '+(k.underlag==='kunstgress'?'🟢 Kunstgress':'🌱 Gress'):''}${k.stream?' · 📺 Streames':''}</div>
           <span class="status status-${k.status}">${stTxt}</span>
         </div>
-        <div style="text-align:right;">
-          <div class="kamp-res">${k.vare||0}–${k.deres||0}</div>
+        <div style="text-align:right;display:flex;align-items:center;gap:8px;">
+          <div>
+            <div class="kamp-res">${k.vare||0}–${k.deres||0}</div>
+            <button onclick="window.redigerKamp('${k.id}',event)" style="background:none;border:none;color:#1F5C8B;cursor:pointer;font-size:0.95rem;padding:2px;">✎ Rediger</button>
+          </div>
           <div style="color:#ccc;font-size:1.2rem;">›</div>
         </div>
       </div>
@@ -685,6 +735,8 @@ window.nullstillSjekk=function(type){
 };
 
 // ===== PROGRAM =====
+let redigerProgId=null;
+
 window.lagreProgram=async function(){
   const dato=document.getElementById('progDato').value;
   const fra=document.getElementById('progFra').value;
@@ -692,25 +744,78 @@ window.lagreProgram=async function(){
   const akt=document.getElementById('progAktivitet').value.trim();
   const ekstra=document.getElementById('progEkstra').value.trim();
   if(!dato||!akt){toast('Velg dag og aktivitet');return;}
-  await addDoc(collection(db,'program'),{dato,fra,til,fraNorsk:autoNorsk(fra),tilNorsk:autoNorsk(til),aktivitet:akt,ekstra,tidspunkt:serverTimestamp()});
-  document.getElementById('progFra').value='';document.getElementById('progTil').value='';
-  document.getElementById('progAktivitet').value='';document.getElementById('progEkstra').value='';
-  toast('✅ Lagt til!');
+  const data={dato,fra,til,fraNorsk:autoNorsk(fra),tilNorsk:autoNorsk(til),aktivitet:akt,ekstra};
+  if(redigerProgId){
+    await updateDoc(doc(db,'program',redigerProgId),data);
+    toast('✅ Oppdatert!');
+    avbrytProgEdit();
+  } else {
+    data.tidspunkt=serverTimestamp();
+    await addDoc(collection(db,'program'),data);
+    toast('✅ Lagt til!');
+    nullstillProgSkjema();
+  }
 };
+
+function nullstillProgSkjema(){
+  document.getElementById('progFra').value='';
+  document.getElementById('progTil').value='';
+  document.getElementById('progAktivitet').value='';
+  document.getElementById('progEkstra').value='';
+}
+
+window.redigerProgram=function(id){
+  const p=alleProgram.find(x=>x.id===id);
+  if(!p)return;
+  redigerProgId=id;
+  document.getElementById('progDato').value=p.dato||'';
+  document.getElementById('progFra').value=p.fra||'';
+  document.getElementById('progTil').value=p.til||'';
+  document.getElementById('progAktivitet').value=p.aktivitet||'';
+  document.getElementById('progEkstra').value=p.ekstra||'';
+  document.getElementById('progBtn').textContent='💾 Lagre endringer';
+  document.getElementById('progAvbryt').style.display='block';
+  document.getElementById('progDato').scrollIntoView({behavior:'smooth',block:'center'});
+};
+
+window.avbrytProgEdit=function(){
+  redigerProgId=null;
+  document.getElementById('progDato').value='';
+  nullstillProgSkjema();
+  document.getElementById('progBtn').textContent='+ Legg til';
+  document.getElementById('progAvbryt').style.display='none';
+};
+
 window.slettProgram=async function(id){if(!confirm('Slett?'))return;await deleteDoc(doc(db,'program',id));toast('🗑 Slettet');};
 
+let alleProgram=[];
+const DAG_REKKEFOLGE=['Lørdag 11. juli','Søndag 12. juli','Mandag 13. juli','Tirsdag 14. juli','Onsdag 15. juli','Torsdag 16. juli','Fredag 17. juli','Lørdag 18. juli','Søndag 19. juli'];
+
+function tidTall(t){if(!t)return 9999;const p=String(t).split(':');return (parseInt(p[0])||0)*60+(parseInt(p[1])||0);}
+
 function rendProgram(items){
+  alleProgram=items;
   const el=document.getElementById('progListe');if(!el)return;
   if(!items.length){el.innerHTML='<div style="color:#888;font-size:0.82rem;">Ingen aktiviteter ennå</div>';return;}
-  const dager={};items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
-  el.innerHTML=Object.entries(dager).map(([dato,akt])=>`
-    <div style="margin-bottom:6px;">
+  const dager={};
+  items.forEach(i=>{if(!dager[i.dato])dager[i.dato]=[];dager[i.dato].push(i);});
+  const sorterteDager=Object.keys(dager).sort((a,b)=>{
+    const ia=DAG_REKKEFOLGE.indexOf(a), ib=DAG_REKKEFOLGE.indexOf(b);
+    return (ia===-1?99:ia)-(ib===-1?99:ib);
+  });
+  el.innerHTML=sorterteDager.map(dato=>{
+    const akt=dager[dato].sort((a,b)=>tidTall(a.fra)-tidTall(b.fra));
+    return `<div style="margin-bottom:8px;">
       <div style="font-size:0.72rem;font-weight:800;color:#0B2240;margin-bottom:3px;">${dato}</div>
-      ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
-        <div><strong>${a.aktivitet}</strong>${a.fra?`<br><span style="color:#888;font-size:0.75rem;">${a.fra}${a.til?'–'+a.til:''} → 🇳🇴 ${a.fraNorsk||''}${a.tilNorsk?'–'+a.tilNorsk:''}</span>`:''}${a.ekstra?`<br><span style="color:#1F5C8B;font-size:0.75rem;">${a.ekstra}</span>`:''}</div>
-        <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;flex-shrink:0;margin-left:6px;">✕</button>
+      ${akt.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 8px;background:#F4F6F8;border-radius:6px;margin-bottom:3px;font-size:0.82rem;">
+        <div style="flex:1;"><strong>${a.aktivitet}</strong>${a.fra?`<br><span style="color:#888;font-size:0.75rem;">${a.fra}${a.til?'–'+a.til:''} → 🇳🇴 ${a.fraNorsk||''}${a.tilNorsk?'–'+a.tilNorsk:''}</span>`:''}${a.ekstra?`<br><span style="color:#1F5C8B;font-size:0.75rem;">${a.ekstra}</span>`:''}</div>
+        <div style="display:flex;gap:4px;flex-shrink:0;margin-left:6px;">
+          <button onclick="window.redigerProgram('${a.id}')" style="background:none;border:none;color:#1F5C8B;cursor:pointer;font-size:1rem;padding:2px 4px;">✎</button>
+          <button onclick="window.slettProgram('${a.id}')" style="background:none;border:none;color:#A81C1C;cursor:pointer;font-size:1rem;padding:2px 4px;">✕</button>
+        </div>
       </div>`).join('')}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ===== TAKTIKK =====
