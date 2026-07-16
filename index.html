@@ -157,6 +157,7 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
 <!-- TABS -->
 <div class="tab-bar">
   <button class="tab-btn active" onclick="showTab('kamper',this)">🏆<br>Kamper</button>
+  <button class="tab-btn" onclick="showTab('styrke',this)">💪<br>Styrke</button>
   <button class="tab-btn" onclick="showTab('usaprog',this)">🇺🇸<br>USA Prog.</button>
   <button class="tab-btn" onclick="showTab('hvemhva',this)">🏠<br>Hvem/Hva</button>
   <button class="tab-btn" onclick="showTab('taktikk',this)">🎯<br>Taktikk</button>
@@ -209,6 +210,88 @@ summary{padding:13px 14px;font-weight:800;color:#0B2240;cursor:pointer;list-styl
     </div>
     <div id="k-loading" style="text-align:center;padding:20px;color:#888;font-size:0.85rem;">Laster kamper...</div>
     <div id="k-kamper"></div>
+  </div>
+
+  <div class="panel" id="styrke">
+    <style>
+      .st-hero{background:linear-gradient(135deg,#0B2240,#1F5C8B);border-radius:14px;padding:16px;margin-bottom:12px;color:#fff;}
+      .st-hero .eb{font-size:.62rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#C8A84B;}
+      .st-hero h2{font-size:1.35rem;font-weight:800;margin:4px 0 6px;line-height:1.15;}
+      .st-hero p{font-size:.82rem;opacity:.85;line-height:1.45;}
+      .st-meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+      .st-pill{background:rgba(255,255,255,.14);border-radius:99px;padding:4px 10px;font-size:.72rem;font-weight:700;}
+      .st-rule{background:#FFF0D6;border-left:3px solid #B35C00;border-radius:0 8px 8px 0;padding:10px;font-size:.83rem;color:#7A3E00;margin-bottom:12px;line-height:1.5;}
+      .st-sec{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:#6B7A8D;margin:16px 0 7px;}
+      .st-card{background:#fff;border-radius:12px;padding:13px;margin-bottom:9px;box-shadow:0 2px 6px rgba(0,0,0,.07);}
+      .st-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+      .st-num{width:30px;height:30px;border-radius:8px;background:#0B2240;color:#C8A84B;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+      .st-name{font-weight:800;font-size:.95rem;color:#0B2240;}
+      .st-dose{font-size:.75rem;color:#A81C1C;font-weight:700;margin-top:1px;}
+      .st-how{font-size:.83rem;color:#444;line-height:1.5;}
+      .st-warm{background:#fff;border-radius:12px;padding:13px;box-shadow:0 2px 6px rgba(0,0,0,.07);}
+      .st-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #F0F3F6;font-size:.85rem;}
+      .st-row:last-child{border-bottom:none;}
+      .st-row b{color:#0B2240;}
+      .st-row span{color:#888;font-size:.78rem;white-space:nowrap;}
+    </style>
+
+    <div class="st-hero">
+      <div class="eb">Torsdag · dagen før sluttspill</div>
+      <h2>Stasjonsøkt – vekk kroppen</h2>
+      <p>Kun én kamp spilt denne uka. Dere er ikke slitne – dere er rustne. Denne økta skal tenne systemet, ikke tappe det.</p>
+      <div class="st-meta">
+        <span class="st-pill">⏱ 40 min</span>
+        <span class="st-pill">5 stasjoner</span>
+        <span class="st-pill">2 runder</span>
+      </div>
+    </div>
+
+    <div class="st-rule">
+      <b>Regelen for i dag:</b> Alle skal gå ut med mer energi enn de kom inn med. Blir noen andpustne eller tunge i beina, er dere gått for langt. Full pause mellom sett – kvalitet foran mengde. Aldri til utmattelse.
+    </div>
+
+    <div class="st-sec">Del 1 · Fellesoppvarming (8 min)</div>
+    <div class="st-warm">
+      <div class="st-row"><b>Sykkel eller romaskin</b><span>4 min rolig</span></div>
+      <div class="st-row"><b>Hofteabduksjon m/strikk</b><span>2 × 10 hver vei</span></div>
+      <div class="st-row"><b>Monster walk</b><span>2 × 10 steg</span></div>
+      <div class="st-row"><b>Glute bridge</b><span>2 × 12</span></div>
+      <div class="st-row"><b>Ankelstrikk inn/ut</b><span>2 × 12 hver fot</span></div>
+    </div>
+
+    <div class="st-sec">Del 2 · Stasjoner — 2 min arbeid, 30 sek bytte</div>
+
+    <div class="st-card">
+      <div class="st-top"><div class="st-num">1</div><div><div class="st-name">Kettlebell swing</div><div class="st-dose">3 × 6 · lett vekt</div></div></div>
+      <div class="st-how">Eksplosiv hofte, ikke armer. Rett rygg, klem rumpa i toppen. Full pause mellom sett.</div>
+    </div>
+
+    <div class="st-card">
+      <div class="st-top"><div class="st-num">2</div><div><div class="st-name">Hopp opp på kasse/benk</div><div class="st-dose">3 × 4 · lav høyde</div></div></div>
+      <div class="st-how">Land mykt med bøyde knær. Gå ned igjen – aldri hopp ned. Kvalitet på hver eneste landing.</div>
+    </div>
+
+    <div class="st-card">
+      <div class="st-top"><div class="st-num">3</div><div><div class="st-name">Benkpress</div><div class="st-dose">3 × 5 · ca. 60 %</div></div></div>
+      <div class="st-how">Rask og eksplosiv opp, kontrollert ned. Spotter alltid på plass. Aldri til failure.</div>
+    </div>
+
+    <div class="st-card">
+      <div class="st-top"><div class="st-num">4</div><div><div class="st-name">Goblet squat</div><div class="st-dose">3 × 6 · lett manual</div></div></div>
+      <div class="st-how">Manual eller kettlebell mot brystet. Dypt og kontrollert, brystet opp, knær ut.</div>
+    </div>
+
+    <div class="st-card">
+      <div class="st-top"><div class="st-num">5</div><div><div class="st-name">Boksebag</div><div class="st-dose">3 × 30 sek · lett</div></div></div>
+      <div class="st-how">Korte, lette runder for gnist og tempo. Ikke slå hardt – uvant belastning på skuldre og håndledd.</div>
+    </div>
+
+    <div class="st-sec">Del 3 · Avslutning (5 min)</div>
+    <div class="st-warm">
+      <div class="st-row"><b>Rulling: lår, legger, rygg</b><span>3 min</span></div>
+      <div class="st-row"><b>Lett tøy</b><span>2 min</span></div>
+      <div class="st-row"><b>Væske + elektrolytter</b><span>med en gang</span></div>
+    </div>
   </div>
 
   <div class="panel" id="usaprog">
@@ -806,7 +889,12 @@ const usaDays = [
   { dag:'Mandag',  dato:'13. juli', emoji:'🎓', color:'#B35C00', items:[] },
   { dag:'Tirsdag', dato:'14. juli', emoji:'⚽', color:'#A81C1C', items:[] },
   { dag:'Onsdag',  dato:'15. juli', emoji:'⚽', color:'#A81C1C', items:[] },
-  { dag:'Torsdag', dato:'16. juli', emoji:'⚽', color:'#A81C1C', items:[] },
+  { dag:'Torsdag', dato:'16. juli', emoji:'⚽', color:'#A81C1C', items:[
+    {tid:'', norsk:'', txt:'💪 Styrke – stasjonsøkt'},
+    {tid:'', norsk:'', txt:'🍽️ Middag'},
+    {tid:'', norsk:'', txt:'🏐 Beach volley: Norge – Canada'},
+    {tid:'', norsk:'', txt:'🧠 Quiz og konkurranser – del 1'},
+  ]},
   { dag:'Fredag',  dato:'17. juli', emoji:'🏆', color:'#A81C1C', items:[] },
   { dag:'Lørdag',  dato:'18. juli', emoji:'🏆', color:'#A81C1C', items:[] },
   { dag:'Søndag',  dato:'19. juli', emoji:'✈️', color:'#0B2240', items:[] },
