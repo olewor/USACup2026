@@ -1,0 +1,20 @@
+{
+  "lag": "Haugsbygd",
+  "program": [
+    { "dato": "2026-11-01", "tekst": "Oppvarming – nærteknikk – pressspill futsal – spill" },
+    { "dato": "2026-11-03", "tekst": "Oppvarming med styrke – avslutninger – spill" },
+    { "dato": "2026-11-08", "tekst": "Bortedrakt i kamp 1 og 2", "type": "kamp", "runde": 1 },
+    { "dato": "2026-11-10", "tekst": "Oppstart Christmas Games – konkurranser, stafetter og spill", "type": "christmas" },
+    { "dato": "2026-11-15", "tekst": "Oppvarming med styrke – samspill – spill – Christmas Games", "type": "christmas" }
+  ],
+  "kamper": [
+    { "runde": 1, "dato": "2026-11-08", "tid": "12:30", "hjemme": "Lier", "borte": "Haugsbygd", "bane": "Drammenshallen A", "maal": null },
+    { "runde": 1, "dato": "2026-11-08", "tid": "13:30", "hjemme": "Åssiden", "borte": "Haugsbygd", "bane": "Drammenshallen B", "maal": null },
+    { "runde": 1, "dato": "2026-11-08", "tid": "14:00", "hjemme": "Haugsbygd", "borte": "Krødsherad", "bane": "Drammenshallen D", "maal": null },
+    { "runde": 1, "dato": "2026-11-08", "tid": "15:00", "hjemme": "Haugsbygd", "borte": "Kongsberg", "bane": "Drammenshallen B", "maal": null }
+  ],
+  "christmasGames": {
+    "deltakere": [],
+    "konkurranser": []
+  }
+}
