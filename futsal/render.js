@@ -6,6 +6,8 @@ const { chromium } = require('playwright');
 const dir = __dirname;
 const data = JSON.parse(fs.readFileSync(path.join(dir, 'data.json'), 'utf8'));
 
+const logo = 'data:image/png;base64,' + fs.readFileSync(path.join(dir, 'hif-logo.png')).toString('base64');
+
 const DAGER = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
 const MND = ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'];
 const d = s => new Date(s + 'T12:00:00');
@@ -16,7 +18,7 @@ const css = `
 body{width:1080px;font-family:Inter,sans-serif;background:#0B2240;color:#fff}
 .wrap{padding:56px 56px 48px;background:linear-gradient(170deg,#0B2240 0%,#1a3a5c 55%,#0B2240 100%)}
 header{display:flex;align-items:center;gap:28px;margin-bottom:40px}
-.badge{width:110px;height:110px;flex-shrink:0;border-radius:50%;border:4px solid #C8A84B;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;color:#C8A84B}
+header img{height:150px;flex-shrink:0;filter:drop-shadow(0 4px 14px rgba(0,0,0,.4))}
 .eyebrow{color:#C8A84B;font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:24px}
 h1{font-size:64px;font-weight:800;line-height:1.05}
 .row{display:flex;gap:28px;background:rgba(255,255,255,.06);border-radius:22px;padding:26px 30px;margin-bottom:18px;border-left:8px solid rgba(255,255,255,.25)}
@@ -42,7 +44,7 @@ footer{margin-top:30px;text-align:center;opacity:.55;font-size:20px;letter-spaci
 
 function page(eyebrow, title, inner) {
   return `<!doctype html><html><head><meta charset="utf-8"><style>${css}</style></head><body><div class="wrap">
-<header><div class="badge">J17</div><div><div class="eyebrow">${esc(eyebrow)}</div><h1>${esc(title)}</h1></div></header>
+<header><img src="${logo}"><div><div class="eyebrow">${esc(eyebrow)}</div><h1>${esc(title)}</h1></div></header>
 ${inner}<footer>HAUGSBYGD J17 · FUTSAL</footer></div></body></html>`;
 }
 
