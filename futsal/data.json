@@ -1,7 +1,25 @@
 {
   "lag": "Haugsbygd",
   "klasse": "J17",
-  "spillere": [],
+  "spillere": [
+    "Aila",
+    "Emilie",
+    "Hermine",
+    "Ina",
+    "Julie",
+    "Frøshaug",
+    "Kaja",
+    "Sparby",
+    "Linnea",
+    "Mogen",
+    "Malin",
+    "Marie A",
+    "Marie O",
+    "Martine",
+    "Nazzal",
+    "Sofie",
+    "Zaz"
+  ],
   "poengverdier": {
     "mål": 1,
     "assist": 1,
