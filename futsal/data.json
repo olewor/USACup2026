@@ -96,5 +96,40 @@
   ],
   "christmasGames": {
     "konkurranser": []
-  }
+  },
+  "kamplengde": 20,
+  "andreKamper": [
+    {
+      "runde": 1,
+      "dato": "2026-11-08",
+      "tid": "12:30",
+      "hjemme": "Krødsherad",
+      "borte": "Kongsberg/Skrim",
+      "bane": "Drammenshallen D"
+    },
+    {
+      "runde": 1,
+      "dato": "2026-11-08",
+      "tid": "13:30",
+      "hjemme": "Lier",
+      "borte": "Krødsherad",
+      "bane": "Drammenshallen A"
+    },
+    {
+      "runde": 1,
+      "dato": "2026-11-08",
+      "tid": "14:00",
+      "hjemme": "Kongsberg/Skrim",
+      "borte": "Åssiden/DBK",
+      "bane": "Drammenshallen C"
+    },
+    {
+      "runde": 1,
+      "dato": "2026-11-08",
+      "tid": "15:00",
+      "hjemme": "Åssiden/DBK",
+      "borte": "Lier",
+      "bane": "Drammenshallen A"
+    }
+  ]
 }

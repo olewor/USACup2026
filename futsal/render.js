@@ -1,4 +1,5 @@
 // Lager bilder til chatgruppa: node futsal/render.js [program|poeng|christmas]
+// Hvile før hver kamp: node futsal/render.js hvile [runde]
 // Lagdeling til Christmas Games: node futsal/render.js lag <antall lag> [spillere som er til stede...]
 const fs = require('fs');
 const path = require('path');
@@ -68,6 +69,21 @@ h1{font-size:64px;font-weight:800;line-height:1.05}
 .regel .rt{font-size:28px;line-height:1.4;opacity:.92}
 .regel .rt b{color:#C8A84B}
 .regel .merk{margin-top:12px;font-size:23px;font-weight:700;opacity:.85}
+.hv{background:rgba(255,255,255,.06);border-left:8px solid rgba(255,255,255,.3);border-radius:22px;padding:24px 30px;margin-bottom:18px}
+.hv.minus{border-left-color:#d64545}
+.hv.pluss{border-left-color:#4caf7a}
+.hv.likt{border-left-color:#C8A84B}
+.hv-top{display:flex;align-items:baseline;gap:20px;margin-bottom:16px}
+.hv-top .t{font-size:34px;font-weight:800;color:#C8A84B}
+.hv-top .v{flex:1;font-size:34px;font-weight:700}
+.hv-top .dom{font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:6px 14px;border-radius:999px;background:#C8A84B;color:#0B2240}
+.minus .dom{background:#d64545;color:#fff}
+.pluss .dom{background:#4caf7a;color:#fff}
+.hv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hv-grid>div{background:rgba(0,0,0,.18);border-radius:14px;padding:14px 20px}
+.hv-grid .l{font-size:20px;text-transform:uppercase;letter-spacing:.08em;opacity:.7;font-weight:700}
+.hv-grid .h{font-size:44px;font-weight:800;line-height:1.2}
+.hv-grid .s{font-size:21px;opacity:.7}
 footer{margin-top:30px;text-align:center;opacity:.55;font-size:20px;letter-spacing:.08em}
 `;
 
@@ -174,11 +190,39 @@ function keeper() {
   return page('Haugsbygd J17 · Futsal', 'Keeperregler', kort);
 }
 
-const typer = { program, poeng, christmas, lag, keeper };
+// Hvile fra kampslutt til neste avspark, for oss og motstanderen i hver av våre kamper.
+function hvile() {
+  const runde = Number(process.argv[3]) || 1;
+  const min = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const alle = [...data.kamper, ...(data.andreKamper || [])].filter(k => k.runde === runde)
+    .sort((a, b) => min(a.tid) - min(b.tid));
+  const lengde = data.kamplengde;
+  const status = (lagnavn, kamp) => {
+    const tidligere = alle.filter(k => min(k.tid) < min(kamp.tid) && (k.hjemme === lagnavn || k.borte === lagnavn));
+    if (!tidligere.length) return { hvile: null, spilt: 0 };
+    return { hvile: min(kamp.tid) - min(tidligere.at(-1).tid) - lengde, spilt: tidligere.length * lengde };
+  };
+  const vis = h => h === null ? 'Uthvilt' : `${h} min`;
+  const vaare = alle.filter(k => k.hjemme === data.lag || k.borte === data.lag);
+  const rader = vaare.map(k => {
+    const mot = k.hjemme === data.lag ? k.borte : k.hjemme;
+    const oss = status(data.lag, k), dem = status(mot, k);
+    const diff = (oss.hvile ?? 999) - (dem.hvile ?? 999);
+    const dom = diff < 0 || oss.spilt > dem.spilt ? ['minus', 'Fordel ' + mot] : diff > 0 || oss.spilt < dem.spilt ? ['pluss', 'Fordel oss'] : ['likt', 'Likt'];
+    return `<div class="hv ${dom[0]}"><div class="hv-top"><span class="t">${k.tid}</span><span class="v">mot ${esc(mot)}</span><span class="dom">${esc(dom[1])}</span></div>
+<div class="hv-grid"><div><div class="l">Vår hvile</div><div class="h">${vis(oss.hvile)}</div><div class="s">${oss.spilt} min spilt før</div></div>
+<div><div class="l">${esc(mot)}</div><div class="h">${vis(dem.hvile)}</div><div class="s">${dem.spilt} min spilt før</div></div></div></div>`;
+  }).join('');
+  const total = vaare.length * lengde;
+  return page(`Runde ${runde} · ${d(vaare[0].dato).getDate()}. ${MND[d(vaare[0].dato).getMonth()]}`, 'Hvile mellom kampene',
+    `<div class="info">Kamptid 1 x ${lengde} min · hvile = kampslutt → neste avspark<br>Vi spiller ${vaare.length} kamper (${total} min)</div>${rader}`);
+}
+
+const typer = { program, poeng, christmas, lag, keeper, hvile };
 
 (async () => {
   const valg = process.argv.slice(2);
-  const navn = valg[0] === 'lag' ? ['lag'] : valg.length ? valg : ['program', 'poeng', 'christmas'];
+  const navn = ['lag', 'hvile'].includes(valg[0]) ? [valg[0]] : valg.length ? valg : ['program', 'poeng', 'christmas'];
   const browser = await chromium.launch();
   const pg = await browser.newPage({ viewport: { width: 1080, height: 800 }, deviceScaleFactor: 1 });
   for (const n of navn) {
