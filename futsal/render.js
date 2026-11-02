@@ -228,7 +228,8 @@ const typer = { program, poeng, christmas, lag, keeper, hvile };
   for (const n of navn) {
     if (!typer[n]) { console.error('Ukjent type: ' + n); continue; }
     await pg.setContent(typer[n]());
-    const out = path.join(dir, n + '.png');
+    const fil = n === 'hvile' ? `hvile-runde${Number(valg[1]) || 1}` : n;
+    const out = path.join(dir, fil + '.png');
     await pg.screenshot({ path: out, fullPage: true });
     console.log('Lagret ' + out);
   }

@@ -12,5 +12,5 @@ Bilder til chatgruppa:
     node futsal/render.js poeng
     node futsal/render.js christmas
     node futsal/render.js keeper
-    node futsal/render.js hvile 1                  # hvile før hver kamp i runde 1
+    node futsal/render.js hvile 1                  # hvile før hver kamp i runde 1 (2, 3, 4 ...)
     node futsal/render.js lag 3 Ola Kari Per ...   # jevne lag etter Christmas Games-stillingen
