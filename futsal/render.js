@@ -1,5 +1,6 @@
 // Lager bilder til chatgruppa: node futsal/render.js [program|poeng|christmas]
 // Hvile før hver kamp: node futsal/render.js hvile [runde]
+// Tropp per kamp: node futsal/render.js tropp <runde> [tilgjengelige spillere...]
 // Lagdeling til Christmas Games: node futsal/render.js lag <antall lag> [spillere som er til stede...]
 const fs = require('fs');
 const path = require('path');
@@ -84,6 +85,9 @@ h1{font-size:64px;font-weight:800;line-height:1.05}
 .hv-grid .l{font-size:20px;text-transform:uppercase;letter-spacing:.08em;opacity:.7;font-weight:700}
 .hv-grid .h{font-size:44px;font-weight:800;line-height:1.2}
 .hv-grid .s{font-size:21px;opacity:.7}
+.tk{border-left-color:#C8A84B;background:rgba(255,255,255,.06)}
+.tk h2{color:#fff}
+.tk .ute{margin-top:10px;font-size:23px;opacity:.6}
 footer{margin-top:30px;text-align:center;opacity:.55;font-size:20px;letter-spacing:.08em}
 `;
 
@@ -218,17 +222,56 @@ function hvile() {
     `<div class="info">Kamptid 1 x ${lengde} min · hvile = kampslutt → neste avspark<br>Vi spiller ${vaare.length} kamper (${total} min)</div>${rader}`);
 }
 
-const typer = { program, poeng, christmas, lag, keeper, hvile };
+// Fordeler tilgjengelige spillere på dagens kamper (maks 9 per kamp) så alle får omtrent like mange kamper.
+// Ved kort hvile (under 30 min fra kampslutt) prioriteres de som satt over forrige kamp. Hver kamp får minst én keeper.
+function tropp() {
+  const runde = Number(process.argv[3]) || 1;
+  const tilgjengelig = process.argv.slice(4).length ? process.argv.slice(4) : data.spillere;
+  const min = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+  const kamper = data.kamper.filter(k => k.runde === runde).sort((a, b) => min(a.tid) - min(b.tid));
+  const maks = data.troppStørrelse || 9;
+  let frø = runde * 9973;
+  const tilfeldig = () => (frø = (frø * 16807) % 2147483647) / 2147483647;
+  const ant = Object.fromEntries(tilgjengelig.map(n => [n, 0]));
+  const orden = Object.fromEntries(tilgjengelig.map(n => [n, tilfeldig()]));
+  const keepere = (data.keepere || []).filter(n => n in ant);
+  let forrige = [];
+  const plan = kamper.map((k, i) => {
+    const hvile = i ? min(k.tid) - min(kamper[i - 1].tid) - data.kamplengde : null;
+    const kort = hvile !== null && hvile < 30;
+    const score = n => ant[n] * 10 + (kort && forrige.includes(n) ? 5 : 0) + orden[n];
+    const valgt = [];
+    if (keepere.length) valgt.push([...keepere].sort((a, b) => score(a) - score(b))[0]);
+    for (const n of [...tilgjengelig].sort((a, b) => score(a) - score(b)))
+      if (valgt.length < Math.min(maks, tilgjengelig.length) && !valgt.includes(n)) valgt.push(n);
+    valgt.forEach(n => ant[n]++);
+    forrige = valgt;
+    return { k, hvile, valgt };
+  });
+  const kort = plan.map(({ k, hvile, valgt }) => {
+    const mot = k.hjemme === data.lag ? k.borte : k.hjemme;
+    const navn = valgt.map(n => keepere.includes(n) ? `<b>🧤 ${esc(n)}</b>` : esc(n)).join(', ');
+    const ute = tilgjengelig.filter(n => !valgt.includes(n));
+    return `<div class="lagkort tk"><h2>${k.tid} mot ${esc(mot)} <span>· ${hvile === null ? 'første kamp' : hvile + ' min hvile'}</span></h2>
+<div class="sp">${navn}</div>${ute.length ? `<div class="ute">Står over: ${ute.map(esc).join(', ')}</div>` : ''}</div>`;
+  }).join('');
+  const fordeling = Object.entries(ant).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'no'))
+    .map(([n, a]) => `${esc(n)} ${a}`).join(' · ');
+  return page(`Runde ${runde} · ${d(kamper[0].dato).getDate()}. ${MND[d(kamper[0].dato).getMonth()]}`, 'Tropp per kamp',
+    `<div class="info">Maks ${maks} spillere per kamp · ${tilgjengelig.length} tilgjengelige</div>${kort}<div class="info" style="margin-top:20px">Kamper per spiller: ${fordeling}</div>`);
+}
+
+const typer = { program, poeng, christmas, lag, keeper, hvile, tropp };
 
 (async () => {
   const valg = process.argv.slice(2);
-  const navn = ['lag', 'hvile'].includes(valg[0]) ? [valg[0]] : valg.length ? valg : ['program', 'poeng', 'christmas'];
+  const navn = ['lag', 'hvile', 'tropp'].includes(valg[0]) ? [valg[0]] : valg.length ? valg : ['program', 'poeng', 'christmas'];
   const browser = await chromium.launch();
   const pg = await browser.newPage({ viewport: { width: 1080, height: 800 }, deviceScaleFactor: 1 });
   for (const n of navn) {
     if (!typer[n]) { console.error('Ukjent type: ' + n); continue; }
     await pg.setContent(typer[n]());
-    const fil = n === 'hvile' ? `hvile-runde${Number(valg[1]) || 1}` : n;
+    const fil = ['hvile', 'tropp'].includes(n) ? `${n}-runde${Number(valg[1]) || 1}` : n;
     const out = path.join(dir, fil + '.png');
     await pg.screenshot({ path: out, fullPage: true });
     console.log('Lagret ' + out);
