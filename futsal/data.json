@@ -59,7 +59,7 @@
       "tid": "12:30",
       "hjemme": "Lier",
       "borte": "Haugsbygd",
-      "bane": "Drammenshallen A",
+      "bane": "Drammenshallen C",
       "resultat": null,
       "poeng": {}
     },
@@ -67,7 +67,7 @@
       "runde": 1,
       "dato": "2026-11-08",
       "tid": "13:30",
-      "hjemme": "Åssiden",
+      "hjemme": "Åssiden/DBK",
       "borte": "Haugsbygd",
       "bane": "Drammenshallen B",
       "resultat": null,
@@ -88,7 +88,7 @@
       "dato": "2026-11-08",
       "tid": "15:00",
       "hjemme": "Haugsbygd",
-      "borte": "Kongsberg",
+      "borte": "Kongsberg/Skrim",
       "bane": "Drammenshallen B",
       "resultat": null,
       "poeng": {}
