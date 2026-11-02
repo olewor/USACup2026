@@ -11,4 +11,5 @@ Bilder til chatgruppa:
     node futsal/render.js program
     node futsal/render.js poeng
     node futsal/render.js christmas
+    node futsal/render.js keeper
     node futsal/render.js lag 3 Ola Kari Per ...   # jevne lag etter Christmas Games-stillingen
