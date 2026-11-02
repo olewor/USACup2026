@@ -180,14 +180,14 @@ function lag() {
 function keeper() {
   const regler = [
     ['⏱️', '4-sekundersregelen', 'Keeper kan ha kontroll på ballen i maks <b>4 sekunder</b> på egen banehalvdel – både med hender og føtter.', 'Brudd: indirekte frispark til motstander'],
-    ['🧤', 'Utkast', 'Når ballen går over mållinja fra motstander, setter keeper den i spill med hendene fra straffefeltet innen 4 sekunder.', '✅ Utkastet kan gå <b>over midtlinja</b>'],
+    ['🧤', 'Utkast (målkast)', 'Når ballen går over mållinja fra motstander, <b>kaster</b> keeper den ut fra straffefeltet innen 4 sekunder. Den kan ikke sparkes, og det kan ikke scores direkte fra kastet.', '✅ Utkastet kan gå <b>over midtlinja</b>'],
     ['↩️', 'Tilbakespill', 'Når keeper har spilt ballen, kan hun <b>ikke ta den igjen på egen halvdel</b> før en motspiller har vært borti den. Ballen kan heller ikke tas med hendene etter bevisst tilbakespill eller innspark fra medspiller.', 'Brudd: indirekte frispark til motstander'],
     ['🚩', 'Keeper tar innspark', 'Tar keeper innsparket, gjelder tilbakespillregelen: hun kan <b>ikke motta ballen igjen på egen halvdel</b> før en motspiller har vært borti den. På motstanders halvdel kan hun motta den.', '❌ Ikke få ballen tilbake på egen halvdel'],
     ['⚡', 'På motstanders halvdel', 'Keeper er en vanlig utespiller: <b>ingen 4-sekundersregel</b> og ingen tilbakespillregel. Hun kan få ballen og spille fritt – men ikke bruke hendene.', '✅ Fri som utespiller'],
   ];
   const kort = regler.map(([ikon, tittel, tekst, merk], i) => `<div class="regel"><div class="ikon">${ikon}</div><div class="body">
 <h2><span>${i + 1}</span>${tittel}</h2><div class="rt">${tekst}</div><div class="merk">${merk}</div></div></div>`).join('');
-  return page('Haugsbygd J17 · Futsal', 'Keeperregler', kort);
+  return page('Haugsbygd J17 · Futsal', 'Keeperregler', kort + '<footer style="opacity:.8">Kilde: NFF Buskerud – futsalregler barn og ungdom 2026/27</footer>');
 }
 
 // Hvile fra kampslutt til neste avspark, for oss og motstanderen i hver av våre kamper.
