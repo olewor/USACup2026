@@ -283,10 +283,10 @@ function insta() {
     const vi = k.hjemme === data.lag;
     const [vf, hf] = vi ? [k.drakt.oss, k.drakt.mot] : [k.drakt.mot, k.drakt.oss];
     return `<div class="ik"><div class="itid">${k.tid}</div>
-<div class="ilag"><div class="side">${drakt(vf, i + 'a')}<div class="${vi ? 'us' : ''}">${esc(k.hjemme)}</div><small>${esc(vf === 'blåhvit' ? 'blå/hvit' : vf)}</small></div>
+<div class="ilag"><div class="side">${drakt(vf, i + 'a')}<div class="${vi ? 'us' : ''}">${esc(k.hjemme)}</div></div>
 <div class="vs">–</div>
-<div class="side">${drakt(hf, i + 'b')}<div class="${vi ? '' : 'us'}">${esc(k.borte)}</div><small>${esc(hf === 'blåhvit' ? 'blå/hvit' : hf)}</small></div></div>
-<div class="ihall">Hall<br><b>${esc(k.bane.replace(sted + ' ', ''))}</b></div></div>`;
+<div class="side">${drakt(hf, i + 'b')}<div class="${vi ? '' : 'us'}">${esc(k.borte)}</div></div></div>
+<div class="ihall">Bane<br><b>${esc(k.bane.replace(sted + ' ', ''))}</b></div></div>`;
   }).join('');
   return `<!doctype html><html><head><meta charset="utf-8"><style>${css}
 body{height:1350px;overflow:hidden}
