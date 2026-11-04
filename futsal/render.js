@@ -1,6 +1,7 @@
 // Lager bilder til chatgruppa: node futsal/render.js [program|poeng|christmas]
 // Hvile før hver kamp: node futsal/render.js hvile [runde]
 // Tropp per kamp: node futsal/render.js tropp <runde> [tilgjengelige spillere...]
+// Instagram-bilde (1080x1350) av en kampdag med draktfarger: node futsal/render.js insta <runde>
 // Lagdeling til Christmas Games: node futsal/render.js lag <antall lag> [spillere som er til stede...]
 const fs = require('fs');
 const path = require('path');
@@ -261,19 +262,72 @@ function tropp() {
     `<div class="info">Maks ${maks} spillere per kamp · ${tilgjengelig.length} tilgjengelige</div>${kort}<div class="info" style="margin-top:20px">Kamper per spiller: ${fordeling}</div>`);
 }
 
-const typer = { program, poeng, christmas, lag, keeper, hvile, tropp };
+// Draktikon i SVG; "striper:a:b" gir vertikale striper.
+function drakt(farge, id) {
+  const f = data.draktfarger[farge] || farge;
+  let fill = f, defs = '';
+  if (f.startsWith('striper:')) {
+    const [, a, b] = f.split(':');
+    defs = `<defs><pattern id="p${id}" width="16" height="10" patternUnits="userSpaceOnUse"><rect width="8" height="10" fill="${a}"/><rect x="8" width="8" height="10" fill="${b}"/></pattern></defs>`;
+    fill = `url(#p${id})`;
+  }
+  return `<svg class="drakt" viewBox="0 0 100 90">${defs}<path d="M32 4 L18 8 L2 26 L16 40 L24 32 L24 86 L76 86 L76 32 L84 40 L98 26 L82 8 L68 4 C64 14 36 14 32 4 Z" fill="${fill}" stroke="rgba(255,255,255,.6)" stroke-width="2.5" stroke-linejoin="round"/></svg>`;
+}
+
+function insta() {
+  const runde = Number(process.argv[3]) || 1;
+  const kamper = data.kamper.filter(k => k.runde === runde).sort((a, b) => a.tid.localeCompare(b.tid));
+  const dt = d(kamper[0].dato);
+  const sted = kamper[0].bane.replace(/ (Arena )?[A-Z0-9]+$/, '');
+  const kort = kamper.map((k, i) => {
+    const vi = k.hjemme === data.lag;
+    const [vf, hf] = vi ? [k.drakt.oss, k.drakt.mot] : [k.drakt.mot, k.drakt.oss];
+    return `<div class="ik"><div class="itid">${k.tid}</div>
+<div class="ilag"><div class="side">${drakt(vf, i + 'a')}<div class="${vi ? 'us' : ''}">${esc(k.hjemme)}</div><small>${esc(vf === 'blåhvit' ? 'blå/hvit' : vf)}</small></div>
+<div class="vs">–</div>
+<div class="side">${drakt(hf, i + 'b')}<div class="${vi ? '' : 'us'}">${esc(k.borte)}</div><small>${esc(hf === 'blåhvit' ? 'blå/hvit' : hf)}</small></div></div>
+<div class="ihall">Hall<br><b>${esc(k.bane.replace(sted + ' ', ''))}</b></div></div>`;
+  }).join('');
+  return `<!doctype html><html><head><meta charset="utf-8"><style>${css}
+body{height:1350px;overflow:hidden}
+.insta{height:1350px;padding:60px 60px 40px;display:flex;flex-direction:column;background:radial-gradient(circle at 85% 0%,rgba(200,168,75,.28),transparent 45%),linear-gradient(170deg,#0B2240 0%,#1a3a5c 55%,#0B2240 100%)}
+.ihead{display:flex;align-items:center;gap:30px}
+.ihead img{height:170px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.4))}
+.kd{font-size:96px;font-weight:900;line-height:.95;letter-spacing:-.02em}
+.dato{font-size:34px;font-weight:700;color:#C8A84B;margin-top:10px;text-transform:uppercase;letter-spacing:.08em}
+.liste{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;margin:30px 0}
+.ik{display:flex;align-items:center;gap:20px;background:rgba(255,255,255,.07);border-radius:26px;padding:18px 26px;border-left:8px solid #C8A84B}
+.itid{font-size:40px;font-weight:900;color:#C8A84B;width:120px}
+.ilag{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+.side{flex:1;display:flex;flex-direction:column;align-items:center;font-size:28px;font-weight:600;text-align:center}
+.side .us{font-weight:900}
+.side small{font-size:19px;opacity:.65;text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+.drakt{width:92px;height:83px;margin-bottom:6px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+.vs{font-size:40px;opacity:.5}
+.ihall{font-size:20px;font-weight:700;width:90px;text-align:center;text-transform:uppercase;opacity:.8}
+.ihall b{font-size:44px;color:#fff;line-height:1}
+.ifoot{display:flex;justify-content:space-between;font-size:24px;opacity:.75;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+</style></head><body><div class="insta">
+<div class="ihead"><img src="${logo}"><div><div class="eyebrow">Haugsbygd J17 · Futsal · Runde ${runde}</div><div class="kd">KAMPDAG</div>
+<div class="dato">${DAGER[dt.getDay()]} ${dt.getDate()}. ${MND[dt.getMonth()]} · ${esc(sted)}</div></div></div>
+<div class="liste">${kort}</div>
+<div class="ifoot"><span>1 x 20 min</span><span>Heia Haugsbygd! 💛💙</span></div></div></body></html>`;
+}
+
+const typer = { program, poeng, christmas, lag, keeper, hvile, tropp, insta };
 
 (async () => {
   const valg = process.argv.slice(2);
-  const navn = ['lag', 'hvile', 'tropp'].includes(valg[0]) ? [valg[0]] : valg.length ? valg : ['program', 'poeng', 'christmas'];
+  const navn = ['lag', 'hvile', 'tropp', 'insta'].includes(valg[0]) ? [valg[0]] : valg.length ? valg : ['program', 'poeng', 'christmas'];
   const browser = await chromium.launch();
   const pg = await browser.newPage({ viewport: { width: 1080, height: 800 }, deviceScaleFactor: 1 });
   for (const n of navn) {
     if (!typer[n]) { console.error('Ukjent type: ' + n); continue; }
+    await pg.setViewportSize({ width: 1080, height: n === 'insta' ? 1350 : 800 });
     await pg.setContent(typer[n]());
-    const fil = ['hvile', 'tropp'].includes(n) ? `${n}-runde${Number(valg[1]) || 1}` : n;
+    const fil = ['hvile', 'tropp', 'insta'].includes(n) ? `${n}-runde${Number(valg[1]) || 1}` : n;
     const out = path.join(dir, fil + '.png');
-    await pg.screenshot({ path: out, fullPage: true });
+    await pg.screenshot(n === 'insta' ? { path: out, clip: { x: 0, y: 0, width: 1080, height: 1350 } } : { path: out, fullPage: true });
     console.log('Lagret ' + out);
   }
   await browser.close();

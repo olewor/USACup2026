@@ -61,7 +61,11 @@
       "borte": "Haugsbygd",
       "bane": "Drammenshallen C",
       "resultat": null,
-      "poeng": {}
+      "poeng": {},
+      "drakt": {
+        "oss": "gul",
+        "mot": "mørkeblå"
+      }
     },
     {
       "runde": 1,
@@ -71,7 +75,11 @@
       "borte": "Haugsbygd",
       "bane": "Drammenshallen B",
       "resultat": null,
-      "poeng": {}
+      "poeng": {},
+      "drakt": {
+        "oss": "gul",
+        "mot": "blåhvit"
+      }
     },
     {
       "runde": 1,
@@ -81,7 +89,11 @@
       "borte": "Krødsherad",
       "bane": "Drammenshallen D",
       "resultat": null,
-      "poeng": {}
+      "poeng": {},
+      "drakt": {
+        "oss": "blå",
+        "mot": "hvit"
+      }
     },
     {
       "runde": 1,
@@ -91,7 +103,11 @@
       "borte": "Kongsberg/Skrim",
       "bane": "Drammenshallen B",
       "resultat": null,
-      "poeng": {}
+      "poeng": {},
+      "drakt": {
+        "oss": "blå",
+        "mot": "rød"
+      }
     },
     {
       "runde": 2,
@@ -323,5 +339,13 @@
       "borte": "Åssiden/DBK",
       "bane": "Hønefoss Arena 2"
     }
-  ]
+  ],
+  "draktfarger": {
+    "gul": "#F5C518",
+    "blå": "#1E63C4",
+    "mørkeblå": "#16264F",
+    "hvit": "#F4F4F4",
+    "rød": "#C8262E",
+    "blåhvit": "striper:#1E63C4:#F4F4F4"
+  }
 }
